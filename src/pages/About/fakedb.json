@@ -1,0 +1,46 @@
+{
+  "offers": [
+    {
+      "title": "Trusted by Thousands",
+      "description":
+        "BBB survey hit higher, there are property applications with our features and quality properties.",
+      "icon": "assets/images/about/support.svg"
+    },
+    {
+      "title": "Wide Range of Properties",
+      "description":
+        "BBB survey hit higher, there are property applications with our features and quality properties.",
+      "icon": "assets/images/about/eco-home.svg"
+    },
+    {
+      "title": "Financing Made Easy",
+      "description":
+        "BBB survey hit higher, there are property applications with our features and quality properties.",
+      "icon": "assets/images/about/calculator.svg"
+    }
+  ],
+  "news": [
+    {
+      "title": "BBB Offers",
+      "description":
+        "BBB survey hit higher, there are property applications with our features and quality properties.",
+      "icon": "assets/images/about/support.svg"
+    },
+    {
+      "title": "BBB Offers",
+      "description":
+        "BBB survey hit higher, there are property applications with our features and quality properties.",
+      "icon": "assets/images/about/support.svg"
+    },
+    {
+      "title": "BBB Offers",
+      "description":
+        "BBB survey hit higher, there are property applications with our features and quality properties.",
+      "icon": "assets/images/about/support.svg"
+    }
+  ]
+}
+
+
+
+
