@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
+import _ from "lodash";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as authActions from "../../../auth/store/actions";
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField } from "@material-ui/core";
+import { IconButton, TextField, Tooltip } from "@material-ui/core";
 import { AppButton } from "./../../../common/components";
+import VisibilityOutlined from "@material-ui/icons/VisibilityOutlined";
+import VisibilityOffOutlined from "@material-ui/icons/VisibilityOffOutlined";
 
 const useStyles = makeStyles((theme) => ({
   screen: {
@@ -13,8 +20,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login(props) {
+function Login(props) {
   const classes = useStyles(props);
+  const { data, login } = props;
+  const [form, setForm] = useState({ ...data });
+  const [visibility, setVisibility] = useState(false);
+
+  const handleVisibility = () => {
+    setVisibility(!visibility);
+  };
+
+  const handleChange = (event) => {
+    setForm((state) => ({
+      ..._.set(state, event.target.name, event.target.value),
+    }));
+  };
+
+  console.log(data, "data login");
+  console.log(form, "form login");
 
   return (
     <div>
@@ -56,8 +79,11 @@ export default function Login(props) {
             <TextField
               autoFocus
               margin="dense"
-              id="name"
+              id="email"
+              name="email"
               label="Email Address"
+              value={form.email}
+              onChange={handleChange}
               type="email"
               variant="outlined"
               fullWidth
@@ -65,12 +91,36 @@ export default function Login(props) {
             <TextField
               margin="dense"
               id="password"
+              name="password"
               label="Password"
-              type="password"
+              value={form.password}
+              onChange={handleChange}
+              InputProps={{
+                endAdornment: (
+                  <Tooltip
+                    title={visibility ? "hide password" : "show password"}
+                    arrow
+                  >
+                    <IconButton onClick={handleVisibility} size="small">
+                      {visibility ? (
+                        <VisibilityOutlined />
+                      ) : (
+                        <VisibilityOffOutlined />
+                      )}
+                    </IconButton>
+                  </Tooltip>
+                ),
+              }}
+              type={visibility ? "text" : "password"}
               variant="outlined"
               fullWidth
             />
-            <AppButton fullWidth variant="contained" color="secondary">
+            <AppButton
+              fullWidth
+              variant="contained"
+              color="secondary"
+              onClick={() => login(form)}
+            >
               Login
             </AppButton>
 
@@ -88,3 +138,20 @@ export default function Login(props) {
     </div>
   );
 }
+
+const mapStateToProps = ({ auth }) => {
+  return {
+    data: auth.login.data,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      login: authActions.login,
+    },
+    dispatch
+  );
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

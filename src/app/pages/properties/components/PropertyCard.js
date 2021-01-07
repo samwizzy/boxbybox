@@ -1,6 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Card, CardContent, CardMedia, Icon } from "@material-ui/core";
+import BoxUtils from "./../../../utils/BoxUtils";
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -14,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PropertyCard(props) {
   const classes = useStyles(props);
+  const { property } = props;
 
   return (
     <Card className="md:grid md:grid-cols-2 gap-4 mb-4">
@@ -24,16 +27,20 @@ export default function PropertyCard(props) {
       />
       <CardContent className="flex flex-col items-start">
         <Button variant="contained" color="primary" className={classes.button}>
-          For Rent
+          For {property.feature}
         </Button>
 
         <span className="text-xs text-gray-400 uppercase mt-4 mb-1">
           R003YXXEN
         </span>
         <h3 className="mb-1 text-sm text-gray-500 uppercase">
-          4 BEDROOM DUPLEX
+          <Link className="no-underline" to={`/property/${property.id}`}>
+            {property.title}
+          </Link>
         </h3>
-        <h3 className="mb-1 text-lg text-gray-800">N 300,000.00</h3>
+        <h3 className="mb-1 text-lg text-gray-800">
+          {BoxUtils.formatCurrency(property.price)}
+        </h3>
 
         <p className="text-sm text-gray-400">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Purus
@@ -43,16 +50,17 @@ export default function PropertyCard(props) {
 
         <div className="flex items-center flex-wrap mt-5">
           <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-            780 sqft
+            {property.size} sqft
           </div>
           <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-            <Icon fontSize="small">hotel</Icon>&nbsp;4
+            <Icon fontSize="small">hotel</Icon>&nbsp;{property.bedrooms}
           </div>
           <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-            <Icon fontSize="small">bathtub</Icon>&nbsp;3
+            <Icon fontSize="small">bathtub</Icon>&nbsp;{property.bathrooms}
           </div>
           <div className="flex items-center text-sm border-0 px-2">
-            <Icon fontSize="small">drive_eta</Icon>&nbsp;2
+            <Icon fontSize="small">drive_eta</Icon>&nbsp;
+            {property.parkingLot ? "Yes" : "No"}
           </div>
         </div>
       </CardContent>

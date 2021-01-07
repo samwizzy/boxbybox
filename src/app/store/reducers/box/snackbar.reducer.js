@@ -8,8 +8,8 @@ const initialState = {
       horizontal: "center",
     },
     autoHideDuration: 6000,
-    message: "Hi",
-    variant: null,
+    message: "Hi!",
+    variant: "success",
   },
 };
 

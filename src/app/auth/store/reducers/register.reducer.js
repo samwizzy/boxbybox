@@ -3,10 +3,45 @@ import * as Actions from "../actions/register.actions";
 const initialState = {
   loading: false,
   data: {
-    firstName: "",
-    lastName: "",
+    administrator: {
+      fullName: "",
+    },
+    company: {
+      address: {
+        city: "",
+        country: "",
+        houseNoAddress: "",
+        latitude: "",
+        lga: "",
+        longitude: "",
+        postCode: "",
+        state: "",
+      },
+      name: "",
+      rcNumber: "",
+    },
     email: "",
+    individualUser: {
+      address: {
+        city: "",
+        country: "",
+        houseNoAddress: "",
+        latitude: "",
+        lga: "",
+        longitude: "",
+        postCode: "",
+        state: "",
+      },
+      dateOfBirth: "01-01-1980",
+      fullName: "",
+      gender: "MALE",
+      nextOfKinEmail: "",
+      nextOfKinName: "",
+      nextOfKinPhone: "",
+    },
     password: "",
+    phone: "",
+    role: "INDIVIDUAL_USER",
   },
   error: null,
 };

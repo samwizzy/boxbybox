@@ -1,24 +1,26 @@
 import { Redirect } from "react-router-dom";
-import Properties from "./listing";
+import loadable from "@loadable/component";
+import Properties from "./";
 import PropertyDetails from "./property-details";
 
 export const PropertyConfig = {
   routes: [
     {
-      path: "/property/listing",
+      path: "/properties",
       component: Properties,
     },
     {
-      path: "/property/offers",
-      component: Properties,
-    },
-    {
-      path: "/property/bids",
-      component: Properties,
-    },
-    {
-      path: "/property/detail",
+      path: "/property/:id",
+      exact: true,
       component: PropertyDetails,
+    },
+    {
+      path: "/property/:id/offers",
+      component: loadable(() => import("./offers")),
+    },
+    {
+      path: "/property/:id/bids",
+      component: Properties,
     },
     {
       path: "/property",
