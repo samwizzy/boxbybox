@@ -1,28 +1,33 @@
-import React from "react";
-import clsx from "clsx";
+import React, { useState } from "react";
 import _ from "lodash";
-import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
-import SearchIcon from "@material-ui/icons/Search";
+import {
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  MenuItem,
+  TextField,
+} from "@material-ui/core";
 import { AppButton } from "../../../../common/components";
 
-const useStyles = makeStyles((theme) => ({
-  root: {},
-  search: {
-    border: "none",
-    "& svg": {
-      fill: theme.palette.secondary.main,
-    },
-    "&:focus": {
-      outline: "none",
-    },
-  },
-}));
+const initialState = {
+  category: "IPO_OFFERS",
+  location: "",
+  type: "",
+  minPrice: "",
+  maxPrice: "",
+};
+
+const types = ["LAND", "BUNGALOWS", "FLAT", "LUXURY_APARTMENT"];
 
 export default function RentForm(props) {
-  const classes = useStyles(props);
+  const [form, setForm] = useState({ ...initialState });
 
-  const handleChange = (event) => {};
+  const handleChange = (event) => {
+    const { name, value, type, checked } = event.target;
+    setForm({ ...form, [name]: type === "checkbox" ? checked : value });
+  };
 
   const handleSubmit = () => {};
 
@@ -30,122 +35,107 @@ export default function RentForm(props) {
     <div>
       <form className="grid grid-cols-3 gap-3">
         <div className="col-span-3 sm:col-span-3">
-          <input
-            type="text"
-            name="location"
-            placeholder="Location"
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Category</FormLabel>
+            <RadioGroup
+              aria-label="category"
+              name="category"
+              value={form.category}
+              onChange={handleChange}
+            >
+              <FormControlLabel
+                value="IPO_OFFERS"
+                control={<Radio />}
+                label="IPO Offers"
+              />
+              <FormControlLabel
+                value="BBB_OFFERS"
+                control={<Radio />}
+                label="BBB Offers"
+              />
+              <FormControlLabel
+                value="AUCTIONABLES"
+                control={<Radio />}
+                label="BBB Auctionables"
+              />
+            </RadioGroup>
+          </FormControl>
+
+          <TextField
+            margin="dense"
             id="location"
-            autoComplete="location"
+            name="location"
+            label="Location"
+            value={form.location}
             onChange={handleChange}
-            className="mt-2 py-2 px-3 block w-full border border-solid border-gray-300 bg-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-gray-500 sm:text-sm"
+            variant="outlined"
+            fullWidth
           />
 
-          <select
-            id="country"
-            name="country"
-            autoComplete="country"
+          <TextField
+            margin="dense"
+            id="type"
+            name="type"
+            select
+            label="Type"
+            value={form.type}
             onChange={handleChange}
-            className="mt-2 py-2 px-2 block w-full border border-solid border-gray-300 bg-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            variant="outlined"
+            fullWidth
           >
-            <option>United States</option>
-            <option>Canada</option>
-            <option>Mexico</option>
-          </select>
-
-          <select
-            id="bedroom"
-            name="bedroom"
-            autoComplete="bedroom"
-            onChange={handleChange}
-            className="mt-2 py-2 px-2 block w-full border border-solid border-gray-300 bg-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          >
-            {_.range(1, 5).map((bed) => (
-              <option key={bed}>
-                {bed} {bed > 1 ? "bedrooms" : "bedroom"}
-              </option>
+            <MenuItem value="">Select type</MenuItem>
+            {types.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
             ))}
-          </select>
+          </TextField>
 
-          <select
+          <TextField
+            margin="dense"
             id="min-price"
-            name="min-price"
-            autoComplete="min-price"
+            name="minPrice"
+            select
+            label="Min Price"
+            value={form.minPrice}
             onChange={handleChange}
-            className="mt-2 py-2 px-2 block w-full border border-solid border-gray-300 bg-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            variant="outlined"
+            fullWidth
           >
+            <MenuItem value="">Select Minimum Price</MenuItem>
             {_.range(200000, 1000000, 100000).map((price) => (
-              <option key={price}>{price}</option>
+              <MenuItem key={price} value={price}>
+                {price}
+              </MenuItem>
             ))}
-          </select>
+          </TextField>
 
-          <select
+          <TextField
+            margin="dense"
             id="max-price"
-            name="max-price"
-            autoComplete="max-price"
+            name="maxPrice"
+            select
+            label="Max Price"
+            value={form.maxPrice}
             onChange={handleChange}
-            className="mt-2 py-2 px-2 block w-full border border-solid border-gray-300 bg-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            variant="outlined"
+            fullWidth
           >
+            <MenuItem value="">Select Max Price</MenuItem>
             {_.range(200000, 1000000, 100000).map((price) => (
-              <option key={price}>{price}</option>
+              <MenuItem key={price} value={price}>
+                {price}
+              </MenuItem>
             ))}
-          </select>
-
-          <div className="mt-4 space-y-4">
-            <div className="flex justify-between items-center">
-              <div className="flex items-start">
-                <div className="flex items-center h-5">
-                  <input
-                    id="furnished"
-                    name="furnished"
-                    type="checkbox"
-                    onChange={handleChange}
-                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-                  />
-                </div>
-                <div className="ml-3 text-sm">
-                  <label
-                    htmlFor="furnished"
-                    className="font-medium text-gray-700"
-                  >
-                    Furnished
-                  </label>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <div className="flex items-center h-5">
-                  <input
-                    id="serviced"
-                    name="serviced"
-                    type="checkbox"
-                    onChange={handleChange}
-                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-                  />
-                </div>
-                <div className="ml-3 text-sm">
-                  <label
-                    htmlFor="serviced"
-                    className="font-medium text-gray-700"
-                  >
-                    Serviced
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <button
-            type="button"
-            onChange={handleSubmit}
-            className={clsx(classes.search, "flex items-center space-x-1 mt-4")}
-          >
-            <SearchIcon fontSize="small" />
-            <Typography color="secondary" className="ml-2 text-sm">
-              Advanced Search
-            </Typography>
-          </button>
+          </TextField>
 
           <div className="mt-4">
-            <AppButton fullWidth variant="contained" color="secondary">
+            <AppButton
+              fullWidth
+              variant="contained"
+              color="secondary"
+              onClick={handleSubmit}
+            >
               Search
             </AppButton>
           </div>

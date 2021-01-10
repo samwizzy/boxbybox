@@ -2,7 +2,9 @@ import * as Actions from "../actions/user.actions";
 
 const initialState = {
   loading: false,
-  data: {},
+  data: {
+    role: null,
+  },
   error: null,
 };
 
@@ -18,6 +20,7 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+        data: action.payload,
       };
     }
     case Actions.SET_USER_DATA_ERROR: {

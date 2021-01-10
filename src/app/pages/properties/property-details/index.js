@@ -1,14 +1,23 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
+import BoxUtils from "./../../../utils/BoxUtils";
 import clsx from "clsx";
 import _ from "lodash";
+import withReducer from "./../../../store/withReducer";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { Link, useParams, withRouter } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import * as Actions from "./../store/actions";
+import reducer from "./../store/reducers";
 import {
   Card,
   CardContent,
   CardMedia,
+  Button,
   Divider,
   Icon,
   Typography,
+  Slider,
 } from "@material-ui/core";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import ExploreIcon from "@material-ui/icons/Explore";
@@ -19,6 +28,9 @@ import {
   FeaturedCard,
   LandscapeCard,
 } from "../../../common/components";
+import BidPaymentDialog from "./components/BidPaymentDialog";
+import QueueInBidDialog from "./components/QueueInBidDialog";
+import ConfirmBidDialog from "./components/ConfirmBidDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -48,10 +60,46 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
     borderRadius: 0,
   },
+  rail: {
+    height: theme.spacing(1),
+    borderRadius: 4,
+  },
+  track: {
+    height: 8,
+    borderRadius: 4,
+  },
+  thumb: {
+    backgroundColor: "#fff",
+    border: "2px solid currentColor",
+    marginTop: -3,
+    marginLeft: -3,
+    "&:focus, &:hover, &$active": {
+      boxShadow: "inherit",
+    },
+  },
 }));
 
-export default function PropertyDetails(props) {
+function PropertyDetails(props) {
   const classes = useStyles(props);
+  const {
+    property,
+    getPropertyById,
+    openBidPaymentDialog,
+    openQueueInBidDialog,
+    match,
+  } = props;
+  const params = useParams();
+
+  console.log(property, "single property details");
+  console.log(params, "params property details");
+
+  useEffect(() => {
+    getPropertyById(params.id);
+  }, [params, getPropertyById]);
+
+  if (!property) {
+    return null;
+  }
 
   return (
     <div className="container">
@@ -62,7 +110,7 @@ export default function PropertyDetails(props) {
               <Breadcrumbs />
 
               <h3 className="text-gray-800 font-medium text-lg my-1 uppercase">
-                4 BEDROOM DUPLEX
+                {property.title}
               </h3>
 
               <span className="text-xs text-gray-600 uppercase my-2">
@@ -70,8 +118,8 @@ export default function PropertyDetails(props) {
               </span>
 
               <h3 className="flex items-center text-sm font-normal text-gray-500 mb-4 mt-2">
-                <LocationOnIcon color="secondary" fontSize="small" /> Yaba Lagos
-                Nigeria
+                <LocationOnIcon color="secondary" fontSize="small" />{" "}
+                {`${property.address.city} ${property.address.state} ${property.address.country}`}
               </h3>
 
               <Fragment>
@@ -96,16 +144,19 @@ export default function PropertyDetails(props) {
 
                     <div className="flex items-center flex-wrap mt-5">
                       <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-                        780 sqft
+                        {property.size} sqft
                       </div>
                       <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-                        <Icon fontSize="small">hotel</Icon>&nbsp;4
+                        <Icon fontSize="small">hotel</Icon>&nbsp;
+                        {property.bedrooms}
                       </div>
                       <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-                        <Icon fontSize="small">bathtub</Icon>&nbsp;3
+                        <Icon fontSize="small">bathtub</Icon>&nbsp;
+                        {property.bathrooms}
                       </div>
                       <div className="flex items-center text-sm border-0 px-2">
-                        <Icon fontSize="small">drive_eta</Icon>&nbsp;2
+                        <Icon fontSize="small">drive_eta</Icon>&nbsp;
+                        {property.parkingLot}
                       </div>
                     </div>
                   </CardContent>
@@ -117,35 +168,127 @@ export default function PropertyDetails(props) {
               </Fragment>
             </div>
             <div className="col-span-6 mt-4 md:mt-16 md:col-span-2">
-              <h2 className="text-gray-600 text-lg font-bold mb-4">
-                Contact Agent
-              </h2>
+              {property.feature === "RENT" ? (
+                <Fragment>
+                  <h2 className="text-gray-600 text-lg font-bold mb-4">
+                    Contact Agent
+                  </h2>
 
-              <Card
-                className="grid grid-cols-2 gap-4 mb-4"
-                square
-                elevation={1}
-              >
-                <CardMedia
-                  className={clsx(classes.media, "bg-center")}
-                  image="https://www.flaticon.com/svg/static/icons/svg/3048/3048127.svg"
-                  title="Agent contact"
-                />
-                <CardContent>
-                  <Typography variant="subtitle1">Chika Uzo</Typography>
-                  <Typography variant="subtitle2" color="textSecondary">
-                    Agent
-                  </Typography>
-                </CardContent>
-              </Card>
+                  <Card
+                    className="grid grid-cols-2 gap-4 mb-4"
+                    square
+                    elevation={1}
+                  >
+                    <CardMedia
+                      className={clsx(classes.media, "bg-center")}
+                      image="https://www.flaticon.com/svg/static/icons/svg/3048/3048127.svg"
+                      title="Agent contact"
+                    />
+                    <CardContent>
+                      <Typography variant="subtitle1">Chika Uzo</Typography>
+                      <Typography variant="subtitle2" color="textSecondary">
+                        Agent
+                      </Typography>
+                    </CardContent>
+                  </Card>
 
-              <h3 className="text-sm text-gray-600 font-medium my-4">
-                chikauzo@yahoo.com
-              </h3>
+                  <h3 className="text-sm text-gray-600 font-medium my-4">
+                    {property.createdBy.email}
+                  </h3>
 
-              <div className="mb-12 md:mb-0">
-                <FormTabs />
-              </div>
+                  <div className="mb-12 md:mb-0">
+                    <FormTabs />
+                  </div>
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <h2 className="text-gray-600 text-lg font-bold mb-4">
+                    {property.title}
+                  </h2>
+                  <h3 className="flex items-center text-sm font-normal text-gray-500 mb-4 mt-2">
+                    <LocationOnIcon color="secondary" fontSize="small" />{" "}
+                    {`${property.address.city} ${property.address.state} ${property.address.country}`}
+                  </h3>
+
+                  <h3 className="text-sm text-gray-600 mb-8">
+                    Property ID: &nbsp; <strong>S008XXXYN</strong>
+                  </h3>
+
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="flex flex-col">
+                      <span className="text-sm text-gray-600">
+                        Current Market Price
+                      </span>
+                      <Typography color="secondary">
+                        {BoxUtils.formatCurrency(property.price)}
+                      </Typography>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-sm text-gray-600">
+                        Price per unit
+                      </span>
+                      <Typography color="secondary">
+                        {BoxUtils.formatCurrency(property.price)}
+                      </Typography>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-sm text-gray-600">
+                        Number of Units
+                      </span>
+                      <Typography color="secondary">
+                        {property.units}
+                      </Typography>
+                    </div>
+                  </div>
+
+                  <div>
+                    <span className="text-sm text-gray-600">
+                      Sales Status Bar
+                    </span>
+                    <Slider
+                      value={property.unitsSold}
+                      color="secondary"
+                      valueLabelDisplay="auto"
+                      valueLabelFormat={(value) => <div>{value}%</div>}
+                      className="mx-1"
+                      classes={{
+                        track: classes.track,
+                        rail: classes.rail,
+                        thumb: classes.thumb,
+                      }}
+                      aria-labelledby="sales-status-bar"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 mt-4">
+                    <Button variant="contained" color="secondary">
+                      Buy IPO Stake
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={openQueueInBidDialog}
+                    >
+                      Queue in a Bid
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      component={Link}
+                      to={`${match.url}/offers`}
+                    >
+                      View BBB Offers
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={openBidPaymentDialog}
+                    >
+                      Buy BBB Offer
+                    </Button>
+                  </div>
+                </Fragment>
+              )}
             </div>
           </div>
 
@@ -231,6 +374,33 @@ export default function PropertyDetails(props) {
           </div>
         </div>
       </div>
+
+      <BidPaymentDialog />
+      <QueueInBidDialog />
+      <ConfirmBidDialog />
     </div>
   );
 }
+
+const mapStateToProps = ({ propertyDetails }) => {
+  console.log(propertyDetails, "propertyDetails from index propertyDetails");
+  return {
+    property: propertyDetails.property.property,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      getPropertyById: Actions.getPropertyById,
+      openBidPaymentDialog: Actions.openBidPaymentDialog,
+      openQueueInBidDialog: Actions.openQueueInBidDialog,
+    },
+    dispatch
+  );
+};
+
+export default withReducer(
+  "propertyDetails",
+  reducer
+)(withRouter(connect(mapStateToProps, mapDispatchToProps)(PropertyDetails)));

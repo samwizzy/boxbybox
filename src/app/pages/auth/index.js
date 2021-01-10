@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
@@ -11,13 +11,6 @@ import Register from "./register";
 const useStyles = makeStyles((theme) => ({
   root: {},
   tabs: {},
-  screen: {
-    backgroundImage:
-      "url(https://image.freepik.com/free-photo/house-key-home-insurance-broker-agent-s-hand-protection_1150-14910.jpg)",
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-  },
 }));
 
 function a11yProps(index) {
@@ -33,6 +26,11 @@ function AuthDialog(props) {
   const dispatch = useDispatch();
   const dialog = useSelector((store) => store.auth.login.authDialog);
 
+  useEffect(() => {
+    dispatch(Actions.getCountries());
+    return () => {};
+  }, [dispatch]);
+
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -42,6 +40,7 @@ function AuthDialog(props) {
       open={dialog.open}
       onClose={() => dispatch(Actions.closeDialog())}
       aria-labelledby="form-dialog-title"
+      maxWidth="md"
     >
       <AppBar position="static" color="inherit" elevation={0}>
         <Tabs

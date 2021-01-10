@@ -42,6 +42,7 @@ function a11yProps(index) {
 
 export default function Listing(props) {
   const classes = useStyles(props);
+  const { properties } = props;
   const [value, setValue] = useState(0);
 
   const handleTabChange = (event, newValue) => {
@@ -82,9 +83,9 @@ export default function Listing(props) {
                 Property Listing
               </h3>
 
-              {_.range(0, 2).map((props, i) => (
+              {properties.entities.map((property, i) => (
                 <Fragment key={i}>
-                  <PropertyCard />
+                  <PropertyCard property={property} />
 
                   {_.range(0, 1).length !== i && (
                     <Divider className={classes.divider} />

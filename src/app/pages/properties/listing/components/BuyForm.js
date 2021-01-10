@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import _ from "lodash";
+import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
+import {
+  Checkbox,
+  FormControlLabel,
+  MenuItem,
+  TextField,
+  Typography,
+} from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { AppButton } from "../../../../common/components";
 
@@ -19,106 +26,142 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const initialState = {
+  location: "",
+  country: "",
+  bedrooms: "",
+  bathrooms: "",
+  minPrice: "",
+  maxPrice: "",
+  furnished: false,
+  serviced: false,
+};
+
 export default function SearchForm(props) {
   const classes = useStyles(props);
+  const [form, setForm] = useState({ ...initialState });
+  const countries = useSelector(({ auth }) => auth.location.countries);
+
+  const handleChange = (event) => {
+    const { name, value, type, checked } = event.target;
+    setForm({ ...form, [name]: type === "checkbox" ? checked : value });
+  };
+
+  console.log(form, "form property");
 
   return (
     <div>
       <form className="grid grid-cols-3 gap-0 md:gap-3">
         <div className="col-span-3">
-          <input
-            type="text"
-            name="location"
-            placeholder="Location"
+          <TextField
+            margin="dense"
             id="location"
-            autoComplete="location"
-            className="mt-2 py-2 px-3 block w-full border border-solid border-gray-300 bg-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-gray-500 sm:text-sm"
+            name="location"
+            label="Location"
+            value={form.location}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
           />
 
-          <select
+          <TextField
+            margin="dense"
             id="country"
             name="country"
-            autoComplete="country"
-            className="mt-2 py-2 px-2 block w-full border border-solid border-gray-300 bg-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            select
+            label="Country"
+            value={form.country}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
           >
-            <option>United States</option>
-            <option>Canada</option>
-            <option>Mexico</option>
-          </select>
+            <MenuItem value="">Select country</MenuItem>
+            {countries.map((option) => (
+              <MenuItem key={option.id} value={option.id}>
+                {option.name}
+              </MenuItem>
+            ))}
+          </TextField>
 
-          <select
-            id="bedroom"
-            name="bedroom"
-            autoComplete="bedroom"
-            className="mt-2 py-2 px-2 block w-full border border-solid border-gray-300 bg-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          <TextField
+            margin="dense"
+            id="bedrooms"
+            name="bedrooms"
+            select
+            label="Bedrooms"
+            value={form.bedrooms}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
           >
+            <MenuItem value="">Select country</MenuItem>
             {_.range(1, 5).map((bed) => (
-              <option key={bed}>
+              <MenuItem key={bed} value={bed}>
                 {bed} {bed > 1 ? "bedrooms" : "bedroom"}
-              </option>
+              </MenuItem>
             ))}
-          </select>
+          </TextField>
 
-          <select
+          <TextField
+            margin="dense"
             id="min-price"
-            name="min-price"
-            autoComplete="min-price"
-            className="mt-2 py-2 px-2 block w-full border border-solid border-gray-300 bg-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            name="minPrice"
+            select
+            label="Min Price"
+            value={form.minPrice}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
           >
+            <MenuItem value="">Select Minimum Price</MenuItem>
             {_.range(200000, 1000000, 100000).map((price) => (
-              <option key={price}>{price}</option>
+              <MenuItem key={price} value={price}>
+                {price}
+              </MenuItem>
             ))}
-          </select>
+          </TextField>
 
-          <select
+          <TextField
+            margin="dense"
             id="max-price"
-            name="max-price"
-            autoComplete="max-price"
-            className="mt-2 py-2 px-2 block w-full border border-solid border-gray-300 bg-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            name="maxPrice"
+            select
+            label="Max Price"
+            value={form.maxPrice}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
           >
+            <MenuItem value="">Select Max Price</MenuItem>
             {_.range(200000, 1000000, 100000).map((price) => (
-              <option key={price}>{price}</option>
+              <MenuItem key={price} value={price}>
+                {price}
+              </MenuItem>
             ))}
-          </select>
+          </TextField>
 
           <div className="mt-4 space-y-4">
             <div className="flex justify-between items-center">
-              <div className="flex items-start">
-                <div className="flex items-center h-5">
-                  <input
-                    id="furnished"
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={form.furnished}
+                    onChange={handleChange}
                     name="furnished"
-                    type="checkbox"
-                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
                   />
-                </div>
-                <div className="ml-3 text-sm">
-                  <label
-                    htmlFor="furnished"
-                    className="font-medium text-gray-700"
-                  >
-                    Furnished
-                  </label>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <div className="flex items-center h-5">
-                  <input
-                    id="serviced"
+                }
+                label="Furnished"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={form.serviced}
+                    onChange={handleChange}
                     name="serviced"
-                    type="checkbox"
-                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
                   />
-                </div>
-                <div className="ml-3 text-sm">
-                  <label
-                    htmlFor="serviced"
-                    className="font-medium text-gray-700"
-                  >
-                    Serviced
-                  </label>
-                </div>
-              </div>
+                }
+                label="Serviced"
+              />
             </div>
           </div>
 
