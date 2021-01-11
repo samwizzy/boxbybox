@@ -34,18 +34,6 @@ import ConfirmBidDialog from "./components/ConfirmBidDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
-  tabs: {
-    "& button": {
-      backgroundColor: theme.palette.secondary.main,
-      color: theme.palette.primary.contrastText,
-      "&:last-child": {
-        marginLeft: theme.spacing(2),
-      },
-      "&:focus": {
-        outline: "none",
-      },
-    },
-  },
   birdview: {
     backgroundColor: theme.palette.secondary.main,
     backgroundImage: console.log(theme, "theme"),
