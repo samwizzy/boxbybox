@@ -3,7 +3,12 @@ import * as Actions from "../actions/user.actions";
 const initialState = {
   loading: false,
   data: {
+    company: null,
+    email: null,
+    individualUser: null,
+    phone: null,
     role: null,
+    status: null,
   },
   error: null,
 };

@@ -32,6 +32,7 @@ function AuthDialog(props) {
   }, [dispatch]);
 
   const handleTabChange = (event, newValue) => {
+    event.preventDefault();
     setValue(newValue);
   };
 
@@ -55,10 +56,10 @@ function AuthDialog(props) {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <Login />
+        <Login handleTabChange={handleTabChange} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Register />
+        <Register handleTabChange={handleTabChange} />
       </TabPanel>
     </Dialog>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
@@ -11,7 +11,6 @@ const useStyles = makeStyles((theme) => ({
 export default function ActiveBids(props) {
   const classes = useStyles(props);
   const { bids } = props;
-  const match = useRouteMatch();
 
   return (
     <div className={classes.root}>

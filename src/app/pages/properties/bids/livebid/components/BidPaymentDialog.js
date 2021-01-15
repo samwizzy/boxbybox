@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogActions,
 } from "@material-ui/core";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,7 +50,7 @@ function BidPaymentDialog(props) {
       <DialogActions>
         <Button
           size="small"
-          variant="contained"
+          startIcon={<ArrowBackIcon />}
           onClick={() => dispatch(Actions.closeBidPaymentDialog())}
         >
           Back

@@ -7,9 +7,8 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, IconButton, Tabs, Tab, Toolbar } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
-import Breadcrumbs from "../components/Breadcrumbs";
 import MenuIcon from "@material-ui/icons/Menu";
-import { TabPanel } from "../../../common/components";
+import { AppBreadcrumbs, TabPanel } from "../../../common/components";
 import RentForm from "./components/RentForm";
 import ActiveBids from "./components/ActiveBids";
 import ExpiredBids from "./components/ExpiredBids";
@@ -66,7 +65,7 @@ function Bids(props) {
             </div>
             <div className="col-span-6 md:col-span-4">
               <Toolbar className={classes.toolbar}>
-                <Breadcrumbs current="Live bids" />
+                <AppBreadcrumbs current="Live bids" />
                 <div className="w-full" />
                 <IconButton color="secondary">
                   <MenuIcon />

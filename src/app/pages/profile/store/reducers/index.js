@@ -1,12 +1,14 @@
 import { combineReducers } from "redux";
+import profile from "./profile.reducer";
 import property from "./property.reducer";
-import offers from "./offers.reducer";
-import bids from "./bids.reducer";
+import wallet from "./wallet.reducer";
+import listing from "./listing.reducer";
 
-const propertyReducers = combineReducers({
+const profileReducers = combineReducers({
+  profile,
   property,
-  offers,
-  bids,
+  wallet,
+  listing,
 });
 
-export default propertyReducers;
+export default profileReducers;
