@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Login(props) {
+export function Login(props) {
   const classes = useStyles(props);
   const { loading, data, login, handleTabChange } = props;
   const [form, setForm] = useState({ ...data });
@@ -121,6 +121,7 @@ function Login(props) {
               fullWidth
             />
             <AppButton
+              title="login"
               fullWidth
               variant="contained"
               color="secondary"

@@ -11,7 +11,7 @@ import { GoBackButton } from "../../../common/components";
 import SellSublotDialog from "./components/SellSublotDialog";
 import MergeSublotDialog from "./components/MergeSublotDialog";
 import ConfirmMergeDialog from "./components/ConfirmMergeDialog";
-import SublotListing from "./sublots/SublotListing";
+import SublotListing from "./boxlots/SublotListing";
 import RentalListing from "./rentals/RentalListing";
 import SalesListing from "./sales/SalesListing";
 
@@ -102,16 +102,6 @@ function PropertyListing(props) {
             <Grid item xs={12} md={3}>
               <Card>
                 <CardContent>
-                  {/* <div>
-                    <List component="nav" aria-label="main profile menus">
-                      {menus.map((menu, i) => (
-                        <ListItem key={i} button onClick={handleListFilter}>
-                          <ListItemText primary={menu.name} disableTypography />
-                        </ListItem>
-                      ))}
-                    </List>
-                  </div> */}
-
                   <AntTabs
                     orientation="vertical"
                     variant="scrollable"
@@ -120,7 +110,7 @@ function PropertyListing(props) {
                     aria-label="ant example"
                     className={classes.tabs}
                   >
-                    <AntTab label="BBB Sublots" {...a11yProps(0)} />
+                    <AntTab label="Boxlots" {...a11yProps(0)} />
                     <AntTab label="My Rental Listing" {...a11yProps(1)} />
                     <AntTab label="My Sales Listing" {...a11yProps(2)} />
                   </AntTabs>

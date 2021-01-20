@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as Actions from "./../../store/actions";
 import { makeStyles } from "@material-ui/core/styles";
+import { AppButton } from "../../../../common/components";
 import {
-  Button,
   Checkbox,
   Dialog,
   DialogContent,
@@ -27,6 +27,8 @@ function ConfirmBidDialog(props) {
   const dialog = useSelector(
     ({ propertyDetails }) => propertyDetails.bids.confirmBidDialog
   );
+
+  console.log(dialog.data, "ConfirmBidDialog diakog");
 
   const handleChange = (event) => {
     setState(event.target.checked);
@@ -64,9 +66,14 @@ function ConfirmBidDialog(props) {
       </DialogContent>
 
       <DialogActions>
-        <Button size="small" variant="contained" color="secondary">
+        <AppButton
+          size="small"
+          variant="contained"
+          color="secondary"
+          onClick={() => dispatch(Actions.bidForIpoStake(dialog.data))}
+        >
           Confirm bid
-        </Button>
+        </AppButton>
       </DialogActions>
     </Dialog>
   );

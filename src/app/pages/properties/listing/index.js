@@ -92,9 +92,13 @@ export default function Listing(props) {
                 </Fragment>
               ))}
 
-              <div className="flex items-center justify-center mt-16">
-                <Pagination count={10} variant="outlined" color="secondary" />
-              </div>
+              {properties.entities.length ? (
+                <div className="flex items-center justify-center mt-16">
+                  <Pagination count={10} variant="outlined" color="secondary" />
+                </div>
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>

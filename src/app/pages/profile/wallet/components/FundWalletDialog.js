@@ -2,8 +2,8 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as Actions from "./../../store/actions";
 import { makeStyles } from "@material-ui/core/styles";
+import { AppButton } from "./../../../../common/components";
 import {
-  Button,
   Dialog,
   DialogContent,
   DialogActions,
@@ -66,15 +66,16 @@ function FundWalletDialog(props) {
       </DialogContent>
 
       <DialogActions>
-        <Button
+        <AppButton
           size="small"
+          variant="outlined"
           onClick={() => dispatch(Actions.closeFundWalletDialog())}
         >
           Close
-        </Button>
-        <Button size="small" variant="contained" color="secondary">
+        </AppButton>
+        <AppButton size="small" variant="contained" color="secondary">
           Fund
-        </Button>
+        </AppButton>
       </DialogActions>
     </Dialog>
   );

@@ -1,6 +1,8 @@
 import React from "react";
 import BoxUtils from "../../../../../utils/BoxUtils";
 import moment from "moment";
+import { useDispatch } from "react-redux";
+import * as Actions from "./../../../store/actions";
 import { AppButton } from "./../../../../../common/components";
 import { makeStyles } from "@material-ui/core/styles";
 import { Table, TableBody, TableRow, TableCell } from "@material-ui/core";
@@ -12,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     "& td": { border: 0 },
   },
-  danger: {
+  rejected: {
     color: theme.palette.getContrastText(red[500]),
     backgroundColor: red[500],
     "&:hover": {
@@ -30,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ActiveOffers(props) {
   const classes = useStyles(props);
+  const dispatch = useDispatch();
   const { offers } = props;
 
   return (
@@ -97,10 +100,14 @@ export default function ActiveOffers(props) {
                 </Table>
               </div>
               <div className="flex justify-end space-x-2 pt-2">
-                <AppButton variant="contained" className={classes.accepted}>
+                <AppButton
+                  variant="contained"
+                  className={classes.accepted}
+                  onClick={() => dispatch(Actions.openOfferDialog())}
+                >
                   Accept offer
                 </AppButton>
-                <AppButton variant="contained" className={classes.danger}>
+                <AppButton variant="contained" className={classes.rejected}>
                   Reject offer
                 </AppButton>
               </div>

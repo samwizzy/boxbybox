@@ -3,18 +3,14 @@ import BoxUtils from "./../../../../utils/BoxUtils";
 import { useSelector, useDispatch } from "react-redux";
 import * as Actions from "./../../store/actions";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogActions,
-} from "@material-ui/core";
+import { AppButton } from "../../../../common/components";
+import { Dialog, DialogContent, DialogActions } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     "& .MuiDialogActions-root": {
       justifyContent: "center",
-      paddingBottom: theme.spacing(4),
+      padding: theme.spacing(0, 4, 2, 4),
     },
   },
 }));
@@ -32,8 +28,6 @@ function BidPaymentDialog(props) {
       open={dialog.open}
       onClose={() => dispatch(Actions.closeBidPaymentDialog())}
       aria-labelledby="bid-offers-payment"
-      fullWidth
-      maxWidth="xs"
     >
       <DialogContent>
         <div className="text-center p-8">
@@ -47,16 +41,16 @@ function BidPaymentDialog(props) {
       </DialogContent>
 
       <DialogActions>
-        <Button
+        <AppButton
           size="small"
-          variant="contained"
+          variant="outlined"
           onClick={() => dispatch(Actions.closeBidPaymentDialog())}
         >
           Back
-        </Button>
-        <Button size="small" variant="contained" color="secondary">
+        </AppButton>
+        <AppButton size="small" variant="contained" color="secondary">
           Confirm Payment
-        </Button>
+        </AppButton>
       </DialogActions>
     </Dialog>
   );

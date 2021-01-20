@@ -11,7 +11,7 @@ import AppContext from "./utils/AppContext";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" title="app">
       <AppContext.Provider value={{ routes }}>
         <Provider store={store}>
           <Router history={history}>

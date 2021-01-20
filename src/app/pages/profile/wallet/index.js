@@ -9,8 +9,8 @@ import reducer from "./../store/reducers";
 import moment from "moment";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
+import { AppButton } from "./../../../common/components";
 import {
-  Button,
   Card,
   CardHeader,
   CardContent,
@@ -64,16 +64,16 @@ function ProfileWallet(props) {
                           <h3 className="text-sm text-gray-500">Balance</h3>
                         </section>
                         <section className="flex items-center justify-between space-x-8">
-                          <Button
+                          <AppButton
                             variant="contained"
                             color="secondary"
                             onClick={openFundWalletDialog}
                           >
                             Fund Wallet
-                          </Button>
-                          <Button variant="outlined" color="secondary">
+                          </AppButton>
+                          <AppButton variant="outlined" color="secondary">
                             Withdraw
-                          </Button>
+                          </AppButton>
                         </section>
                       </div>
                     </CardContent>
@@ -113,14 +113,14 @@ function ProfileWallet(props) {
                           </section>
                         </div>
                         <div className="flex justify-end">
-                          <Button
+                          <AppButton
                             color="secondary"
                             size="small"
                             startIcon={<AddCircleOutlineIcon />}
                             onClick={openNewCardDialog}
                           >
                             Add card
-                          </Button>
+                          </AppButton>
                         </div>
                       </div>
                     </CardContent>

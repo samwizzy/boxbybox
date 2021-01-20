@@ -2,8 +2,8 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as Actions from "./../store/actions";
 import { makeStyles } from "@material-ui/core/styles";
+import { AppButton } from "./../../../common/components";
 import {
-  Button,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -61,15 +61,16 @@ function ProfileDialog(props) {
       </DialogContent>
 
       <DialogActions>
-        <Button
+        <AppButton
           size="small"
+          variant="outlined"
           onClick={() => dispatch(Actions.closeProfileDialog())}
         >
           Close
-        </Button>
-        <Button size="small" variant="contained" color="secondary">
+        </AppButton>
+        <AppButton size="small" variant="contained" color="secondary">
           Update
-        </Button>
+        </AppButton>
       </DialogActions>
     </Dialog>
   );

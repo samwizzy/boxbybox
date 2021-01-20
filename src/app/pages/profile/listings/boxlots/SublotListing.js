@@ -3,8 +3,8 @@ import BoxUtils from "../../../../utils/BoxUtils";
 import _ from "lodash";
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
+import { AppButton } from "./../../../../common/components";
 import {
-  Button,
   IconButton,
   Menu,
   MenuItem,
@@ -96,9 +96,9 @@ function SublotListing(props) {
           >
             <MenuItem value="">BBB Hierachy</MenuItem>
           </TextField>
-          <Button variant="contained" color="secondary">
+          <AppButton variant="contained" color="secondary">
             Filter
-          </Button>
+          </AppButton>
         </div>
 
         <div className="space-y-4">
@@ -164,7 +164,7 @@ function SublotListing(props) {
                 </div>
 
                 <div className="flex justify-end px-4">
-                  <Button
+                  <AppButton
                     variant="contained"
                     color="secondary"
                     aria-controls="simple-menu"
@@ -172,7 +172,7 @@ function SublotListing(props) {
                     onClick={handleClick}
                   >
                     Manage Property
-                  </Button>
+                  </AppButton>
                 </div>
               </div>
             </div>

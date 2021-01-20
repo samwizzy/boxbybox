@@ -6,6 +6,7 @@ import withReducer from "../../store/withReducer";
 import * as Actions from "./store/actions";
 import reducer from "./store/reducers";
 import _ from "lodash";
+import moment from "moment";
 import { AppButton } from "../../common/components";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -85,7 +86,19 @@ function ProfileApp(props) {
                       </section>
                       <section>
                         <h3 className="text-sm text-gray-600">Age</h3>
-                        <span className="text-gray-600">50 years</span>
+                        {user.individualUser ? (
+                          <span className="text-gray-600">
+                            {moment().diff(
+                              moment(user.individualUser.dateOfBirth, [
+                                "DD-MM-YYYY",
+                              ]),
+                              "year"
+                            )}{" "}
+                            years
+                          </span>
+                        ) : (
+                          <Skeleton />
+                        )}
                       </section>
                       <section>
                         <h3 className="text-sm text-gray-600">Nationality</h3>
@@ -109,9 +122,20 @@ function ProfileApp(props) {
                       </section>
                       <section>
                         <h3 className="text-sm text-gray-600">Address</h3>
-                        <span className="text-gray-600">
-                          3a Idowu Martins St, Victoria island, Lagos
-                        </span>
+                        {user.individualUser && countries.length ? (
+                          <span className="text-gray-600">
+                            {user.individualUser.address.houseNoAddress}
+                            {", "}
+                            {user.individualUser.address.city}{" "}
+                            {
+                              _.find(countries, {
+                                id: Number(user.individualUser.address.country),
+                              }).name
+                            }
+                          </span>
+                        ) : (
+                          <Skeleton />
+                        )}
                       </section>
                       <section>
                         <h3 className="text-sm text-gray-600">Sex</h3>

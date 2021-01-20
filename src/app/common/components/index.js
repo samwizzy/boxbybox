@@ -6,6 +6,7 @@ export { default as AppBreadcrumbs } from "./Breadcrumbs/Breadcrumbs";
 export { default as LandscapeCard } from "./Card/LandscapeCardComponent";
 export { default as PortraitCard } from "./Card/PortraitCardComponent";
 export { default as FeaturedCard } from "./Card/FeaturedCardComponent";
+export { default as FeatureCard } from "./Card/FeatureCardComponent";
 export { default as NewsCard } from "./NewsCard/NewsCardComponent";
 export { default as PropertyCard } from "./PropertyCard/PropertyCardComponent";
 export { default as ServiceCard } from "./ServiceCard/ServiceCardComponent";
