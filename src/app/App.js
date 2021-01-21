@@ -1,3 +1,4 @@
+import "./config/axiosConfig";
 import { Router, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import Auth from "./auth/Auth";

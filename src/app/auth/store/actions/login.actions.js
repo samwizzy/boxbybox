@@ -12,7 +12,8 @@ export const LOGIN_PROGRESS = "[AUTH] LOGIN_PROGRESS";
 export function login(data) {
   const { email, password } = data;
 
-  return (dispatch) =>
+  return (dispatch) => {
+    dispatch({ type: LOGIN_PROGRESS });
     authService
       .signInWithEmailAndPassword(email, password)
       .then((user) =>
@@ -27,6 +28,7 @@ export function login(data) {
       .catch((error) => {
         dispatch(showSnackbar({ message: "Invalid email or password" }));
       });
+  };
 }
 
 export function openDialog(payload) {

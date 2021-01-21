@@ -19,8 +19,13 @@ export const PropertyConfig = {
       component: loadable(() => import("./offers")),
     },
     {
-      path: "/property/:id/bids",
-      component: Properties,
+      path: "/live-bids",
+      exact: true,
+      component: loadable(() => import("./bids")),
+    },
+    {
+      path: "/live-bid/:id",
+      component: loadable(() => import("./bids/livebid/index")),
     },
     {
       path: "/property",

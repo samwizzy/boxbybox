@@ -5,8 +5,6 @@ import { bindActionCreators } from "redux";
 import * as authActions from "./store/actions";
 import * as Actions from "../store/actions";
 import authService from "./../services/authService";
-// import _ from "lodash";
-
 class Auth extends Component {
   constructor(props) {
     super(props);

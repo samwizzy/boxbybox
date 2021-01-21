@@ -21,8 +21,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Banner(props) {
+export default function BreadCrumb(props) {
   const classes = useStyles(props);
+  const { current, prevLinks } = props;
   const handleClick = () => {};
 
   return (
@@ -36,7 +37,19 @@ export default function Banner(props) {
           <Link href="/" onClick={handleClick} className="text-sm font-bold">
             <HomeIcon fontSize="small" /> Home
           </Link>
-          <p className="text-sm font-bold">Property</p>
+          {prevLinks &&
+            prevLinks.length &&
+            prevLinks.map((link, i) => (
+              <Link
+                key={i}
+                href="/"
+                onClick={handleClick}
+                className="text-sm font-bold"
+              >
+                <HomeIcon fontSize="small" /> Home
+              </Link>
+            ))}
+          <p className="text-sm font-bold">{current}</p>
         </Breadcrumbs>
       </div>
     </div>

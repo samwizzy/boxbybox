@@ -7,7 +7,8 @@ export const REGISTER_ERROR = "[AUTH] REGISTER_ERROR";
 export const REGISTER_PROGRESS = "[AUTH] REGISTER_PROGRESS";
 
 export function register(data) {
-  return (dispatch) =>
+  return (dispatch) => {
+    dispatch({ type: REGISTER_PROGRESS });
     authService
       .createUser(data)
       .then((user) => {
@@ -22,4 +23,5 @@ export function register(data) {
           payload: error.response.message,
         });
       });
+  };
 }

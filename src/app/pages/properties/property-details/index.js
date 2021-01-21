@@ -21,10 +21,10 @@ import {
 } from "@material-ui/core";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import ExploreIcon from "@material-ui/icons/Explore";
-import Breadcrumbs from "../components/Breadcrumbs";
 import { FormTabs, DescriptionTabs } from "./tabs";
 import {
   AppButton,
+  AppBreadcrumbs,
   FeaturedCard,
   LandscapeCard,
 } from "../../../common/components";
@@ -34,18 +34,6 @@ import ConfirmBidDialog from "./components/ConfirmBidDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
-  tabs: {
-    "& button": {
-      backgroundColor: theme.palette.secondary.main,
-      color: theme.palette.primary.contrastText,
-      "&:last-child": {
-        marginLeft: theme.spacing(2),
-      },
-      "&:focus": {
-        outline: "none",
-      },
-    },
-  },
   birdview: {
     backgroundColor: theme.palette.secondary.main,
     backgroundImage: console.log(theme, "theme"),
@@ -107,7 +95,10 @@ function PropertyDetails(props) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-6 gap-2 md:gap-6">
             <div className="col-span-6 md:col-span-4">
-              <Breadcrumbs />
+              <AppBreadcrumbs
+                prevLinks={{ properties: "/properties" }}
+                current={property.id}
+              />
 
               <h3 className="text-gray-800 font-medium text-lg my-1 uppercase">
                 {property.title}

@@ -4,8 +4,7 @@ import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Divider, Tabs, Tab } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
-import Breadcrumbs from "../components/Breadcrumbs";
-import { TabPanel } from "../../../common/components";
+import { AppBreadcrumbs, TabPanel } from "../../../common/components";
 import BuyForm from "./components/BuyForm";
 import RentForm from "./components/RentForm";
 import PropertyCard from "./../components/PropertyCard";
@@ -77,7 +76,7 @@ export default function Listing(props) {
               </div>
             </div>
             <div className="col-span-6 md:col-span-4">
-              <Breadcrumbs />
+              <AppBreadcrumbs current="Properties" />
 
               <h3 className="text-gray-800 font-medium text-lg mb-4 mt-1">
                 Property Listing
