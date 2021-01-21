@@ -1,8 +1,9 @@
 import React from "react";
 import { Card, CardContent, CardMedia } from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 
-export default function FeaturedCardComponent(props) {
+export default function FeaturedCardComponent({ property }) {
   return (
     <Card className="grid grid-cols-2">
       <CardMedia
@@ -11,13 +12,20 @@ export default function FeaturedCardComponent(props) {
       />
       <CardContent>
         <h3 className="text-gray-800 font-medium text-sm mb-1 uppercase">
-          4 BEDROOM DUPLEX
+          {property ? property.title : <Skeleton />}
         </h3>
-        <span className="text-xs text-gray-600 uppercase">R003YXXEN</span>
-        <h3 className="flex items-center text-xs font-normal text-gray-500 mt-1">
-          <LocationOnIcon color="secondary" fontSize="small" /> Yaba Lagos
-          Nigeria
-        </h3>
+        <span className="text-xs text-gray-600 uppercase">
+          {property ? property.propertyRef : <Skeleton />}
+        </span>
+        {property ? (
+          <h3 className="flex items-center text-xs font-normal text-gray-500 mt-1">
+            <LocationOnIcon color="secondary" fontSize="small" />{" "}
+            {property.address.city} {property.address.state}{" "}
+            {property.address.country}
+          </h3>
+        ) : (
+          <Skeleton />
+        )}
       </CardContent>
     </Card>
   );

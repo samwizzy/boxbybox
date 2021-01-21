@@ -9,7 +9,7 @@ function Step2(props) {
   return (
     <Card>
       <CardContent>
-        <div className="flex flex-col space-y-4">
+        <div className="flex flex-col p-8 space-y-4">
           <div>
             <ImageDropzone />
           </div>

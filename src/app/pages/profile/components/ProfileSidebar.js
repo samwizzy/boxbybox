@@ -25,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiCardContent-root:last-child": {
       paddingBottom: theme.spacing(5),
     },
+    "& .MuiListItem-gutters": {
+      paddingLeft: theme.spacing(3),
+    },
   },
 }));
 

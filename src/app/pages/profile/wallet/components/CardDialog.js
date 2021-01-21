@@ -2,8 +2,8 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as Actions from "../../store/actions";
 import { makeStyles } from "@material-ui/core/styles";
+import { AppButton } from "./../../../../common/components";
 import {
-  Button,
   Dialog,
   DialogContent,
   DialogActions,
@@ -73,14 +73,14 @@ function CardDialog(props) {
       </DialogContent>
 
       <DialogActions>
-        <Button
+        <AppButton
           size="small"
           variant="contained"
           color="secondary"
           onClick={() => dispatch(Actions.closeNewCardDialog())}
         >
           Add Card
-        </Button>
+        </AppButton>
       </DialogActions>
     </Dialog>
   );

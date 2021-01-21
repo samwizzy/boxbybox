@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Dialog, Tabs, Tab } from "@material-ui/core";
@@ -65,9 +64,10 @@ function AuthDialog(props) {
   );
 }
 
-export default function Auth() {
-  return ReactDOM.createPortal(
-    <AuthDialog />,
-    document.getElementById("portal-root")
-  );
-}
+export default AuthDialog;
+// export default function Auth() {
+//   return ReactDOM.createPortal(
+//     <AuthDialog />,
+//     document.getElementById("portal-root")
+//   );
+// }

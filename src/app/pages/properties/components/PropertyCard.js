@@ -1,8 +1,9 @@
 import React from "react";
+import BoxUtils from "./../../../utils/BoxUtils";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Card, CardContent, CardMedia, Icon } from "@material-ui/core";
-import BoxUtils from "./../../../utils/BoxUtils";
+import { Skeleton } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -18,6 +19,8 @@ export default function PropertyCard(props) {
   const classes = useStyles(props);
   const { property } = props;
 
+  console.log(property, "property details single one");
+
   return (
     <Card className="md:grid md:grid-cols-2 gap-4 mb-4">
       <CardMedia
@@ -27,40 +30,46 @@ export default function PropertyCard(props) {
       />
       <CardContent className="flex flex-col items-start">
         <Button variant="contained" color="primary" className={classes.button}>
-          For {property.feature}
+          For {property ? property.feature : <Skeleton />}
         </Button>
 
         <span className="text-xs text-gray-400 uppercase mt-4 mb-1">
-          R003YXXEN
+          {property ? property.propertyRef : <Skeleton />}
         </span>
         <h3 className="mb-1 text-sm text-gray-500 uppercase">
-          <Link className="no-underline" to={`/property/${property.id}`}>
-            {property.title}
-          </Link>
+          {property ? (
+            <Link className="no-underline" to={`/property/${property.id}`}>
+              {property.title}
+            </Link>
+          ) : (
+            <Skeleton />
+          )}
         </h3>
         <h3 className="mb-1 text-lg text-gray-800">
-          {BoxUtils.formatCurrency(property.price)}
+          {property ? BoxUtils.formatCurrency(property.price) : <Skeleton />}
         </h3>
 
-        <p className="text-sm text-gray-400">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Purus
-          consectetur id facilisi sodales sollicitudin malesuada proin. Suscipit
-          risus ut porttitor cursus consequat iaculis habitant enim.
-        </p>
+        {property ? (
+          <p className="text-sm text-gray-400">{property.description}</p>
+        ) : (
+          <Skeleton />
+        )}
 
         <div className="flex items-center flex-wrap mt-5">
           <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-            {property.size} sqft
+            {property ? property.size : <Skeleton />} sqft
           </div>
           <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-            <Icon fontSize="small">hotel</Icon>&nbsp;{property.bedrooms}
+            <Icon fontSize="small">hotel</Icon>&nbsp;
+            {property ? property.bedrooms : <Skeleton />}
           </div>
           <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-            <Icon fontSize="small">bathtub</Icon>&nbsp;{property.bathrooms}
+            <Icon fontSize="small">bathtub</Icon>&nbsp;
+            {property ? property.bathrooms : <Skeleton />}
           </div>
           <div className="flex items-center text-sm border-0 px-2">
             <Icon fontSize="small">drive_eta</Icon>&nbsp;
-            {property.parkingLot ? "Yes" : "No"}
+            {property ? property.parkingLot ? "Yes" : "No" : <Skeleton />}
           </div>
         </div>
       </CardContent>

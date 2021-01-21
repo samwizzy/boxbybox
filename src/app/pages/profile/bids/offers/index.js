@@ -10,6 +10,9 @@ import ActiveOffers from "./components/ActiveOffers";
 import ExpiredOffers from "./components/ExpiredOffers";
 import AcceptedOffers from "./components/AcceptedOffers";
 import RejectedOffers from "./components/RejectedOffers";
+import OfferDialog from "./dialogs/OfferDialog";
+import BidPaymentDialog from "./dialogs/BidPaymentDialog";
+import ConfirmBidDialog from "./dialogs/ConfirmBidDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -106,6 +109,10 @@ function Offers(props) {
               </div>
             </div>
           </div>
+
+          <OfferDialog />
+          <BidPaymentDialog />
+          <ConfirmBidDialog />
         </div>
       </div>
     </div>

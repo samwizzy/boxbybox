@@ -8,9 +8,10 @@ import {
   Icon,
   Typography,
 } from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: { minWidth: 250 },
 }));
 
 export default function PortraitCardComponent(props) {
@@ -30,26 +31,45 @@ export default function PortraitCardComponent(props) {
         />
         <CardContent className="text-center">
           <Typography color="textSecondary" variant="caption">
-            {property.reference}
+            {property ? property.reference : <Skeleton />}
           </Typography>
           <h3 className="mb-1 text-sm text-gray-500 uppercase">
-            {property.title}
+            {property ? property.title : <Skeleton />}
           </h3>
-          <h3 className="mb-1 text-lg text-gray-800">{property.price}</h3>
+          <h3 className="mb-1 text-lg text-gray-800">
+            {property ? property.price : <Skeleton />}
+          </h3>
 
           <div className="flex items-center justify-center flex-wrap mt-5">
-            <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-              780 sqft
-            </div>
-            <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-              <Icon fontSize="small">hotel</Icon>&nbsp;4
-            </div>
-            <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-              <Icon fontSize="small">bathtub</Icon>&nbsp;3
-            </div>
-            <div className="flex items-center text-sm border-0 px-2">
-              <Icon fontSize="small">drive_eta</Icon>&nbsp;2
-            </div>
+            {property ? (
+              <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
+                {property.size} sqft
+              </div>
+            ) : (
+              <Skeleton />
+            )}
+            {property ? (
+              <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
+                <Icon fontSize="small">hotel</Icon>&nbsp;{property.bedrooms}
+              </div>
+            ) : (
+              <Skeleton />
+            )}
+            {property ? (
+              <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
+                <Icon fontSize="small">bathtub</Icon>&nbsp;{property.bathrooms}
+              </div>
+            ) : (
+              <Skeleton />
+            )}
+            {property ? (
+              <div className="flex items-center text-sm border-0 px-2">
+                <Icon fontSize="small">drive_eta</Icon>&nbsp;
+                {property.parkingLot ? "Yes" : "No"}
+              </div>
+            ) : (
+              <Skeleton />
+            )}
           </div>
         </CardContent>
       </Card>

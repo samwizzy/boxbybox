@@ -8,12 +8,13 @@ import * as Actions from "./store/actions";
 import Listing from "./listing";
 
 function PropertyApp(props) {
-  const { getProperties, properties } = props;
+  const { getProperties, getIpoStakes, properties } = props;
 
   useEffect(() => {
     getProperties();
+    getIpoStakes();
     return () => {};
-  }, [getProperties]);
+  }, [getProperties, getIpoStakes]);
 
   return (
     <Fragment>
@@ -26,6 +27,7 @@ const mapStateToProps = ({ propertyApp }) => {
   console.log(propertyApp, "propertyApp from index propertyApp");
   return {
     properties: propertyApp.property.properties,
+    ipoStakes: propertyApp.ipostakes.boxlots,
   };
 };
 
@@ -33,6 +35,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getProperties: Actions.getProperties,
+      getIpoStakes: Actions.getIpoStakes,
     },
     dispatch
   );

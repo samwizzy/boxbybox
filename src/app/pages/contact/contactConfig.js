@@ -1,7 +1,7 @@
 import loadable from "@loadable/component";
 
 export const ContactConfig = {
-  auth: ["COMPANY"],
+  // auth: ["COMPANY"],
   routes: [
     {
       path: "/contacts",

@@ -22,9 +22,7 @@ import {
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  card: {
-    padding: theme.spacing(2, 6),
-  },
+  card: {},
 }));
 
 const types = ["LUXURY_APARTMENT", "FLAT", "BUNGALOWS", "LAND", "OFFICE_BLOCK"];
@@ -56,7 +54,7 @@ function Step1(props) {
   return (
     <Card className={classes.card}>
       <CardContent>
-        <div className="">
+        <div className="py-8 px-8">
           <div>
             <FormControl component="fieldset" fullWidth>
               <FormLabel>Property type</FormLabel>
