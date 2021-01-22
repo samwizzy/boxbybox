@@ -3,8 +3,10 @@ import * as Actions from "../actions/bids.actions";
 const initialState = {
   loading: false,
   error: null,
-  bids: [],
-  bid: null,
+  units: [],
+  minimumCostForUnit: null,
+  userBids: [],
+  bidsOnIpoStakes: [],
   paymentDialog: {
     open: false,
     data: null,
@@ -21,22 +23,28 @@ const initialState = {
 
 const bidsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case Actions.GET_BIDS_SUCCESS: {
+    case Actions.GET_BIDS_BY_USER_SUCCESS: {
       return {
         ...state,
-        bids: action.payload,
+        userBids: action.payload,
       };
     }
-    case Actions.GET_BIDS_ERROR: {
+    case Actions.GET_BIDS_ON_USER_IPO_STAKES: {
       return {
         ...state,
-        error: action.payload,
+        bidsOnIpoStakes: action.payload,
       };
     }
-    case Actions.GET_BID_BY_ID_SUCCESS: {
+    case Actions.GET_AVAILABLE_UNITS_SUCCESS: {
       return {
         ...state,
-        bid: action.payload,
+        units: action.payload,
+      };
+    }
+    case Actions.GET_MIN_COST_OF_UNIT_SUCCESS: {
+      return {
+        ...state,
+        minimumCostForUnit: action.payload,
       };
     }
     case Actions.OPEN_BID_PAYMENT_DIALOG: {

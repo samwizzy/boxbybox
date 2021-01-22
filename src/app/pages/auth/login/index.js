@@ -6,7 +6,12 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as authActions from "../../../auth/store/actions";
 import { makeStyles } from "@material-ui/core/styles";
-import { IconButton, TextField, Tooltip } from "@material-ui/core";
+import {
+  CircularProgress,
+  IconButton,
+  TextField,
+  Tooltip,
+} from "@material-ui/core";
 import { AppButton } from "./../../../common/components";
 import VisibilityOutlined from "@material-ui/icons/VisibilityOutlined";
 import VisibilityOffOutlined from "@material-ui/icons/VisibilityOffOutlined";
@@ -20,9 +25,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Login(props) {
+export function Login(props) {
   const classes = useStyles(props);
-  const { data, login } = props;
+  const { loading, data, login, handleTabChange } = props;
   const [form, setForm] = useState({ ...data });
   const [visibility, setVisibility] = useState(false);
 
@@ -116,10 +121,14 @@ function Login(props) {
               fullWidth
             />
             <AppButton
+              title="login"
               fullWidth
               variant="contained"
               color="secondary"
               onClick={() => login(form)}
+              startIcon={
+                loading && <CircularProgress size={20} color="inherit" />
+              }
             >
               Login
             </AppButton>
@@ -128,7 +137,11 @@ function Login(props) {
               <span className="text-xs text-gray-600">
                 Don't have an account?
               </span>
-              <a className="text-xs text-blue-" href="/register">
+              <a
+                className="text-xs text-blue-"
+                href="/register"
+                onClick={(event) => handleTabChange(event, 1)}
+              >
                 Register
               </a>
             </div>
@@ -142,6 +155,7 @@ function Login(props) {
 const mapStateToProps = ({ auth }) => {
   return {
     data: auth.login.data,
+    loading: auth.login.loading,
   };
 };
 

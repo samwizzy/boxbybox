@@ -1,3 +1,4 @@
+import "./config/axiosConfig";
 import { Router, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import Auth from "./auth/Auth";
@@ -10,7 +11,7 @@ import AppContext from "./utils/AppContext";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" title="app">
       <AppContext.Provider value={{ routes }}>
         <Provider store={store}>
           <Router history={history}>

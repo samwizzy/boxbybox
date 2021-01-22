@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  listIcon: { minWidth: 40 },
   navigation: {
     "& a": {
       color: theme.palette.grey[200],
@@ -152,8 +153,14 @@ export default withRouter(function Header(props) {
                   }}
                 >
                   <Fragment>
+                    <MenuItem component={Link} to="/profile">
+                      <ListItemIcon className={classes.listIcon}>
+                        <Icon>person</Icon>
+                      </ListItemIcon>
+                      <ListItemText className="pl-0" primary="Profile" />
+                    </MenuItem>
                     <MenuItem component={Link} to="/logout">
-                      <ListItemIcon className="min-w-40">
+                      <ListItemIcon className={classes.listIcon}>
                         <Icon>lock</Icon>
                       </ListItemIcon>
                       <ListItemText className="pl-0" primary="Logout" />

@@ -1,6 +1,8 @@
 import React from "react";
+import BoxUtils from "./../../../utils/BoxUtils";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Card, CardContent, CardMedia, Icon } from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   media: {
@@ -12,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LandscapeCardComponent(props) {
+export default function LandscapeCardComponent({ property }, props) {
   const classes = useStyles(props);
 
   return (
@@ -23,37 +25,78 @@ export default function LandscapeCardComponent(props) {
         title="Live property"
       />
       <CardContent className="flex flex-col items-start">
-        <Button variant="contained" color="primary" className={classes.button}>
-          For Rent
-        </Button>
+        {property ? (
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+          >
+            For {property.feature}
+          </Button>
+        ) : (
+          <Skeleton width="100%" />
+        )}
 
-        <span className="text-xs text-gray-400 uppercase mt-4 mb-1">
-          R003YXXEN
-        </span>
-        <h3 className="mb-1 text-sm text-gray-500 uppercase">
-          4 BEDROOM DUPLEX
-        </h3>
-        <h3 className="mb-1 text-lg text-gray-800">N 300,000.00</h3>
+        {property ? (
+          <span className="text-xs text-gray-400 uppercase mt-4 mb-1">
+            {property.propertyRef}
+          </span>
+        ) : (
+          <Skeleton width="100%" />
+        )}
+        {property ? (
+          <h3 className="mb-1 text-sm text-gray-500 uppercase">
+            {property.title}
+          </h3>
+        ) : (
+          <Skeleton width="100%" />
+        )}
+        {property ? (
+          <h3 className="mb-1 text-lg text-gray-800">
+            {BoxUtils.formatCurrency(property.price)}
+          </h3>
+        ) : (
+          <Skeleton width="100%" />
+        )}
 
-        <p className="text-sm text-gray-400">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Purus
-          consectetur id facilisi sodales sollicitudin malesuada proin. Suscipit
-          risus ut porttitor cursus consequat iaculis habitant enim.
-        </p>
+        {property ? (
+          <p className="text-sm text-gray-400">{property.description}</p>
+        ) : (
+          <Skeleton width="100%" />
+        )}
 
-        <div className="flex items-center flex-wrap mt-5">
-          <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-            780 sqft
-          </div>
-          <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-            <Icon fontSize="small">hotel</Icon>&nbsp;4
-          </div>
-          <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-            <Icon fontSize="small">bathtub</Icon>&nbsp;3
-          </div>
-          <div className="flex items-center text-sm border-0 px-2">
-            <Icon fontSize="small">drive_eta</Icon>&nbsp;2
-          </div>
+        <div className="flex items-center flex-wrap space-x-2 mt-5">
+          {property ? (
+            <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid pr-2">
+              {property.size} sqft
+            </div>
+          ) : (
+            <Skeleton width="50px" />
+          )}
+          {property ? (
+            <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid pr-2">
+              <Icon fontSize="small">hotel</Icon>&nbsp;
+              {property.bedrooms}
+            </div>
+          ) : (
+            <Skeleton width="50px" />
+          )}
+          {property ? (
+            <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid pr-2">
+              <Icon fontSize="small">bathtub</Icon>&nbsp;
+              {property.bathrooms}
+            </div>
+          ) : (
+            <Skeleton width="50px" />
+          )}
+          {property ? (
+            <div className="flex items-center text-sm border-0 pr-2">
+              <Icon fontSize="small">drive_eta</Icon>&nbsp;
+              {property.parkingLot ? "Yes" : "No"}
+            </div>
+          ) : (
+            <Skeleton width="50px" />
+          )}
         </div>
       </CardContent>
     </Card>

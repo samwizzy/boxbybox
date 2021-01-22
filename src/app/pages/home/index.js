@@ -1,6 +1,9 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import withReducer from "./../../store/withReducer";
+import { useSelector, useDispatch } from "react-redux";
 import clsx from "clsx";
+import * as Actions from "./store/actions";
+import reducer from "./store/reducers";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Card,
@@ -8,39 +11,28 @@ import {
   CardContent,
   Divider,
   Typography,
-  Icon,
 } from "@material-ui/core";
 import Banner from "./components/Banner";
-import { Store } from "./../../common/containers/components";
+import { Store } from "../../common/containers/components";
+import { FeatureCard } from "../../common/components";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
-  media: {
-    position: "relative",
-    "&::before": {
-      position: "absolute",
-      content: "'Rent'",
-      top: 0,
-      right: 0,
-      width: "100px",
-      height: "40px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      color: theme.palette.primary.contrastText,
-      backgroundColor: theme.palette.primary.main,
-    },
-  },
   divider: { margin: theme.spacing(6, 0) },
 }));
 
-export default function Home(props) {
+export function Home(props) {
   const classes = useStyles(props);
-  const store = useSelector((state) => state);
-  console.log(store, "store");
+  const properties = useSelector(({ homeApp }) => homeApp.property.properties);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(Actions.getProperties());
+    return () => {};
+  }, [dispatch]);
 
   return (
-    <div style={{ backgroundColor: "red" }}>
+    <div>
       <Banner />
 
       <div className="bg-white">
@@ -110,45 +102,9 @@ export default function Home(props) {
             Featured Properties
           </h2>
           <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-4 md:gap-x-8 md:gap-y-10">
-            {[0, 1, 2, 3].map((item, i) => (
+            {properties.entities.slice(0, 4).map((property, i) => (
               <div className="flex" key={i}>
-                <Card
-                  className={clsx(classes.card, "flex-1")}
-                  variant="outlined"
-                >
-                  <CardMedia
-                    className={classes.media}
-                    classes={{
-                      root: "w-full h-48",
-                    }}
-                    image="https://image.freepik.com/free-photo/industrial-park-factory-building-warehouse_1417-1913.jpg"
-                    title="demo"
-                  />
-                  <CardContent className="text-center">
-                    <Typography color="textSecondary" variant="caption">
-                      R003YXXEN
-                    </Typography>
-                    <h3 className="mb-1 text-sm text-gray-500 uppercase">
-                      4 BEDROOM DUPLEX
-                    </h3>
-                    <h3 className="mb-1 text-lg text-gray-800">N 300,000.00</h3>
-
-                    <div className="flex items-center justify-center flex-wrap mt-5">
-                      <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-                        780 sqft
-                      </div>
-                      <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-                        <Icon fontSize="small">hotel</Icon>&nbsp;4
-                      </div>
-                      <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-                        <Icon fontSize="small">bathtub</Icon>&nbsp;3
-                      </div>
-                      <div className="flex items-center text-sm border-0 px-2">
-                        <Icon fontSize="small">drive_eta</Icon>&nbsp;2
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                <FeatureCard property={property} />
               </div>
             ))}
           </dl>
@@ -205,3 +161,5 @@ export default function Home(props) {
     </div>
   );
 }
+
+export default withReducer("homeApp", reducer)(Home);

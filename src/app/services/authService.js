@@ -1,6 +1,5 @@
 import axios from "axios";
 import BoxUtils from "../utils/BoxUtils";
-import "../config/axiosConfig";
 
 class authService extends BoxUtils.EventEmitter {
   init() {
@@ -137,7 +136,7 @@ class authService extends BoxUtils.EventEmitter {
     return new Promise((resolve, reject) => {
       axios.post("/auth/logout").then((response) => {
         if (response.data) {
-          this.setSession(null, null);
+          this.setSession(null);
           resolve(response.data);
         } else {
           reject(response.data.error);

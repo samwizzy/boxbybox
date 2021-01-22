@@ -17,7 +17,7 @@ import {
   TableCell,
 } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
-import Breadcrumbs from "../components/Breadcrumbs";
+import { AppBreadcrumbs } from "../../../common/components";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -50,7 +50,7 @@ function Offers(props) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-6 gap-2 md:gap-6">
             <div className="col-span-6 md:col-span-6">
-              <Breadcrumbs />
+              <AppBreadcrumbs current="offers" />
 
               <h3 className="text-gray-800 font-medium text-lg my-4">
                 BBB Offers
@@ -60,7 +60,7 @@ function Offers(props) {
               <Table size="small">
                 <TableBody>
                   {properties.entities.map((property, i) => (
-                    <TableRow>
+                    <TableRow key={i}>
                       <TableCell>
                         <img
                           src="https://image.freepik.com/free-vector/logo-template-design_1289-160.jpg"

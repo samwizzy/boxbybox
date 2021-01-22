@@ -12,6 +12,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  CircularProgress,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -38,12 +39,14 @@ const useStyles = makeStyles((theme) => ({
 function Register(props) {
   const classes = useStyles(props);
   const {
+    loading,
     countries,
     states,
     lgas,
     data,
     getStateByCountry,
     getLgaByState,
+    handleTabChange,
   } = props;
   const [form, setForm] = useState({ ...data });
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -591,6 +594,9 @@ function Register(props) {
               variant="contained"
               color="secondary"
               onClick={() => props.registerUser(form)}
+              startIcon={
+                loading && <CircularProgress size={20} color="inherit" />
+              }
             >
               Register
             </AppButton>
@@ -599,7 +605,11 @@ function Register(props) {
               <span className="text-xs text-gray-600">
                 Don't have an account?
               </span>
-              <a className="text-xs text-blue-" href="/login">
+              <a
+                className="text-xs text-blue-"
+                href="/login"
+                onClick={(event) => handleTabChange(event, 0)}
+              >
                 Login
               </a>
             </div>
@@ -616,6 +626,7 @@ const mapStateToProps = ({ auth }) => {
     states: auth.location.states,
     lgas: auth.location.lgas,
     data: auth.register.data,
+    loading: auth.register.loading,
   };
 };
 

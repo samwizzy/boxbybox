@@ -1,39 +1,85 @@
 import axios from "axios";
 
-export const GET_BIDS_SUCCESS = "[PROPERTY] GET_BIDS_SUCCESS";
-export const GET_BIDS_ERROR = "[PROPERTY] GET_BIDS_ERROR";
+export const GET_BIDS_BY_USER_SUCCESS = "[BIDS] GET_BIDS_BY_USER_SUCCESS";
 
-export const GET_BID_BY_ID_SUCCESS = "[PROPERTY] GET_BID_BY_ID_SUCCESS";
-export const GET_BID_BY_ID_ERROR = "[PROPERTY] GET_BID_BY_ID_ERROR";
+export const GET_BIDS_ON_USER_IPO_STAKES = "[BIDS] GET_BIDS_ON_USER_IPO_STAKES";
 
-export const OPEN_BID_PAYMENT_DIALOG = "[PROPERTY] OPEN_BID_PAYMENT_DIALOG";
-export const CLOSE_BID_PAYMENT_DIALOG = "[PROPERTY] CLOSE_BID_PAYMENT_DIALOG";
+export const GET_AVAILABLE_UNITS_SUCCESS = "[BIDS] GET_AVAILABLE_UNITS_SUCCESS";
+export const GET_AVAILABLE_UNITS_ERROR = "[BIDS] GET_AVAILABLE_UNITS_ERROR";
 
-export const OPEN_QUEUE_IN_BID_DIALOG = "[PROPERTY] OPEN_QUEUE_IN_BID_DIALOG";
-export const CLOSE_QUEUE_IN_BID_DIALOG = "[PROPERTY] CLOSE_QUEUE_IN_BID_DIALOG";
+export const GET_MIN_COST_OF_UNIT_SUCCESS =
+  "[BIDS] GET_MIN_COST_OF_UNIT_SUCCESS";
+export const GET_MIN_COST_OF_UNIT_ERROR = "[BIDS] GET_MIN_COST_OF_UNIT_ERROR";
 
-export const OPEN_CONFIRM_BID_DIALOG = "[PROPERTY] OPEN_CONFIRM_BID_DIALOG";
-export const CLOSE_CONFIRM_BID_DIALOG = "[PROPERTY] CLOSE_CONFIRM_BID_DIALOG";
+export const GET_MIN_COST_OF_COUNTERING_BID =
+  "[BIDS] GET_MIN_COST_OF_COUNTERING_BID";
 
-export function getBids() {
-  const request = axios.get("/properties");
+export const OPEN_BID_PAYMENT_DIALOG = "[BIDS] OPEN_BID_PAYMENT_DIALOG";
+export const CLOSE_BID_PAYMENT_DIALOG = "[BIDS] CLOSE_BID_PAYMENT_DIALOG";
+
+export const OPEN_QUEUE_IN_BID_DIALOG = "[BIDS] OPEN_QUEUE_IN_BID_DIALOG";
+export const CLOSE_QUEUE_IN_BID_DIALOG = "[BIDS] CLOSE_QUEUE_IN_BID_DIALOG";
+
+export const OPEN_CONFIRM_BID_DIALOG = "[BIDS] OPEN_CONFIRM_BID_DIALOG";
+export const CLOSE_CONFIRM_BID_DIALOG = "[BIDS] CLOSE_CONFIRM_BID_DIALOG";
+
+export function getBidsByUser() {
+  const request = axios.get("/auth/bids-by-user");
 
   return (dispatch) =>
     request.then((response) =>
       dispatch({
-        type: GET_BIDS_SUCCESS,
+        type: GET_BIDS_BY_USER_SUCCESS,
         payload: response.data,
       })
     );
 }
 
-export function getBidById(id) {
-  const request = axios.get("/property/" + id);
+export function getBidsOnUserIpoStakes() {
+  const request = axios.get("/auth/bids-on-user-ipostakes");
 
   return (dispatch) =>
     request.then((response) =>
       dispatch({
-        type: GET_BID_BY_ID_SUCCESS,
+        type: GET_BIDS_ON_USER_IPO_STAKES,
+        payload: response.data,
+      })
+    );
+}
+
+export function getAvailableUnits(propertyId) {
+  const request = axios.get("/auth/properties/ipo-stake/" + propertyId);
+
+  return (dispatch) =>
+    request.then((response) =>
+      dispatch({
+        type: GET_AVAILABLE_UNITS_SUCCESS,
+        payload: response.data,
+      })
+    );
+}
+
+export function getMinCostOfCounteringBid(ipoBidId) {
+  const request = axios.get(`/auth/bid-counter-cost/${ipoBidId}`);
+
+  return (dispatch) =>
+    request.then((response) =>
+      dispatch({
+        type: GET_MIN_COST_OF_COUNTERING_BID,
+        payload: response.data,
+      })
+    );
+}
+
+export function getMinCostOfUnit(propertyId, units) {
+  const request = axios.get(
+    `/auth/properties/ipo-stake/units/${propertyId}/${units}`
+  );
+
+  return (dispatch) =>
+    request.then((response) =>
+      dispatch({
+        type: GET_MIN_COST_OF_UNIT_SUCCESS,
         payload: response.data,
       })
     );
