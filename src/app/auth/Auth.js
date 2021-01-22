@@ -34,7 +34,7 @@ class Auth extends Component {
       if (message) {
         this.props.showMessage({ message });
       }
-      // this.props.logout();
+      this.props.logout();
     });
 
     authService.init();

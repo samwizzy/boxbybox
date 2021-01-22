@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import BoxUtils from "../../../../utils/BoxUtils";
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
-import { AppButton } from "./../../../../common/components";
+import { AppButton } from "../../../../common/components";
 import {
-  Icon,
   IconButton,
   Menu,
   MenuItem,
@@ -24,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SalesListing(props) {
+function BoxlotListing(props) {
   const classes = useStyles(props);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedSublot, setSelectedSublot] = useState(null);
@@ -53,15 +52,13 @@ function SalesListing(props) {
     <div className="container">
       <div className="bg-white pb-8">
         <div className="py-4 px-8">
-          <h3 className="text-lg font-normal text-gray-600">
-            My Sales Listing
-          </h3>
+          <h3 className="text-lg font-normal text-gray-600">BBB Sublots</h3>
         </div>
 
         <div className="flex flex-col md:flex-row md:justify-end md:items-center md:space-x-2 px-8 py-4">
           <TextField
-            id="search-by-title-id"
-            label="Search by title or ID"
+            id="search-by-id"
+            label="Search by ID"
             name="search"
             value=""
             variant="outlined"
@@ -75,40 +72,28 @@ function SalesListing(props) {
             }}
           />
           <TextField
-            id="type"
+            id="category"
             select
-            label="Type"
-            name="type"
+            label="Category"
+            name="category"
             value=""
             variant="outlined"
             margin="dense"
             classes={{ root: "w-40" }}
           >
-            <MenuItem value="">Type</MenuItem>
+            <MenuItem value="">Category</MenuItem>
           </TextField>
           <TextField
-            id="status"
+            id="bbb-hierachy"
             select
-            label="Status"
-            name="status"
+            label="Hierachy"
+            name="hierachy"
             value=""
             variant="outlined"
             margin="dense"
             classes={{ root: "w-40" }}
           >
-            <MenuItem value="">Status</MenuItem>
-          </TextField>
-          <TextField
-            id="date-added"
-            select
-            label="Date Added"
-            name="dateAdded"
-            value=""
-            variant="outlined"
-            margin="dense"
-            classes={{ root: "w-40" }}
-          >
-            <MenuItem value="">Date Added</MenuItem>
+            <MenuItem value="">BBB Hierachy</MenuItem>
           </TextField>
           <AppButton variant="contained" color="secondary">
             Filter
@@ -183,22 +168,7 @@ function SalesListing(props) {
                   </Table>
                 </div>
 
-                <div className="flex justify-between items-center px-4">
-                  <div className="flex items-center space-x-1 flex-wrap mt-5">
-                    <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-4">
-                      {170} sqft
-                    </div>
-                    <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-4">
-                      <Icon fontSize="small">hotel</Icon>&nbsp;{4}
-                    </div>
-                    <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-4">
-                      <Icon fontSize="small">bathtub</Icon>&nbsp;{6}
-                    </div>
-                    <div className="flex items-center text-sm border-0 px-4">
-                      <Icon fontSize="small">drive_eta</Icon>&nbsp;
-                      {1 ? "Yes" : "No"}
-                    </div>
-                  </div>
+                <div className="flex justify-end px-4">
                   <AppButton
                     variant="contained"
                     color="secondary"
@@ -234,4 +204,4 @@ function SalesListing(props) {
   );
 }
 
-export default SalesListing;
+export default BoxlotListing;

@@ -20,15 +20,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ConfirmMergeDialog(props) {
-  const classes = useStyles();
+function ConfirmSellDialog(props) {
+  const classes = useStyles(props);
   const dispatch = useDispatch();
   const [state, setState] = useState(false);
   const dialog = useSelector(
-    ({ profileListing }) => profileListing.ipostakes.confirmMergeDialog
+    ({ profileListing }) => profileListing.ipostakes.confirmSaleDialog
   );
 
-  console.log(dialog, "confirm merge dialog");
+  console.log(dialog, "confirm sale dialog");
 
   const handleChange = (event) => {
     setState(event.target.checked);
@@ -38,7 +38,7 @@ function ConfirmMergeDialog(props) {
     <Dialog
       className={classes.root}
       open={dialog.open}
-      onClose={() => dispatch(Actions.closeConfirmMergeDialog())}
+      onClose={() => dispatch(Actions.closeConfirmSaleDialog())}
       aria-labelledby="bid-offers-payment"
       fullWidth
       maxWidth="xs"
@@ -46,7 +46,7 @@ function ConfirmMergeDialog(props) {
       <DialogContent>
         <div className="text-center p-8">
           <h3 className="text-lg font-medium text-gray-600 mb-4">
-            You are about to Merge Sublots
+            You are about to put your boxlot up for sale
           </h3>
           <span className="mt-8 text-xs">
             <FormControlLabel
@@ -66,12 +66,17 @@ function ConfirmMergeDialog(props) {
       </DialogContent>
 
       <DialogActions>
-        <AppButton size="small" variant="contained" color="secondary">
-          Confirm Merge
+        <AppButton
+          size="small"
+          variant="contained"
+          color="secondary"
+          onClick={() => dispatch(Actions.putIpoStakeForSale(dialog.data))}
+        >
+          Confirm
         </AppButton>
       </DialogActions>
     </Dialog>
   );
 }
 
-export default ConfirmMergeDialog;
+export default ConfirmSellDialog;

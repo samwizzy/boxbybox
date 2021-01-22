@@ -39,12 +39,12 @@ function Bids(props) {
   const classes = useStyles(props);
   const [value, setValue] = useState(0);
   const dispatch = useDispatch();
-  const bids = useSelector(({ bidsApp }) => bidsApp.property.properties);
+  const bids = useSelector(({ bidsApp }) => bidsApp.bids.bids);
 
   console.log(bids, "bids state live");
 
   useEffect(() => {
-    dispatch(Actions.getProperties());
+    dispatch(Actions.getBids());
   }, [dispatch]);
 
   const handleTabChange = (event, newValue) => {
@@ -67,7 +67,7 @@ function Bids(props) {
               <Toolbar className={classes.toolbar}>
                 <AppBreadcrumbs current="Live bids" />
                 <div className="w-full" />
-                <IconButton color="secondary">
+                <IconButton color="secondary" className="focus:outline-none">
                   <MenuIcon />
                 </IconButton>
               </Toolbar>

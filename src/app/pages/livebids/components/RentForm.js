@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import _ from "lodash";
 import { MenuItem, TextField } from "@material-ui/core";
-import { AppButton } from "../../../../common/components";
+import { AppButton } from "../../../common/components";
 
 const initialState = {
   location: "",

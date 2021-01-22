@@ -30,6 +30,15 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  avatar: { background: theme.palette.secondary.main },
+  emailButton: {
+    "& .MuiButton-startIcon": {
+      textTransform: "UPPERCASE",
+    },
+    "& .MuiButton-label": {
+      textTransform: "none",
+    },
+  },
   listIcon: { minWidth: 40 },
   navigation: {
     "& a": {
@@ -128,11 +137,14 @@ export default withRouter(function Header(props) {
                   aria-describedby={id}
                   onClick={handleClick}
                   color="inherit"
-                  startIcon={<Avatar>{user.email[0]}</Avatar>}
+                  className={classes.emailButton}
+                  startIcon={
+                    <Avatar className={classes.avatar}>{user.email[0]}</Avatar>
+                  }
                 >
                   {user.email}
                   <Icon
-                    className="text-16 ml-4 hidden sm:flex"
+                    className="text-16 ml-4 hidden sm:flex tran"
                     variant="action"
                   >
                     keyboard_arrow_down

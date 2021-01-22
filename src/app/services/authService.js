@@ -95,8 +95,11 @@ class authService extends BoxUtils.EventEmitter {
 
   signInWithToken = () => {
     return new Promise((resolve, reject) => {
-      axios.defaults.headers.common["Authorization"] =
-        "Bearer " + this.getAccessToken();
+      let token = this.getAccessToken();
+      if (token) {
+        axios.defaults.headers.common["Authorization"] =
+          "Bearer " + this.getAccessToken();
+      }
 
       axios.get("/auth/users").then((response) => {
         if (response.status === 200) {
@@ -134,14 +137,17 @@ class authService extends BoxUtils.EventEmitter {
 
   logout = () => {
     return new Promise((resolve, reject) => {
-      axios.post("/auth/logout").then((response) => {
-        if (response.data) {
-          this.setSession(null);
-          resolve(response.data);
-        } else {
-          reject(response.data.error);
-        }
-      });
+      // axios.post("/auth/logout").then((response) => {
+      //   if (response.data) {
+      //     this.setSession(null);
+      //     resolve(response.data);
+      //   } else {
+      //     reject(response.data.error);
+      //   }
+      // });
+      console.log("You have been logged out");
+      this.setSession(null);
+      resolve({ message: "You have logged out successfully" });
     });
   };
 

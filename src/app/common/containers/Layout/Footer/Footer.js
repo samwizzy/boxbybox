@@ -76,10 +76,9 @@ export default function Footer(props) {
               />
 
               <Typography variant="subtitle2" className="text-gray-200">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Purus
-                consectetur id facilisi sodales sollicitudin malesuada proin.
-                Suscipit risus ut porttitor cursus consequat iaculis habitant
-                enim.
+                BoxByBox is a online property platform that brings a rental and
+                a bidder together in a bid to own a property, sell or co-own a
+                property.
               </Typography>
             </div>
 
