@@ -3,7 +3,18 @@ import * as Actions from "../actions/ipo-stakes.actions";
 const initialState = {
   loading: false,
   error: null,
-  userBoxlets: [],
+  boxlots: {
+    page: 0,
+    limit: 50,
+    total: 0,
+    entities: [],
+  },
+  userBoxlots: {
+    page: 0,
+    limit: 50,
+    total: 0,
+    entities: [],
+  },
   offerDialog: {
     open: false,
     data: null,
@@ -16,6 +27,22 @@ const initialState = {
     open: false,
     data: null,
   },
+  sellSublotDialog: {
+    open: false,
+    data: null,
+  },
+  mergeSublotDialog: {
+    open: false,
+    data: null,
+  },
+  confirmMergeDialog: {
+    open: false,
+    data: null,
+  },
+  confirmSaleDialog: {
+    open: false,
+    data: null,
+  },
 };
 
 const ipoStakesReducer = (state = initialState, action) => {
@@ -23,7 +50,7 @@ const ipoStakesReducer = (state = initialState, action) => {
     case Actions.GET_USER_IPO_STAKES: {
       return {
         ...state,
-        userBoxlets: action.payload,
+        userBoxlots: action.payload,
       };
     }
     case Actions.ADD_IPO_STAKE_BY_ID_SUCCESS: {
@@ -60,6 +87,66 @@ const ipoStakesReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+      };
+    }
+    case Actions.OPEN_SELL_SUBLOT_DIALOG: {
+      return {
+        ...state,
+        sellSublotDialog: {
+          open: true,
+          data: action.payload,
+        },
+      };
+    }
+    case Actions.CLOSE_SELL_SUBLOT_DIALOG: {
+      return {
+        ...state,
+        sellSublotDialog: { open: false, data: null },
+      };
+    }
+    case Actions.OPEN_MERGE_SUBLOT_DIALOG: {
+      return {
+        ...state,
+        mergeSublotDialog: {
+          open: true,
+          data: action.payload,
+        },
+      };
+    }
+    case Actions.CLOSE_MERGE_SUBLOT_DIALOG: {
+      return {
+        ...state,
+        mergeSublotDialog: { open: false, data: null },
+      };
+    }
+    case Actions.OPEN_CONFIRM_MERGE_DIALOG: {
+      return {
+        ...state,
+        confirmMergeDialog: {
+          open: true,
+          data: action.payload,
+        },
+      };
+    }
+    case Actions.CLOSE_CONFIRM_MERGE_DIALOG: {
+      return {
+        ...state,
+        confirmMergeDialog: { open: false, data: null },
+      };
+    }
+    case Actions.OPEN_CONFIRM_SALE_DIALOG: {
+      return {
+        ...state,
+        confirmSaleDialog: {
+          open: true,
+          data: action.payload,
+        },
+      };
+    }
+    case Actions.CLOSE_CONFIRM_SALE_DIALOG: {
+      return {
+        ...state,
+        confirmSaleDialog: { open: false, data: null },
       };
     }
     default:

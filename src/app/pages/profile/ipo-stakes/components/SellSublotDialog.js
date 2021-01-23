@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import BoxUtils from "../../../../utils/BoxUtils";
 import { useSelector, useDispatch } from "react-redux";
 import * as Actions from "../../store/actions";
@@ -31,27 +31,18 @@ const useStyles = makeStyles((theme) => ({
 
 function SellSublotDialog(props) {
   const classes = useStyles(props);
+  const [form, setForm] = useState({
+    amount: 0,
+    ipoId: 0,
+  });
   const dispatch = useDispatch();
-  const [form, setForm] = useState({ amount: 0, ipoId: 0 });
-  const ipoStakes = useSelector(
-    ({ profileListing }) => profileListing.ipostakes
+  const dialog = useSelector(
+    ({ profileListing }) => profileListing.listing.sellSublotDialog
   );
-  const dialog = ipoStakes.sellSublotDialog;
-  const { data } = dialog;
-  const userBoxlots = ipoStakes.userBoxlots;
-
-  useEffect(() => {
-    if (dialog.data) {
-      dispatch(Actions.getUserIpoStakes(dialog.data.id));
-    }
-    return () => {};
-  }, [dialog.data, dispatch]);
 
   const handleChange = (event) => {
     setForm({ ...form, [event.target.name]: event.target.value });
   };
-
-  console.log(form, "put ipo up for sale");
 
   return (
     <Dialog
@@ -79,15 +70,13 @@ function SellSublotDialog(props) {
                   <TableCell>
                     <strong>Property ID:</strong>
                   </TableCell>
-                  <TableCell>{data && data.propertyRef}</TableCell>
+                  <TableCell>S001XXXEN/1/40/5/JD</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>
                     <strong>Market Price:</strong>
                   </TableCell>
-                  <TableCell>
-                    {data && BoxUtils.formatCurrency(data.price)}
-                  </TableCell>
+                  <TableCell>{BoxUtils.formatCurrency(105)}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -99,7 +88,6 @@ function SellSublotDialog(props) {
             id="selling-price"
             label="Selling Price"
             name="amount"
-            type="number"
             value={form.amount}
             onChange={handleChange}
             variant="outlined"
@@ -109,7 +97,6 @@ function SellSublotDialog(props) {
 
           <TextField
             id="ipo-stake"
-            select
             label="IPO stake"
             name="ipoId"
             value={form.ipoId}
@@ -118,10 +105,10 @@ function SellSublotDialog(props) {
             margin="dense"
             classes={{ root: "w-56" }}
           >
-            <MenuItem value="0">Select IPO stake</MenuItem>
-            {userBoxlots.entities.map((boxlot, i) => (
-              <MenuItem key={i} value={boxlot.id}>
-                {boxlot.purchaseAmount}
+            <MenuItem value="">Select IPO stake</MenuItem>
+            {[0, 1].map((ipo, i) => (
+              <MenuItem key={i} value={ipo}>
+                {ipo}
               </MenuItem>
             ))}
           </TextField>
@@ -133,7 +120,7 @@ function SellSublotDialog(props) {
           size="small"
           variant="contained"
           color="secondary"
-          onClick={() => dispatch(Actions.openConfirmSaleDialog(form))}
+          onClick={() => dispatch(Actions.closeSellSublotDialog())}
         >
           Sell Sublot
         </AppButton>

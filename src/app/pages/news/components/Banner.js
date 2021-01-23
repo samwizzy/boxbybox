@@ -1,7 +1,8 @@
 import React from "react";
 import clsx from "clsx";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link, Breadcrumbs, Typography } from "@material-ui/core";
+import { Breadcrumbs, Typography } from "@material-ui/core";
 import HomeIcon from "@material-ui/icons/Home";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 
@@ -28,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Banner(props) {
   const classes = useStyles(props);
-  const handleClick = () => {};
 
   return (
     <div
@@ -47,12 +47,10 @@ export default function Banner(props) {
           separator={<NavigateNextIcon fontSize="small" />}
           aria-label="breadcrumb"
         >
-          <Link color="inherit" href="/" onClick={handleClick}>
+          <Link className="text-sm font-bold no-underline text-white" to="/">
             <HomeIcon fontSize="small" /> Home
           </Link>
-          <Typography variant="subtitle1" color="textSecondary">
-            News
-          </Typography>
+          <h3 className="text-sm font-bold no-underline text-gray-800">News</h3>
         </Breadcrumbs>
       </div>
     </div>

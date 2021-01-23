@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -11,10 +11,9 @@ import { GoBackButton } from "../../../common/components";
 import SellSublotDialog from "./components/SellSublotDialog";
 import MergeSublotDialog from "./components/MergeSublotDialog";
 import ConfirmMergeDialog from "./components/ConfirmMergeDialog";
-import ConfirmSellDialog from "./components/ConfirmSellDialog";
 import BoxlotListing from "./boxlots/BoxlotListing";
-import RentalListing from "./rentals/RentalListing";
-import SalesListing from "./sales/SalesListing";
+// import RentalListing from "./rentals/RentalListing";
+// import SalesListing from "./sales/SalesListing";
 
 const AntTabs = withStyles((theme) => ({
   flexContainer: {
@@ -79,20 +78,22 @@ function a11yProps(index) {
   };
 }
 
-function PropertyListing(props) {
+function IPOStakeListing(props) {
   const classes = useStyles(props);
-  const { getUserProperties } = props;
   const [value, setValue] = useState(0);
-  const { userProperties, openSellSublotDialog, openMergeSublotDialog } = props;
-
-  useEffect(() => {
-    getUserProperties();
-    return () => {};
-  }, [getUserProperties]);
+  const {
+    properties,
+    userProperties,
+    openSellSublotDialog,
+    openMergeSublotDialog,
+  } = props;
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  console.log(properties, "profile listing");
+  console.log(userProperties, "userProperties listing");
 
   return (
     <div className="container">
@@ -100,7 +101,7 @@ function PropertyListing(props) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Toolbar variant="dense" className={classes.toolbar}>
             <GoBackButton />
-            <h3 className="text-gray-800 ml-2">My Listing</h3>
+            <h3 className="text-gray-800 ml-2">My IPO Stake Listing</h3>
           </Toolbar>
 
           <Grid container spacing={2}>
@@ -116,8 +117,8 @@ function PropertyListing(props) {
                     className={classes.tabs}
                   >
                     <AntTab label="Boxlots" {...a11yProps(0)} />
-                    <AntTab label="My Rental Listing" {...a11yProps(1)} />
-                    <AntTab label="My Sales Listing" {...a11yProps(2)} />
+                    {/* <AntTab label="My Rental Listing" {...a11yProps(1)} />
+                    <AntTab label="My Sales Listing" {...a11yProps(2)} /> */}
                   </AntTabs>
                 </CardContent>
               </Card>
@@ -130,7 +131,7 @@ function PropertyListing(props) {
                   openMergeSublotDialog={openMergeSublotDialog}
                 />
               )}
-              {value === 1 && (
+              {/* {value === 1 && (
                 <RentalListing
                   properties={userProperties}
                   openSellSublotDialog={openSellSublotDialog}
@@ -143,14 +144,13 @@ function PropertyListing(props) {
                   openSellSublotDialog={openSellSublotDialog}
                   openMergeSublotDialog={openMergeSublotDialog}
                 />
-              )}
+              )} */}
             </Grid>
           </Grid>
 
           <SellSublotDialog />
           <MergeSublotDialog />
           <ConfirmMergeDialog />
-          <ConfirmSellDialog />
         </div>
       </div>
     </div>
@@ -167,7 +167,6 @@ const mapStateToProps = ({ profileListing }) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      getUserProperties: Actions.getUserProperties,
       openSellSublotDialog: Actions.openSellSublotDialog,
       openMergeSublotDialog: Actions.openMergeSublotDialog,
     },
@@ -178,4 +177,4 @@ const mapDispatchToProps = (dispatch) => {
 export default withReducer(
   "profileListing",
   reducer
-)(withRouter(connect(mapStateToProps, mapDispatchToProps)(PropertyListing)));
+)(withRouter(connect(mapStateToProps, mapDispatchToProps)(IPOStakeListing)));

@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import withReducer from "./../../store/withReducer";
-import { useSelector, useDispatch } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import clsx from "clsx";
+import moment from "moment";
 import * as Actions from "./store/actions";
 import reducer from "./store/reducers";
 import { makeStyles } from "@material-ui/core/styles";
@@ -21,10 +22,35 @@ const useStyles = makeStyles((theme) => ({
   divider: { margin: theme.spacing(6, 0) },
 }));
 
+const services = [
+  {
+    title: "Rent",
+    description:
+      "BBB survey hit higher, there are property applications with our features and quality properties.",
+  },
+  {
+    title: "BBB Offers",
+    description:
+      "BBB survey hit higher, there are property applications with our features and quality properties.",
+  },
+  {
+    title: "BBB IPO",
+    description:
+      "BBB survey hit higher, there are property applications with our features and quality properties.",
+  },
+  {
+    title: "BBB Auctionable",
+    description:
+      "BBB survey hit higher, there are property applications with our features and quality properties.",
+  },
+];
+
 export function Home(props) {
   const classes = useStyles(props);
-  const properties = useSelector(({ homeApp }) => homeApp.property.properties);
+  const { news, properties } = props;
   const dispatch = useDispatch();
+
+  console.log(news, "homeApp news store");
 
   useEffect(() => {
     dispatch(Actions.getProperties());
@@ -66,7 +92,7 @@ export function Home(props) {
             </div>
 
             <dl className="bg-white mt-10 space-y-10 md:space-y-0 md:grid md:grid-cols-4 md:gap-x-8 md:gap-y-10">
-              {[0, 1, 2, 3].map((item, i) => (
+              {services.map((service, i) => (
                 <div className="flex" key={i}>
                   <Card
                     className={clsx(classes.card, "flex-1")}
@@ -81,11 +107,12 @@ export function Home(props) {
                       title="demo"
                     />
                     <CardContent className="text-center">
-                      <h3 className="mb-1 text-lg text-gray-800">BBB Offers</h3>
+                      <h3 className="mb-1 text-lg text-gray-800">
+                        {service.title}
+                      </h3>
 
                       <Typography variant="subtitle2" color="textPrimary">
-                        BBB survey hit higher, there are property applications
-                        with our features and quality properties.
+                        {service.description}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -124,7 +151,7 @@ export function Home(props) {
           </div>
 
           <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10">
-            {[0, 1, 2].map((item, i) => (
+            {news.slice(0, 3).map((_new, i) => (
               <div className="flex" key={i}>
                 <Card
                   className={clsx(classes.card, "flex-1")}
@@ -138,18 +165,13 @@ export function Home(props) {
                     title="demo"
                   />
                   <CardContent>
-                    <h3 className="mb-1 text-sm text-gray-500">
-                      No lesser than 25m people are affected
-                    </h3>
+                    <h3 className="mb-1 text-sm text-gray-500">{_new.title}</h3>
                     <Typography color="textSecondary" variant="caption">
-                      3rd May 2020
+                      {moment(_new.dateCreated).format("ll")}
                     </Typography>
 
                     <p className="text-sm mt-5 text-gray-800">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Lacus elit elementum bibendum platea feugiat nisl morbi
-                      arcu id. Feugiat lectus elit non turpis quis ullamcorper
-                      magna eu sagittis.
+                      {_new.description}.
                     </p>
                   </CardContent>
                 </Card>
@@ -162,4 +184,11 @@ export function Home(props) {
   );
 }
 
-export default withReducer("homeApp", reducer)(Home);
+const mapStateToProps = ({ homeApp }) => {
+  return {
+    news: homeApp.news.data,
+    properties: homeApp.property.properties,
+  };
+};
+
+export default withReducer("homeApp", reducer)(connect(mapStateToProps)(Home));

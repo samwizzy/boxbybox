@@ -32,7 +32,19 @@ const propertyReducer = (state = initialState, action) => {
         error: action.payload,
       };
     }
-    case Actions.GET_USER_PROPERTIES_SUCCESS: {
+    case Actions.ADD_PROPERTY_PROGRESS: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case Actions.ADD_PROPERTY_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+    case Actions.GET_USER_PROPERTIES: {
       return {
         ...state,
         userProperties: action.payload,

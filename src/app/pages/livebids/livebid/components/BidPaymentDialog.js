@@ -1,7 +1,7 @@
 import React from "react";
-import BoxUtils from "./../../../../../utils/BoxUtils";
+import BoxUtils from "./../../../../utils/BoxUtils";
 import { useSelector, useDispatch } from "react-redux";
-import * as Actions from "./../../../store/actions";
+import * as Actions from "./../../store/actions";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import BoxUtils from "../../../../utils/BoxUtils";
-import _ from "lodash";
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppButton } from "./../../../../common/components";
@@ -29,7 +28,7 @@ function RentalListing(props) {
   const classes = useStyles(props);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedSublot, setSelectedSublot] = useState(null);
-  const { openSellSublotDialog, openMergeSublotDialog } = props;
+  const { properties, openSellSublotDialog, openMergeSublotDialog } = props;
 
   const handleClick = (event) => {
     setSelectedSublot();
@@ -129,7 +128,7 @@ function RentalListing(props) {
         </div>
 
         <div className="space-y-4">
-          {_.range(0, 5).map((property, i) => (
+          {properties.entities.map((property, i) => (
             <div
               key={i}
               className="flex space-x-2 border-0 border-t border-b border-solid border-gray-200"
@@ -149,19 +148,25 @@ function RentalListing(props) {
                         <TableCell>
                           <strong>Property ID:</strong>
                         </TableCell>
-                        <TableCell>S001XXXEN/1/40/5/JD</TableCell>
+                        <TableCell>{property.propertyRef}</TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>
                           <strong>PMP Per Units:</strong>
                         </TableCell>
-                        <TableCell>{BoxUtils.formatCurrency(105)}</TableCell>
+                        <TableCell>
+                          {BoxUtils.formatCurrency(
+                            Number(property.price) / Number(property.units)
+                          )}
+                        </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>
                           <strong>Market Price:</strong>
                         </TableCell>
-                        <TableCell>{BoxUtils.formatCurrency(105)}</TableCell>
+                        <TableCell>
+                          {BoxUtils.formatCurrency(property.price)}
+                        </TableCell>
                       </TableRow>
                     </TableBody>
                   </Table>

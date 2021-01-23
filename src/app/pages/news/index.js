@@ -1,6 +1,10 @@
 import React, { useEffect } from "react";
+import withReducer from "./../../store/withReducer";
+import { connect } from "react-redux";
 import clsx from "clsx";
 import _ from "lodash";
+import moment from "moment";
+import reducer from "./store/reducers";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardMedia, CardContent, Typography } from "@material-ui/core";
 import Banner from "./components/Banner";
@@ -9,14 +13,13 @@ const useStyles = makeStyles((theme) => ({
   root: {},
 }));
 
-export default function News(props) {
+export function News(props) {
   const classes = useStyles(props);
+  const { news } = props;
+
+  console.log(news, "news app");
 
   useEffect(() => {}, []);
-
-  if (!true) {
-    return <p>Loading...</p>;
-  }
 
   return (
     <div className="root">
@@ -45,7 +48,7 @@ export default function News(props) {
           </div>
 
           <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10">
-            {_.range(0, 9).map((item, i) => (
+            {news.map((_new, i) => (
               <div className="flex" key={i}>
                 <Card
                   className={clsx(classes.card, "flex-1")}
@@ -59,18 +62,13 @@ export default function News(props) {
                     title="demo"
                   />
                   <CardContent>
-                    <h3 className="mb-1 text-sm text-gray-500">
-                      No lesser than 25m people are affected
-                    </h3>
+                    <h3 className="mb-1 text-sm text-gray-500">{_new.title}</h3>
                     <Typography color="textSecondary" variant="caption">
-                      3rd May 2020
+                      {moment(_new.dateCreated).format("ll")}
                     </Typography>
 
                     <p className="text-sm mt-5 text-gray-800">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Lacus elit elementum bibendum platea feugiat nisl morbi
-                      arcu id. Feugiat lectus elit non turpis quis ullamcorper
-                      magna eu sagittis.
+                      {_new.description}.
                     </p>
                   </CardContent>
                 </Card>
@@ -82,3 +80,9 @@ export default function News(props) {
     </div>
   );
 }
+
+const mapStateToProps = ({ newsApp }) => ({
+  news: newsApp.news.data,
+});
+
+export default withReducer("newsApp", reducer)(connect(mapStateToProps)(News));

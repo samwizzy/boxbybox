@@ -20,15 +20,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ConfirmMergeDialog(props) {
+function ConfirmBidDialog(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [state, setState] = useState(false);
   const dialog = useSelector(
-    ({ profileListing }) => profileListing.ipostakes.confirmMergeDialog
+    ({ profileListing }) => profileListing.listing.confirmMergeDialog
   );
-
-  console.log(dialog, "confirm merge dialog");
 
   const handleChange = (event) => {
     setState(event.target.checked);
@@ -74,4 +72,4 @@ function ConfirmMergeDialog(props) {
   );
 }
 
-export default ConfirmMergeDialog;
+export default ConfirmBidDialog;

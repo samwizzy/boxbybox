@@ -6,11 +6,11 @@ export const BidsConfig = {
     {
       path: "/live-bids",
       exact: true,
-      component: loadable(() => import("./bids")),
+      component: loadable(() => import("./")),
     },
     {
       path: "/live-bid/:id",
-      component: loadable(() => import("./bids/livebid/index")),
+      component: loadable(() => import("./livebid/index")),
     },
     {
       path: "/live-bid",

@@ -18,8 +18,24 @@ export const GET_IPO_STAKE_BY_ID_SUCCESS =
   "[IPOSTAKE] GET_IPO_STAKE_BY_ID_SUCCESS";
 export const GET_IPO_STAKE_BY_ID_ERROR = "[IPOSTAKE] GET_IPO_STAKE_BY_ID_ERROR";
 
-export function getUserIpoStakes() {
-  const request = axios.get("/auth/users/ipo-stake");
+export const OPEN_MERGE_SUBLOT_DIALOG = "[LISTING] OPEN_MERGE_SUBLOT_DIALOG";
+export const CLOSE_MERGE_SUBLOT_DIALOG = "[LISTING] CLOSE_MERGE_SUBLOT_DIALOG";
+
+export const OPEN_SELL_SUBLOT_DIALOG = "[LISTING] OPEN_SELL_SUBLOT_DIALOG";
+export const CLOSE_SELL_SUBLOT_DIALOG = "[LISTING] CLOSE_SELL_SUBLOT_DIALOG";
+
+export const OPEN_CONFIRM_MERGE_DIALOG = "[LISTING] OPEN_CONFIRM_MERGE_DIALOG";
+export const CLOSE_CONFIRM_MERGE_DIALOG =
+  "[LISTING] CLOSE_CONFIRM_MERGE_DIALOG";
+
+export const OPEN_CONFIRM_SALE_DIALOG = "[LISTING] OPEN_CONFIRM_SALE_DIALOG";
+export const CLOSE_CONFIRM_SALE_DIALOG = "[LISTING] CLOSE_CONFIRM_SALE_DIALOG";
+
+export function getUserIpoStakes(propertyId) {
+  // const request = axios.get(`/auth/users/ipo-stake?propertyId=${propertyId}`);
+  const request = axios.get(`/auth/ipo-stake`);
+
+  console.log(request, "request get ipo stakes on property");
 
   return (dispatch) =>
     request.then((response) =>
@@ -69,6 +85,8 @@ export function mergeIpoStake(data) {
 export function putIpoStakeForSale(data) {
   const request = axios.put("/auth/ipo-stake/put-up-for-sale", data);
 
+  console.log(request, "putIpoStakeForSale request");
+
   return (dispatch) =>
     request.then((response) =>
       dispatch({
@@ -100,4 +118,56 @@ export function getIpoStakeById(propertyId) {
         payload: response.data,
       })
     );
+}
+
+export function openSellSublotDialog(payload) {
+  return {
+    type: OPEN_SELL_SUBLOT_DIALOG,
+    payload,
+  };
+}
+
+export function closeSellSublotDialog() {
+  return {
+    type: CLOSE_SELL_SUBLOT_DIALOG,
+  };
+}
+
+export function openMergeSublotDialog(payload) {
+  return {
+    type: OPEN_MERGE_SUBLOT_DIALOG,
+    payload,
+  };
+}
+
+export function closeMergeSublotDialog() {
+  return {
+    type: CLOSE_MERGE_SUBLOT_DIALOG,
+  };
+}
+
+export function openConfirmMergeDialog(payload) {
+  return {
+    type: OPEN_CONFIRM_MERGE_DIALOG,
+    payload,
+  };
+}
+
+export function closeConfirmMergeDialog() {
+  return {
+    type: CLOSE_CONFIRM_MERGE_DIALOG,
+  };
+}
+
+export function openConfirmSaleDialog(payload) {
+  return {
+    type: OPEN_CONFIRM_SALE_DIALOG,
+    payload,
+  };
+}
+
+export function closeConfirmSaleDialog() {
+  return {
+    type: CLOSE_CONFIRM_SALE_DIALOG,
+  };
 }

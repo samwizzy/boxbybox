@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import BoxUtils from "./../../../../utils/BoxUtils";
 import { useSelector, useDispatch } from "react-redux";
 import * as Actions from "./../../store/actions";
@@ -8,7 +8,6 @@ import {
   Dialog,
   DialogContent,
   DialogActions,
-  IconButton,
   MenuItem,
   Table,
   TableBody,
@@ -17,7 +16,6 @@ import {
   TextField,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,44 +31,10 @@ const useStyles = makeStyles((theme) => ({
 
 function MergeSublotDialog(props) {
   const classes = useStyles(props);
-  const [form, setForm] = useState({
-    ipos: [0],
-    propertyId: 0,
-  });
   const dispatch = useDispatch();
-  const ipostakes = useSelector(
-    ({ profileListing }) => profileListing.ipostakes
+  const dialog = useSelector(
+    ({ profileListing }) => profileListing.listing.mergeSublotDialog
   );
-  const dialog = ipostakes.mergeSublotDialog;
-  const { data } = dialog;
-  const userBoxlots = ipostakes.userBoxlots;
-
-  useEffect(() => {
-    if (dialog.data) {
-      dispatch(Actions.getUserIpoStakes(dialog.data.id));
-    }
-    return () => {};
-  }, [dialog.data, dispatch]);
-
-  const handleChange = (i) => (event) => {
-    let ipos = [...form.ipos];
-    ipos.splice(i, 1, event.target.value);
-    setForm({ ...form, ipos });
-  };
-
-  const addSublot = () => {
-    setForm({ ...form, ipos: [...form.ipos, 0] });
-  };
-
-  const removeSublot = (i) => () => {
-    let ipos = [...form.ipos];
-    ipos.splice(i, 1);
-    setForm({ ...form, ipos });
-  };
-
-  console.log(dialog, "activate merge dialog");
-  console.log(form, "merge dialog form");
-  console.log(userBoxlots, "activate merge userBoxlots");
 
   return (
     <Dialog
@@ -97,7 +61,7 @@ function MergeSublotDialog(props) {
                   <TableCell>
                     <strong>Property ID:</strong>
                   </TableCell>
-                  <TableCell>{data && data.propertyRef}</TableCell>
+                  <TableCell>S001XXXEN/1/40/5/JD</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>
@@ -109,9 +73,7 @@ function MergeSublotDialog(props) {
                   <TableCell>
                     <strong>Market Price:</strong>
                   </TableCell>
-                  <TableCell>
-                    {data && BoxUtils.formatCurrency(data.price)}
-                  </TableCell>
+                  <TableCell>{BoxUtils.formatCurrency(105)}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -119,40 +81,19 @@ function MergeSublotDialog(props) {
         </div>
 
         <div className="flex flex-col items-center">
-          {form.ipos.map((ipo, i) => (
-            <div
-              key={i}
-              className="flex justify-between items-center space-x-2"
-            >
-              <TextField
-                id={`bbb-sublots ${i}`}
-                select
-                label="Sublots"
-                name="ipos"
-                value={ipo}
-                onChange={handleChange(i)}
-                variant="outlined"
-                margin="dense"
-                classes={{ root: "w-40" }}
-              >
-                <MenuItem value="0">Select Sublot</MenuItem>
-                {userBoxlots.entities.map((boxlot) => (
-                  <MenuItem key={boxlot.id} value={boxlot.id}>
-                    {boxlot.purchaseAmount}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <IconButton onClick={removeSublot(i)}>
-                <CloseIcon />
-              </IconButton>
-            </div>
-          ))}
-          <AppButton
-            size="small"
-            color="secondary"
-            startIcon={<AddIcon />}
-            onClick={addSublot}
+          <TextField
+            id="bbb-sublots"
+            select
+            label="Sublots"
+            name="sublots"
+            value=""
+            variant="outlined"
+            margin="dense"
+            classes={{ root: "w-40" }}
           >
+            <MenuItem value="">Sublots</MenuItem>
+          </TextField>
+          <AppButton size="small" color="secondary" startIcon={<AddIcon />}>
             Add BBB Sublot
           </AppButton>
         </div>

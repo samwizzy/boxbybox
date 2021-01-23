@@ -103,7 +103,7 @@ function PropertyDetails(props) {
               current={property && property.propertyRef}
             />
 
-            <h3 className="text-gray-600 font-bold text-lg mt-2 uppercase">
+            <h3 className="text-gray-600 text-lg mt-2 uppercase">
               {property ? property.title : <Skeleton />}
             </h3>
 
@@ -205,7 +205,7 @@ function PropertyDetails(props) {
                   </Fragment>
                 ) : (
                   <Fragment>
-                    <h2 className="text-gray-600 text-lg font-bold mb-2">
+                    <h2 className="text-gray-600 text-lg mb-2">
                       {property ? property.title : <Skeleton />}
                     </h2>
                     <h3 className="flex items-center text-sm font-normal text-gray-500 mb-2">

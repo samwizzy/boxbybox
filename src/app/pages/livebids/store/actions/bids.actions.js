@@ -28,7 +28,7 @@ export function getBids() {
 }
 
 export function getBidById(id) {
-  const request = axios.get("/property/" + id);
+  const request = axios.get("/properties/" + id);
 
   return (dispatch) =>
     request.then((response) =>

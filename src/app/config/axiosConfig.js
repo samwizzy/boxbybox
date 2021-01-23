@@ -7,4 +7,5 @@ axios.defaults.headers.post["Content-Type"] =
   "application/x-www-form-urlencoded";
 axios.defaults.headers.common["X-Frame-Options"] = "sameorigin";
 
-console.log(axios.defaults.headers.common);
+// delete axios.defaults.headers.common["Authorization"];
+// console.log(axios.defaults.headers.common, "axios.defaults.headers.common");
