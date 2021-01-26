@@ -1,12 +1,12 @@
 import React, { Fragment, useEffect } from "react";
-import BoxUtils from "./../../../../utils/BoxUtils";
+import BoxUtils from "./../../../utils/BoxUtils";
 import _ from "lodash";
-import withReducer from "./../../../../store/withReducer";
+import withReducer from "./../../../store/withReducer";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { useParams, withRouter } from "react-router-dom";
-import * as Actions from "./../../store/actions";
-import reducer from "./../../store/reducers";
+import * as Actions from "./../store/actions";
+import reducer from "./../store/reducers";
 import {
   Card,
   CardHeader,
@@ -16,28 +16,35 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { Skeleton } from "@material-ui/lab";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import ExploreIcon from "@material-ui/icons/Explore";
-import Breadcrumbs from "../../components/Breadcrumbs";
+import Breadcrumbs from "./../components/Breadcrumbs";
 import { DescriptionTabs } from "./tabs";
-import { AppButton } from "../../../../common/components";
+import { AppButton } from "../../../common/components";
 import QueueInBidDialog from "./components/QueueInBidDialog";
 import ConfirmBidDialog from "./components/ConfirmBidDialog";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    overflow: "hidden",
+    backgroundColor: "#fcfcfb",
+    transition: theme.transitions.create(["border-color", "box-shadow"]),
+  },
+}));
+
 function LiveBidDetails(props) {
-  const { bid, getPropertyById } = props;
+  const classes = useStyles(props);
+  const { bid, getBidById } = props;
   const params = useParams();
 
   console.log(bid, "single livebid details");
   console.log(params, "params livebid details");
 
   useEffect(() => {
-    getPropertyById(params.id);
-  }, [params, getPropertyById]);
-
-  if (!bid) {
-    return null;
-  }
+    getBidById(params.id);
+  }, [params, getBidById]);
 
   return (
     <div className="container">
@@ -47,18 +54,22 @@ function LiveBidDetails(props) {
             <div className="col-span-6 md:col-span-4">
               <Breadcrumbs />
 
-              <h3 className="text-gray-800 font-medium text-lg my-1 uppercase">
-                {bid.title}
+              <h3 className="text-gray-800 text-lg my-1 uppercase">
+                {bid ? bid.title : <Skeleton />}
               </h3>
 
               <span className="text-xs text-gray-600 uppercase my-2">
-                R003YXXEN
+                {bid ? bid.propertyRef : <Skeleton />}
               </span>
 
-              <h3 className="flex items-center text-sm font-normal text-gray-500 mb-4 mt-2">
-                <LocationOnIcon color="secondary" fontSize="small" />{" "}
-                {`${bid.address.city} ${bid.address.state} ${bid.address.country}`}
-              </h3>
+              {bid ? (
+                <h3 className="flex items-center text-sm font-normal text-gray-500 mb-4 mt-2">
+                  <LocationOnIcon color="secondary" fontSize="small" />{" "}
+                  {`${bid.address.city} ${bid.address.state} ${bid.address.country}`}
+                </h3>
+              ) : (
+                <Skeleton />
+              )}
 
               <Fragment>
                 <Card>
@@ -92,72 +103,113 @@ function LiveBidDetails(props) {
                     </div>
 
                     <div className="flex items-center flex-wrap mt-5">
-                      <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-                        {bid.size} sqft
-                      </div>
-                      <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-                        <Icon fontSize="small">hotel</Icon>&nbsp;
-                        {bid.bedrooms}
-                      </div>
-                      <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-                        <Icon fontSize="small">bathtub</Icon>&nbsp;
-                        {bid.bathrooms}
-                      </div>
-                      <div className="flex items-center text-sm border-0 px-2">
-                        <Icon fontSize="small">drive_eta</Icon>&nbsp;
-                        {bid.parkingLot}
-                      </div>
+                      {bid ? (
+                        <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
+                          {bid.size} sqft
+                        </div>
+                      ) : (
+                        <Skeleton />
+                      )}
+                      {bid ? (
+                        <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
+                          <Icon fontSize="small">hotel</Icon>&nbsp;
+                          {bid.bedrooms}
+                        </div>
+                      ) : (
+                        <Skeleton />
+                      )}
+                      {bid ? (
+                        <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
+                          <Icon fontSize="small">bathtub</Icon>&nbsp;
+                          {bid.bathrooms}
+                        </div>
+                      ) : (
+                        <Skeleton />
+                      )}
+                      {bid ? (
+                        <div className="flex items-center text-sm border-0 px-2">
+                          <Icon fontSize="small">drive_eta</Icon>&nbsp;
+                          {bid.parkingLot ? "Yes" : "No"}
+                        </div>
+                      ) : (
+                        <Skeleton />
+                      )}
                     </div>
                   </CardContent>
                 </Card>
 
                 <div className="my-8">
-                  <DescriptionTabs />
+                  <DescriptionTabs bid={bid} />
                 </div>
               </Fragment>
             </div>
             <div className="col-span-6 mt-4 md:mt-16 md:col-span-2">
               <Fragment>
-                <h2 className="text-gray-600 text-lg font-bold mb-4">
-                  {bid.title}
-                </h2>
-                <h3 className="flex items-center text-sm font-normal text-gray-500 mb-4 mt-2">
-                  <LocationOnIcon color="secondary" fontSize="small" />{" "}
-                  {`${bid.address.city} ${bid.address.state} ${bid.address.country}`}
-                </h3>
-
-                <h3 className="text-sm text-gray-600 mb-8">
-                  Property ID: &nbsp; <strong>S008XXXYN</strong>
-                </h3>
+                {bid ? (
+                  <h2 className="text-gray-600 text-lg mb-4">{bid.title}</h2>
+                ) : (
+                  <Skeleton />
+                )}
+                {bid ? (
+                  <h3 className="flex items-center text-sm font-normal text-gray-500 mb-4 mt-2">
+                    <LocationOnIcon color="secondary" fontSize="small" />{" "}
+                    {`${bid.address.city} ${bid.address.state} ${bid.address.country}`}
+                  </h3>
+                ) : (
+                  <Skeleton />
+                )}
+                {bid ? (
+                  <h3 className="text-sm text-gray-600 mb-4">
+                    Property ID: &nbsp; <strong>{bid.propertyRef}</strong>
+                  </h3>
+                ) : (
+                  <Skeleton />
+                )}
 
                 <div className="grid grid-cols-2 gap-6">
                   <div className="flex flex-col">
                     <span className="text-sm text-gray-600">
                       Number of Units
                     </span>
-                    <Typography color="secondary">{bid.units}</Typography>
+                    {bid ? (
+                      <Typography color="secondary">{bid.units}</Typography>
+                    ) : (
+                      <Skeleton />
+                    )}
                   </div>
                 </div>
 
-                <h4 className="text-sm font-normal text-gray-600 my-4">
-                  Make your Offer
-                </h4>
-                <span className="flex justify-between items-center gap-6 mt-8">
-                  <div>
-                    <TextField
-                      label="Number of Units"
-                      variant="outlined"
-                      size="small"
-                      fullWidth
-                    />
+                <div className="bg-gray-100 px-4 py-8 my-4">
+                  <h4 className="text-sm font-normal text-gray-600">
+                    Make your Offer
+                  </h4>
+                  <span className="flex justify-between items-center gap-6 mt-4 mb-4">
+                    <div>
+                      <TextField
+                        label="Number of Units"
+                        variant="outlined"
+                        size="small"
+                        fullWidth
+                        InputProps={{ classes }}
+                      />
+                    </div>
+                    <div>
+                      <span className="text-xs">Amount</span>
+                      {bid ? (
+                        <Typography color="secondary">
+                          {BoxUtils.formatCurrency(5000000)}
+                        </Typography>
+                      ) : (
+                        <Skeleton />
+                      )}
+                    </div>
+                  </span>
+                  <div className="flex justify-center">
+                    <AppButton variant="contained" color="secondary">
+                      bid
+                    </AppButton>
                   </div>
-                  <div className="flex flex-col">
-                    <span className="text-xs">Amount</span>
-                    <Typography color="secondary">
-                      {BoxUtils.formatCurrency(5000000)}
-                    </Typography>
-                  </div>
-                </span>
+                </div>
 
                 <div className="grid grid-cols-2 gap-4 mt-4"></div>
               </Fragment>
@@ -191,14 +243,14 @@ function LiveBidDetails(props) {
 
 const mapStateToProps = ({ bidDetail }) => {
   return {
-    bid: bidDetail.property.property,
+    bid: bidDetail.bids.bid,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      getPropertyById: Actions.getPropertyById,
+      getBidById: Actions.getBidById,
       openQueueInBidDialog: Actions.openQueueInBidDialog,
     },
     dispatch

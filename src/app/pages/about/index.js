@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardMedia, CardContent, Typography } from "@material-ui/core";
 import Banner from "./components/Banner";
 import data from "./fakedb.json";
-import { Store } from "./../../common/containers/components";
+import { Store } from "../../common/containers/components";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -28,7 +28,7 @@ export default function About(props) {
 
       <div className="bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid order-first md:order-none grid-cols-1 md:grid-cols-2 gap-4">
             <div className="">
               <h2 className="mt-2 text-3xl md:text-4xl font-normal leading-8 tracking-tight text-gray-800 sm:text-4xl">
                 Executive Summary and Mission statement
@@ -48,6 +48,7 @@ export default function About(props) {
               <img
                 src="https://image.freepik.com/free-vector/about-us-concept-illustration_114360-669.jpg"
                 alt="about bbb"
+                className="w-full"
               />
             </div>
           </div>

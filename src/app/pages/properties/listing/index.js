@@ -1,4 +1,6 @@
 import React, { Fragment, useState } from "react";
+import { useDispatch } from "react-redux";
+import * as Actions from "./../store/actions";
 import clsx from "clsx";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
@@ -41,11 +43,16 @@ function a11yProps(index) {
 
 export default function Listing(props) {
   const classes = useStyles(props);
+  const dispatch = useDispatch();
   const { properties } = props;
   const [value, setValue] = useState(0);
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const handlePaginate = (event, page) => {
+    dispatch(Actions.getProperties({ page: page - 1 }));
   };
 
   return (
@@ -79,7 +86,7 @@ export default function Listing(props) {
               <AppBreadcrumbs current="Properties" />
 
               <h3 className="text-gray-800 font-medium text-lg mb-4 mt-1">
-                Property Listing
+                Property Listing ({properties.total})
               </h3>
 
               {properties.entities.map((property, i) => (
@@ -92,9 +99,14 @@ export default function Listing(props) {
                 </Fragment>
               ))}
 
-              {properties.entities.length ? (
+              {properties.total ? (
                 <div className="flex items-center justify-center mt-16">
-                  <Pagination count={10} variant="outlined" color="secondary" />
+                  <Pagination
+                    count={_.ceil(properties.total / properties.limit)}
+                    variant="outlined"
+                    color="secondary"
+                    onChange={handlePaginate}
+                  />
                 </div>
               ) : (
                 ""

@@ -3,8 +3,18 @@ import * as Actions from "../actions/ipo_stakes.actions";
 const initialState = {
   loading: false,
   error: null,
-  boxlots: [],
-  userBoxlots: [],
+  boxlots: {
+    total: 0,
+    limit: 0,
+    page: 0,
+    entities: [],
+  },
+  userBoxlots: {
+    total: 0,
+    limit: 0,
+    page: 0,
+    entities: [],
+  },
   ipoStakeDialog: {
     open: false,
     data: null,
@@ -18,6 +28,12 @@ const initialState = {
 const ipoStakesReducer = (state = initialState, action) => {
   switch (action.type) {
     case Actions.GET_IPO_STAKES: {
+      return {
+        ...state,
+        boxlots: action.payload,
+      };
+    }
+    case Actions.GET_IPO_STAKES_BY_PROPERTY_ID: {
       return {
         ...state,
         boxlots: action.payload,

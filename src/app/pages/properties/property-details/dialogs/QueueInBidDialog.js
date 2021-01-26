@@ -126,7 +126,7 @@ function QueueInBidDialog(props) {
           color="secondary"
           onClick={() => dispatch(Actions.openConfirmBidDialog(form))}
         >
-          Bid
+          Queue Bid
         </AppButton>
       </DialogActions>
     </Dialog>

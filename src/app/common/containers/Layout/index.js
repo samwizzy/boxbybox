@@ -7,7 +7,7 @@ import SnackBar from "./../../components/Snackbar/SnackbarComponent";
 
 export default function Layout({ route, children }) {
   return (
-    <div className="layout">
+    <div className="layout flex flex-col">
       <div className="container mx-auto">
         <Header />
       </div>

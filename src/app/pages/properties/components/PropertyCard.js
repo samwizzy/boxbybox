@@ -19,8 +19,6 @@ export default function PropertyCard(props) {
   const classes = useStyles(props);
   const { property } = props;
 
-  console.log(property, "property details single one");
-
   return (
     <Card className="md:grid md:grid-cols-2 gap-4 mb-4">
       <CardMedia
@@ -57,7 +55,7 @@ export default function PropertyCard(props) {
 
         <div className="flex items-center flex-wrap mt-5">
           <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-            {property ? property.size : <Skeleton />} sqft
+            {property ? property.size : <Skeleton />} sq ft
           </div>
           <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
             <Icon fontSize="small">hotel</Icon>&nbsp;

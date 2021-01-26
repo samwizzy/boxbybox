@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { bindActionCreators } from "redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import withReducer from "./../../store/withReducer";
 import reducer from "./store/reducers";
 import * as Actions from "./store/actions";
@@ -10,8 +11,9 @@ import Pagination from "@material-ui/lab/Pagination";
 import MenuIcon from "@material-ui/icons/Menu";
 import { AppBreadcrumbs, TabPanel } from "../../common/components";
 import RentForm from "./components/RentForm";
-import ActiveBids from "./components/ActiveBids";
-import ExpiredBids from "./components/ExpiredBids";
+import ActiveBids from "./tabs/ActiveBids";
+import ExpiredBids from "./tabs/ExpiredBids";
+import QueueInBidDialog from "./components/QueueInBidDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -37,23 +39,20 @@ function a11yProps(index) {
 
 function Bids(props) {
   const classes = useStyles(props);
+  const { openQueueInBidDialog } = props;
   const [value, setValue] = useState(0);
   const dispatch = useDispatch();
-  const bids = useSelector(({ bidsApp }) => bidsApp.property.properties);
+  const bids = useSelector(({ bidsApp }) => bidsApp.bids.bids);
 
   console.log(bids, "bids state live");
 
   useEffect(() => {
-    dispatch(Actions.getProperties());
+    dispatch(Actions.getBids());
   }, [dispatch]);
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  if (!bids) {
-    return null;
-  }
 
   return (
     <div className={clsx(classes.root, "container")}>
@@ -67,7 +66,7 @@ function Bids(props) {
               <Toolbar className={classes.toolbar}>
                 <AppBreadcrumbs current="Live bids" />
                 <div className="w-full" />
-                <IconButton color="secondary">
+                <IconButton color="secondary" className="focus:outline-none">
                   <MenuIcon />
                 </IconButton>
               </Toolbar>
@@ -85,10 +84,16 @@ function Bids(props) {
               </AppBar>
               <div>
                 <TabPanel value={value} index={0} nopadding>
-                  <ActiveBids bids={bids} />
+                  <ActiveBids
+                    bids={bids}
+                    openQueueInBidDialog={openQueueInBidDialog}
+                  />
                 </TabPanel>
                 <TabPanel value={value} index={1} nopadding>
-                  <ExpiredBids bids={bids} />
+                  <ExpiredBids
+                    bids={bids}
+                    openQueueInBidDialog={openQueueInBidDialog}
+                  />
                 </TabPanel>
               </div>
 
@@ -97,10 +102,24 @@ function Bids(props) {
               </div>
             </div>
           </div>
+
+          <QueueInBidDialog />
         </div>
       </div>
     </div>
   );
 }
 
-export default withReducer("bidsApp", reducer)(Bids);
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      openQueueInBidDialog: Actions.openQueueInBidDialog,
+    },
+    dispatch
+  );
+};
+
+export default withReducer(
+  "bidsApp",
+  reducer
+)(connect(null, mapDispatchToProps)(Bids));

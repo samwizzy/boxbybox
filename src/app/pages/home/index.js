@@ -1,20 +1,15 @@
 import React, { useEffect } from "react";
 import withReducer from "./../../store/withReducer";
-import { useSelector, useDispatch } from "react-redux";
-import clsx from "clsx";
+import { connect, useDispatch } from "react-redux";
 import * as Actions from "./store/actions";
 import reducer from "./store/reducers";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Card,
-  CardMedia,
-  CardContent,
-  Divider,
-  Typography,
-} from "@material-ui/core";
+import { Divider } from "@material-ui/core";
 import Banner from "./components/Banner";
 import { Store } from "../../common/containers/components";
 import { FeatureCard } from "../../common/components";
+import Services from "./components/Services";
+import News from "./components/News";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -23,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 export function Home(props) {
   const classes = useStyles(props);
-  const properties = useSelector(({ homeApp }) => homeApp.property.properties);
+  const { news, properties } = props;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -55,53 +50,16 @@ export function Home(props) {
 
           <Divider className={classes.divider} />
 
-          <div className="">
-            <div className="lg:text-center">
-              <h5 className="text-gray-400 text-sm tracking-wide mt-4 font-normal">
-                Explore features
-              </h5>
-              <h2 className="text-gray-800 font-extrabold">
-                Services You Need
-              </h2>
-            </div>
-
-            <dl className="bg-white mt-10 space-y-10 md:space-y-0 md:grid md:grid-cols-4 md:gap-x-8 md:gap-y-10">
-              {[0, 1, 2, 3].map((item, i) => (
-                <div className="flex" key={i}>
-                  <Card
-                    className={clsx(classes.card, "flex-1")}
-                    variant="outlined"
-                  >
-                    <CardMedia
-                      classes={{
-                        root:
-                          "h-16 w-16 border bg-indigo-900 rounded-full mx-auto mt-2",
-                      }}
-                      image=".."
-                      title="demo"
-                    />
-                    <CardContent className="text-center">
-                      <h3 className="mb-1 text-lg text-gray-800">BBB Offers</h3>
-
-                      <Typography variant="subtitle2" color="textPrimary">
-                        BBB survey hit higher, there are property applications
-                        with our features and quality properties.
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </div>
-              ))}
-            </dl>
-          </div>
+          <Services />
         </div>
       </div>
 
       <div className="bg-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <h2 className="text-3xl font-light my-8 text-center">
+          <h2 className="text-3xl font-light mb-8 text-center">
             Featured Properties
           </h2>
-          <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-4 md:gap-x-8 md:gap-y-10">
+          <dl className="grid grid-cols-1 gap-3 md:grid-cols-4 md:gap-x-6">
             {properties.entities.slice(0, 4).map((property, i) => (
               <div className="flex" key={i}>
                 <FeatureCard property={property} />
@@ -114,52 +72,16 @@ export function Home(props) {
       {/* Store component */}
       <Store />
 
-      <div className="bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="lg:text-center mb-8">
-            <h6 className="uppercase text-xs tracking-widest font-medium text-gray-500">
-              Blog & Events
-            </h6>
-            <h2 className="text-3xl font-bold my-2">News Latest</h2>
-          </div>
-
-          <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10">
-            {[0, 1, 2].map((item, i) => (
-              <div className="flex" key={i}>
-                <Card
-                  className={clsx(classes.card, "flex-1")}
-                  variant="outlined"
-                >
-                  <CardMedia
-                    classes={{
-                      root: "w-full h-48",
-                    }}
-                    image="https://image.freepik.com/free-vector/coronavirus-breaking-news-background_23-2148736973.jpg"
-                    title="demo"
-                  />
-                  <CardContent>
-                    <h3 className="mb-1 text-sm text-gray-500">
-                      No lesser than 25m people are affected
-                    </h3>
-                    <Typography color="textSecondary" variant="caption">
-                      3rd May 2020
-                    </Typography>
-
-                    <p className="text-sm mt-5 text-gray-800">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Lacus elit elementum bibendum platea feugiat nisl morbi
-                      arcu id. Feugiat lectus elit non turpis quis ullamcorper
-                      magna eu sagittis.
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </div>
+      <News news={news} />
     </div>
   );
 }
 
-export default withReducer("homeApp", reducer)(Home);
+const mapStateToProps = ({ homeApp }) => {
+  return {
+    news: homeApp.news.data,
+    properties: homeApp.property.properties,
+  };
+};
+
+export default withReducer("homeApp", reducer)(connect(mapStateToProps)(Home));

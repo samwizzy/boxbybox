@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
+import { AppButton } from "../../../common/components";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 
 const useStyles = makeStyles((theme) => ({
@@ -10,16 +10,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ActiveBids(props) {
   const classes = useStyles(props);
-  const { bids } = props;
+  const { bids, openQueueInBidDialog } = props;
 
   return (
     <div className={classes.root}>
-      {bids.entities.map((bid, i) => (
+      {bids.map((bid, i) => (
         <div
           key={i}
           className="flex justify-between items-center my-4 border-0 border-b border-gray-200 border-solid"
         >
-          <div className="grid grid-cols-2 gap-4">
+          <div className="flex space-x-4">
             <img
               src="https://image.freepik.com/free-photo/happy-asian-family-father-mother-daughter-near-new-home-real-estate_36356-245.jpg"
               alt=""
@@ -27,22 +27,28 @@ export default function ActiveBids(props) {
             />
             <div className="flex flex-col">
               <h3 className="text-lg text-gray-800">
-                <Link to={`live-bid/${bid.id}`}>{bid.title}</Link>
+                <Link className="no-underline" to={`live-bid/${bid.id}`}>
+                  {bid.ipoStake.property.title}
+                </Link>
               </h3>
-              <span>S001XXXEN/23/40/5/JD</span>
-              <span className="flex items-center text-sm font-normal text-gray-500 mb-4 mt-2">
+              <span className="font-medium text-sm">{bid.ipoStake.ipoRef}</span>
+              <span className="flex items-center text-sm font-normal text-gray-600 mb-4 mt-2">
                 <LocationOnIcon color="secondary" fontSize="small" />{" "}
-                {`${bid.address.city} ${bid.address.state} ${bid.address.country}`}
+                {`${bid.ipoStake.property.address.city} ${bid.ipoStake.property.address.state} ${bid.ipoStake.property.address.country}`}
               </span>
             </div>
           </div>
           <div className="flex flex-col space-y-2">
-            <Button color="inherit" variant="contained">
+            <AppButton color="inherit" variant="contained">
               View Details
-            </Button>
-            <Button color="secondary" variant="contained">
+            </AppButton>
+            <AppButton
+              color="secondary"
+              variant="contained"
+              onClick={() => openQueueInBidDialog(bid.ipoStake.property)}
+            >
               Queue in a Bid
-            </Button>
+            </AppButton>
           </div>
         </div>
       ))}

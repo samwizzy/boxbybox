@@ -9,6 +9,7 @@ export { default as FeaturedCard } from "./Card/FeaturedCardComponent";
 export { default as FeatureCard } from "./Card/FeatureCardComponent";
 export { default as NewsCard } from "./NewsCard/NewsCardComponent";
 export { default as PropertyCard } from "./PropertyCard/PropertyCardComponent";
+export { default as PropertyDetailCard } from "./PropertyCard/PropertyDetailCard";
 export { default as ServiceCard } from "./ServiceCard/ServiceCardComponent";
 export { default as TabPanel } from "./Tabs/TabPanel/TabPanelComponent";
 export { default as Loading } from "./Loadable/LoadableComponent";

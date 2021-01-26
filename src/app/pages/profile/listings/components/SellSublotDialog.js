@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import BoxUtils from "../../../../utils/BoxUtils";
 import { useSelector, useDispatch } from "react-redux";
 import * as Actions from "../../store/actions";
@@ -9,6 +9,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  ListItemText,
+  MenuItem,
   Table,
   TableBody,
   TableRow,
@@ -28,12 +30,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SellSublotDialog(props) {
-  const classes = useStyles();
+function SellBoxlotDialog(props) {
+  const classes = useStyles(props);
   const dispatch = useDispatch();
-  const dialog = useSelector(
-    ({ profileListing }) => profileListing.listing.sellSublotDialog
+  const [form, setForm] = useState({ amount: 0, ipoId: 0 });
+  const ipoStakes = useSelector(
+    ({ profileListing }) => profileListing.ipostakes
   );
+  const dialog = ipoStakes.sellSublotDialog;
+  const { data } = dialog;
+  const userBoxlots = ipoStakes.userBoxlots;
+
+  useEffect(() => {
+    if (dialog.data) {
+      dispatch(Actions.getUserIpoStakes(dialog.data.id));
+    }
+    return () => {};
+  }, [dialog.data, dispatch]);
+
+  const handleChange = (event) => {
+    setForm({ ...form, [event.target.name]: event.target.value });
+  };
+
+  console.log(form, "put ipo up for sale");
 
   return (
     <Dialog
@@ -41,10 +60,12 @@ function SellSublotDialog(props) {
       open={dialog.open}
       onClose={() => dispatch(Actions.closeSellSublotDialog())}
       aria-labelledby="bid-offers-payment"
-      fullWidth
-      maxWidth="sm"
     >
-      <DialogTitle>Sell BBB Sublots</DialogTitle>
+      <DialogTitle>
+        Sell Boxlots
+        <p className="text-xs text-gray-600">Put boxlot up for sale</p>
+      </DialogTitle>
+
       <DialogContent>
         <div className="flex items-center space-x-2">
           <div>
@@ -61,27 +82,63 @@ function SellSublotDialog(props) {
                   <TableCell>
                     <strong>Property ID:</strong>
                   </TableCell>
-                  <TableCell>S001XXXEN/1/40/5/JD</TableCell>
+                  <TableCell>{data && data.propertyRef}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>
                     <strong>Market Price:</strong>
                   </TableCell>
-                  <TableCell>{BoxUtils.formatCurrency(105)}</TableCell>
+                  <TableCell>
+                    {data && BoxUtils.formatCurrency(data.price)}
+                  </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </div>
         </div>
 
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center space-y-4">
           <TextField
+            id="selling-price"
             label="Selling Price"
-            name="price"
+            name="amount"
+            type="number"
+            value={form.amount}
+            onChange={handleChange}
             variant="outlined"
             margin="dense"
-            classes={{ root: "w-56" }}
+            fullWidth
           />
+
+          <TextField
+            id="ipo-stake"
+            select
+            label="IPO stake"
+            name="ipoId"
+            value={form.ipoId}
+            onChange={handleChange}
+            variant="outlined"
+            margin="dense"
+            fullWidth
+            classes={{ root: "w-60" }}
+          >
+            <MenuItem value="0">Select IPO stake</MenuItem>
+            {userBoxlots.entities.map((boxlot, i) => (
+              <MenuItem key={i} value={boxlot.id}>
+                <ListItemText
+                  primary={`#${boxlot.ipoRef} — ${BoxUtils.formatCurrency(
+                    boxlot.purchaseAmount
+                  )}`}
+                  secondary={
+                    <div className="space-x-1">
+                      <span>No. of units: {boxlot.noOfUnitsPurchased} |</span>
+                      <span>Date Acquired: {boxlot.createdAt}</span>
+                    </div>
+                  }
+                />
+              </MenuItem>
+            ))}
+          </TextField>
         </div>
       </DialogContent>
 
@@ -90,13 +147,13 @@ function SellSublotDialog(props) {
           size="small"
           variant="contained"
           color="secondary"
-          onClick={() => dispatch(Actions.closeSellSublotDialog())}
+          onClick={() => dispatch(Actions.openConfirmSaleDialog(form))}
         >
-          Sell Sublot
+          Sell Boxlot
         </AppButton>
       </DialogActions>
     </Dialog>
   );
 }
 
-export default SellSublotDialog;
+export default SellBoxlotDialog;

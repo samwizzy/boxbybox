@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as Actions from "./../store/actions";
+import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppButton } from "./../../../common/components";
 import {
@@ -8,7 +9,12 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
   TextField,
+  Radio,
+  RadioGroup,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -26,13 +32,24 @@ function ProfileDialog(props) {
   const dialog = useSelector(
     ({ profileApp }) => profileApp.profile.profileDialog
   );
+  const data = useSelector(({ auth }) => auth.register.data);
+  const [form, setForm] = useState({ ...data });
+
+  const handleChange = (event) => {
+    const { name, value, type, checked } = event.target;
+    setForm((state) => ({
+      ..._.set(state, name, type === "checkbox" ? checked : value),
+    }));
+  };
+
+  console.log(form, "form data profile dialog");
 
   return (
     <Dialog
       className={classes.root}
       open={dialog.open}
       onClose={() => dispatch(Actions.closeProfileDialog())}
-      aria-labelledby="merge-subslots"
+      aria-labelledby="profile-update"
       fullWidth
       maxWidth="xs"
     >
@@ -55,6 +72,67 @@ function ProfileDialog(props) {
             value=""
             variant="outlined"
             margin="dense"
+            fullWidth
+          />
+          <TextField
+            id="phone-number"
+            label="Phone Number"
+            name="phoneNumber"
+            value=""
+            variant="outlined"
+            margin="dense"
+            fullWidth
+          />
+          <FormControl component="fieldset" fullWidth>
+            <RadioGroup
+              aria-label="gender"
+              name="individualUser.gender"
+              value={form.individualUser.gender}
+              onChange={handleChange}
+              row
+            >
+              <FormControlLabel value="MALE" control={<Radio />} label="Male" />
+              <FormControlLabel
+                value="FEMALE"
+                control={<Radio />}
+                label="Female"
+              />
+            </RadioGroup>
+          </FormControl>
+
+          <div className="place-self-start">
+            <FormLabel>Next of Kin Details</FormLabel>
+          </div>
+
+          <TextField
+            margin="dense"
+            id="individual-next-of-kin-name"
+            name="individualUser.nextOfKinName"
+            label="Name"
+            value={form.individualUser.nextOfKinName}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
+          />
+          <TextField
+            margin="dense"
+            id="individual-next-of-kin-email"
+            name="individualUser.nextOfKinEmail"
+            label="Email"
+            type="email"
+            value={form.individualUser.nextOfKinEmail}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
+          />
+          <TextField
+            margin="dense"
+            id="individual-next-of-kin-phone"
+            name="individualUser.nextOfKinPhone"
+            label="Phone"
+            value={form.individualUser.nextOfKinPhone}
+            onChange={handleChange}
+            variant="outlined"
             fullWidth
           />
         </div>

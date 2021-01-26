@@ -55,10 +55,22 @@ function ProfileSidebar(props) {
         </CardContent>
       </Card>
       <div className="flex items-center justify-between space-x-1 my-4">
-        <AppButton variant="contained" color="secondary" size="large">
+        <AppButton
+          variant="contained"
+          color="secondary"
+          size="large"
+          component={Link}
+          to="/properties"
+        >
           Buy a Property
         </AppButton>
-        <AppButton variant="contained" color="secondary" size="large">
+        <AppButton
+          variant="contained"
+          color="secondary"
+          size="large"
+          component={Link}
+          to="/properties"
+        >
           Rent a Property
         </AppButton>
       </div>

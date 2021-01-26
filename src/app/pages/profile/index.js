@@ -230,6 +230,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       openProfileDialog: Actions.openProfileDialog,
+      getProperties: Actions.getProperties,
     },
     dispatch
   );

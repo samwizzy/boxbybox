@@ -12,6 +12,7 @@ import { AppButton, GoBackButton } from "./../../../common/components";
 import {
   Card,
   CardActions,
+  CircularProgress,
   Grid,
   Toolbar,
   Typography,
@@ -72,6 +73,7 @@ function getSteps() {
 function UploadProperty(props) {
   const classes = useStyles(props);
   const {
+    loading,
     getCountries,
     countries,
     states,
@@ -163,11 +165,13 @@ function UploadProperty(props) {
                         <AppButton
                           variant="contained"
                           color="secondary"
+                          disabled={loading}
                           onClick={
                             activeStep === steps.length - 1
                               ? handleSubmit
                               : handleNext
                           }
+                          startIcon={loading && <CircularProgress size={20} />}
                         >
                           {activeStep === steps.length - 1 ? "Finish" : "Next"}
                         </AppButton>
@@ -186,6 +190,7 @@ function UploadProperty(props) {
 
 const mapStateToProps = ({ propertyUpload, auth }) => {
   return {
+    loading: propertyUpload.property.loading,
     countries: auth.location.countries,
     states: auth.location.states,
     lgas: auth.location.lgas,

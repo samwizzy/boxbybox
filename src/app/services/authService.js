@@ -87,16 +87,19 @@ class authService extends BoxUtils.EventEmitter {
           }
         })
         .catch((error) => {
-          console.log(error, "catch login error");
-          error.response && reject(error.response.data);
+          console.log(error.toJSON(), "catch login error");
+          error.message && reject(error.toJSON());
         });
     });
   };
 
   signInWithToken = () => {
     return new Promise((resolve, reject) => {
-      axios.defaults.headers.common["Authorization"] =
-        "Bearer " + this.getAccessToken();
+      let token = this.getAccessToken();
+      if (token) {
+        axios.defaults.headers.common["Authorization"] =
+          "Bearer " + this.getAccessToken();
+      }
 
       axios.get("/auth/users").then((response) => {
         if (response.status === 200) {
@@ -134,14 +137,16 @@ class authService extends BoxUtils.EventEmitter {
 
   logout = () => {
     return new Promise((resolve, reject) => {
-      axios.post("/auth/logout").then((response) => {
-        if (response.data) {
-          this.setSession(null);
-          resolve(response.data);
-        } else {
-          reject(response.data.error);
-        }
-      });
+      // axios.post("/auth/logout").then((response) => {
+      //   if (response.data) {
+      //     this.setSession(null);
+      //     resolve(response.data);
+      //   } else {
+      //     reject(response.data.error);
+      //   }
+      // });
+      this.setSession(null);
+      resolve({ message: "You have logged out successfully" });
     });
   };
 

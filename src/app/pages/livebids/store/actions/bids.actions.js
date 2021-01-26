@@ -1,22 +1,25 @@
 import axios from "axios";
+import { showSnackbar } from "./../../../../store/actions";
 
-export const GET_BIDS_SUCCESS = "[PROPERTY] GET_BIDS_SUCCESS";
-export const GET_BIDS_ERROR = "[PROPERTY] GET_BIDS_ERROR";
+export const GET_BIDS_SUCCESS = "[BIDS] GET_BIDS_SUCCESS";
+export const GET_BIDS_ERROR = "[BIDS] GET_BIDS_ERROR";
 
-export const GET_BID_BY_ID_SUCCESS = "[PROPERTY] GET_BID_BY_ID_SUCCESS";
-export const GET_BID_BY_ID_ERROR = "[PROPERTY] GET_BID_BY_ID_ERROR";
+export const GET_BID_BY_ID_SUCCESS = "[BIDS] GET_BID_BY_ID_SUCCESS";
+export const GET_BID_BY_ID_ERROR = "[BIDS] GET_BID_BY_ID_ERROR";
 
-export const OPEN_BID_PAYMENT_DIALOG = "[PROPERTY] OPEN_BID_PAYMENT_DIALOG";
-export const CLOSE_BID_PAYMENT_DIALOG = "[PROPERTY] CLOSE_BID_PAYMENT_DIALOG";
+export const GET_AVAILABLE_UNITS = "[BIDS] GET_AVAILABLE_UNITS";
+export const GET_MIN_COST_OF_COUNTERING_BID =
+  "[BIDS] GET_MIN_COST_OF_COUNTERING_BID";
+export const GET_MIN_COST_OF_UNIT = "[BIDS] GET_MIN_COST_OF_UNIT";
 
-export const OPEN_QUEUE_IN_BID_DIALOG = "[PROPERTY] OPEN_QUEUE_IN_BID_DIALOG";
-export const CLOSE_QUEUE_IN_BID_DIALOG = "[PROPERTY] CLOSE_QUEUE_IN_BID_DIALOG";
+export const OPEN_QUEUE_IN_BID_DIALOG = "[BIDS] OPEN_QUEUE_IN_BID_DIALOG";
+export const CLOSE_QUEUE_IN_BID_DIALOG = "[BIDS] CLOSE_QUEUE_IN_BID_DIALOG";
 
-export const OPEN_CONFIRM_BID_DIALOG = "[PROPERTY] OPEN_CONFIRM_BID_DIALOG";
-export const CLOSE_CONFIRM_BID_DIALOG = "[PROPERTY] CLOSE_CONFIRM_BID_DIALOG";
+export const OPEN_CONFIRM_BID_DIALOG = "[BIDS] OPEN_CONFIRM_BID_DIALOG";
+export const CLOSE_CONFIRM_BID_DIALOG = "[BIDS] CLOSE_CONFIRM_BID_DIALOG";
 
 export function getBids() {
-  const request = axios.get("/properties");
+  const request = axios.get("/auth/bids-by-user");
 
   return (dispatch) =>
     request.then((response) =>
@@ -28,7 +31,7 @@ export function getBids() {
 }
 
 export function getBidById(id) {
-  const request = axios.get("/property/" + id);
+  const request = axios.get("/properties/" + id);
 
   return (dispatch) =>
     request.then((response) =>
@@ -39,17 +42,52 @@ export function getBidById(id) {
     );
 }
 
-export function openBidPaymentDialog(payload) {
-  return {
-    type: OPEN_BID_PAYMENT_DIALOG,
-    payload,
-  };
+export function getAvailableUnits(propertyId) {
+  const request = axios.get("/auth/properties/ipo-stake/" + propertyId);
+
+  return (dispatch) =>
+    request.then((response) =>
+      dispatch({
+        type: GET_AVAILABLE_UNITS,
+        payload: response.data,
+      })
+    );
 }
 
-export function closeBidPaymentDialog() {
-  return {
-    type: CLOSE_BID_PAYMENT_DIALOG,
-  };
+export function getMinCostOfCounteringBid(ipoBidId) {
+  const request = axios.get(`/auth/bid-counter-cost/${ipoBidId}`);
+
+  return (dispatch) =>
+    request.then((response) =>
+      dispatch({
+        type: GET_MIN_COST_OF_COUNTERING_BID,
+        payload: response.data,
+      })
+    );
+}
+
+export function getMinCostOfUnit(propertyId, units) {
+  const request = axios.get(
+    `/auth/properties/ipo-stake/units/${propertyId}/${units}`
+  );
+  console.log(request, "get minimum cost of unit request");
+
+  return (dispatch) =>
+    request
+      .then((response) =>
+        dispatch({
+          type: GET_MIN_COST_OF_UNIT,
+          payload: response.data,
+        })
+      )
+      .catch((error) => {
+        dispatch(
+          showSnackbar({
+            message: error.response.data.message,
+            variant: "warning",
+          })
+        );
+      });
 }
 
 export function openQueueInBidDialog(payload) {

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Fragment } from "react";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import {
@@ -17,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.primary.main,
     color: "#fff",
+    "& a": { color: theme.palette.secondary.contrastText },
   },
   title: {
     position: "relative",
@@ -36,10 +38,10 @@ const footerLinks = [
   {
     column: "About us",
     links: [
-      { title: "Why Choose Us" },
-      { title: "Our services" },
-      { title: "Contact Us" },
-      { title: "Terms & conditions" },
+      { title: "Why Choose Us", path: "/" },
+      { title: "Our services", path: "#services" },
+      { title: "Contact Us", path: "/contacts" },
+      { title: "Terms & conditions", path: "/" },
     ],
   },
   {
@@ -76,10 +78,9 @@ export default function Footer(props) {
               />
 
               <Typography variant="subtitle2" className="text-gray-200">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Purus
-                consectetur id facilisi sodales sollicitudin malesuada proin.
-                Suscipit risus ut porttitor cursus consequat iaculis habitant
-                enim.
+                BoxByBox is a online property platform that brings a rental and
+                a bidder together in a bid to own, rent, sell or co-own a
+                property.
               </Typography>
             </div>
 
@@ -149,9 +150,17 @@ export default function Footer(props) {
                     className={classes.root}
                   >
                     {item.links.map((link, a) => (
-                      <ListItem key={a}>
-                        <ListItemText primary={link.title} />
-                      </ListItem>
+                      <Fragment key={a}>
+                        {item.column === "About us" ? (
+                          <ListItem key={a} component={Link} to={link.path}>
+                            <ListItemText primary={link.title} />
+                          </ListItem>
+                        ) : (
+                          <ListItem key={a}>
+                            <ListItemText primary={link.title} />
+                          </ListItem>
+                        )}
+                      </Fragment>
                     ))}
                   </List>
                 </Grid>

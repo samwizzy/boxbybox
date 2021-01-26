@@ -128,7 +128,7 @@ function ProfileWallet(props) {
                 </div>
 
                 <Card className={classes.card}>
-                  <CardHeader disableTypography title="Transaction" />
+                  <CardHeader disableTypography title="Transactions" />
                   <CardContent>
                     <Table size="small">
                       <TableHead>
