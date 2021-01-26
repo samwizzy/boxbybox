@@ -46,9 +46,9 @@ export function Login(props) {
 
   return (
     <div>
-      <div className="grid grid-cols-2 gap-4">
-        <div className={clsx(classes.screen, "flex screen")}></div>
-        <div className="">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className={clsx(classes.screen, "hidden md:flex")}></div>
+        <div>
           <div className="space-y-4 mb-2">
             <AppButton
               fullWidth

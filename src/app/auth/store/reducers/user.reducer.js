@@ -15,24 +15,18 @@ const initialState = {
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case Actions.SET_USER_DATA_PROGRESS: {
-      return {
-        ...state,
-        loading: true,
-      };
-    }
-    case Actions.SET_USER_DATA_SUCCESS: {
+    case Actions.SET_USER_DATA: {
       return {
         ...state,
         loading: false,
         data: action.payload,
       };
     }
-    case Actions.SET_USER_DATA_ERROR: {
+    case Actions.REMOVE_USER_DATA: {
       return {
         ...state,
         loading: false,
-        error: action.payload,
+        data: { ...initialState.data },
       };
     }
     case Actions.LOGOUT_SUCCESS: {

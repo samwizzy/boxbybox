@@ -116,8 +116,8 @@ function Register(props) {
 
   return (
     <div>
-      <div className="grid grid-cols-2 gap-4">
-        <div className={clsx(classes.screen, "flex screen")}></div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className={clsx(classes.screen, "hidden md:flex")}></div>
         <div className="">
           <div className="space-y-4">
             <FormControl component="fieldset" fullWidth>
@@ -526,6 +526,7 @@ function Register(props) {
                           id="individual-latitude"
                           name="individualUser.address.latitude"
                           label="Latitude"
+                          type="number"
                           value={form.individualUser.address.latitude}
                           onChange={handleChange}
                           variant="outlined"
@@ -538,6 +539,7 @@ function Register(props) {
                           id="individual-longitude"
                           name="individualUser.address.longitude"
                           label="Longitude"
+                          type="number"
                           value={form.individualUser.address.longitude}
                           onChange={handleChange}
                           variant="outlined"
@@ -565,6 +567,7 @@ function Register(props) {
                           id="individual-next-of-kin-email"
                           name="individualUser.nextOfKinEmail"
                           label="Email"
+                          type="email"
                           value={form.individualUser.nextOfKinEmail}
                           onChange={handleChange}
                           variant="outlined"
