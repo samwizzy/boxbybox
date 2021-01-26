@@ -4,6 +4,9 @@ import { showSnackbar } from "../../../../store/actions";
 
 export const GET_IPO_STAKES = "[IPOSTAKES] GET_IPO_STAKES";
 
+export const GET_IPO_STAKES_BY_PROPERTY_ID =
+  "[IPOSTAKES] GET_IPO_STAKES_BY_PROPERTY_ID";
+
 export const GET_USER_IPO_STAKES_BY_PROPERTY_ID =
   "[IPOSTAKES] GET_USER_IPO_STAKE_BY_PROPERTY_ID";
 
@@ -33,6 +36,21 @@ export function getIpoStakes() {
         });
       }
     });
+}
+
+export function getIpoStakeByPropertyId(propertyId, page = 0) {
+  const request = axios.get("/auth/ipo-stake", {
+    params: { propertyId, page },
+  });
+  console.log(request, "request get ipo stake by");
+
+  return (dispatch) =>
+    request.then((response) =>
+      dispatch({
+        type: GET_IPO_STAKES_BY_PROPERTY_ID,
+        payload: response.data,
+      })
+    );
 }
 
 export function getUserIpoStakeByPropertyId(propertyId) {

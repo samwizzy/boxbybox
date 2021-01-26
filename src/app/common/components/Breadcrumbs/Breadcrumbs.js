@@ -47,7 +47,7 @@ export default function BreadCrumb(props) {
                 to={prevLinks[k]}
                 className="text-sm font-bold no-underline"
               >
-                <HomeIcon fontSize="small" /> {k}
+                {k}
               </Link>
             ))}
 

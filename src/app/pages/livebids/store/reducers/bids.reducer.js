@@ -3,17 +3,10 @@ import * as Actions from "../actions/bids.actions";
 const initialState = {
   loading: false,
   error: null,
-  bids: {
-    entities: [],
-    page: 0,
-    limit: 0,
-    total: 0,
-  },
+  units: [],
+  minimumCostForUnit: null,
+  bids: [],
   bid: null,
-  paymentDialog: {
-    open: false,
-    data: null,
-  },
   queueInBidDialog: {
     open: false,
     data: null,
@@ -32,31 +25,17 @@ const bidsReducer = (state = initialState, action) => {
         bids: action.payload,
       };
     }
-    case Actions.GET_BIDS_ERROR: {
+    case Actions.GET_AVAILABLE_UNITS: {
       return {
         ...state,
-        error: action.payload,
+        units: action.payload,
       };
     }
-    case Actions.GET_BID_BY_ID_SUCCESS: {
+    case Actions.GET_MIN_COST_OF_UNIT: {
+      console.log(action.payload, "tha fuck is going on");
       return {
         ...state,
-        bid: action.payload,
-      };
-    }
-    case Actions.OPEN_BID_PAYMENT_DIALOG: {
-      return {
-        ...state,
-        paymentDialog: {
-          open: true,
-          data: action.payload,
-        },
-      };
-    }
-    case Actions.CLOSE_BID_PAYMENT_DIALOG: {
-      return {
-        ...state,
-        paymentDialog: { open: false, data: null },
+        minimumCostForUnit: action.payload,
       };
     }
     case Actions.OPEN_QUEUE_IN_BID_DIALOG: {

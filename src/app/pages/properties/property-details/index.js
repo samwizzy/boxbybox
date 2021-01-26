@@ -14,7 +14,6 @@ import {
   CardContent,
   CardMedia,
   Divider,
-  Icon,
   Typography,
   Slider,
 } from "@material-ui/core";
@@ -27,12 +26,12 @@ import {
   AppBreadcrumbs,
   FeaturedCard,
   LandscapeCard,
+  PropertyDetailCard,
 } from "../../../common/components";
-import BidPaymentDialog from "./components/BidPaymentDialog";
-import BuyIpoStakeDialog from "./components/BuyIpoStakeDialog";
-import QueueInBidDialog from "./components/QueueInBidDialog";
-import ConfirmBidDialog from "./components/ConfirmBidDialog";
-import ConfirmIpoStakeDialog from "./components/ConfirmIpoStakeDialog";
+import BuyIpoStakeDialog from "./dialogs/BuyIpoStakeDialog";
+import QueueInBidDialog from "./dialogs/QueueInBidDialog";
+import ConfirmBidDialog from "./dialogs/ConfirmBidDialog";
+import ConfirmIpoStakeDialog from "./dialogs/ConfirmIpoStakeDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -77,7 +76,6 @@ function PropertyDetails(props) {
     property,
     getPropertyById,
     openIpoStakeDialog,
-    openBidPaymentDialog,
     openQueueInBidDialog,
     match,
   } = props;
@@ -96,79 +94,21 @@ function PropertyDetails(props) {
   return (
     <div className="container bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-6 gap-2 md:gap-6">
+        <div className="mb-3">
+          <AppBreadcrumbs
+            prevLinks={{ Properties: "/properties" }}
+            current={property && property.propertyRef}
+          />
+        </div>
+        <div className="grid grid-cols-6 gap-2 md:gap-6 mb-4">
           <div className="col-span-6 md:col-span-4">
-            <AppBreadcrumbs
-              prevLinks={{ properties: "/properties" }}
-              current={property && property.propertyRef}
-            />
+            <PropertyDetailCard property={property} />
 
-            <h3 className="text-gray-600 text-lg mt-2 uppercase">
-              {property ? property.title : <Skeleton />}
-            </h3>
-
-            <span className="text-xs text-gray-600 uppercase mt-2">
-              {property ? property.propertyRef : <Skeleton />}
-            </span>
-
-            <div className="mb-2 mt-1">
-              {property ? (
-                <h3 className="flex items-center text-xs font-normal text-gray-500">
-                  <LocationOnIcon color="secondary" fontSize="small" />{" "}
-                  {property.address.city} {property.address.state}{" "}
-                  {property.address.country}
-                </h3>
-              ) : (
-                <Skeleton />
-              )}
+            <div className="my-8">
+              <DescriptionTabs property={property} />
             </div>
-
-            <Fragment>
-              <Card>
-                <CardMedia
-                  className="h-80 md:h-80"
-                  image="https://image.freepik.com/free-photo/house-key-home-insurance-broker-agent-s-hand-protection_1150-14910.jpg"
-                  title="Live property details"
-                />
-                <CardContent>
-                  <div className="flex items-center justify-around space-x-6 overflow-x-auto">
-                    {_.range(0, 4).map((thumb, i) => (
-                      <Card key={i}>
-                        <CardMedia
-                          className="h-40 w-40"
-                          image="https://image.freepik.com/free-photo/house-key-home-insurance-broker-agent-s-hand-protection_1150-14910.jpg"
-                          title={`thumbnail ${i + 1}`}
-                        />
-                      </Card>
-                    ))}
-                  </div>
-
-                  <div className="flex items-center flex-wrap mt-5">
-                    <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-                      {property ? property.size : <Skeleton />} sqft
-                    </div>
-                    <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-                      <Icon fontSize="small">hotel</Icon>&nbsp;
-                      {property ? property.bedrooms : <Skeleton />}
-                    </div>
-                    <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-                      <Icon fontSize="small">bathtub</Icon>&nbsp;
-                      {property ? property.bathrooms : <Skeleton />}
-                    </div>
-                    <div className="flex items-center text-sm border-0 px-2">
-                      <Icon fontSize="small">drive_eta</Icon>&nbsp;
-                      {property ? property.parkingLot : <Skeleton />}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <div className="my-8">
-                <DescriptionTabs property={property} />
-              </div>
-            </Fragment>
           </div>
-          <div className="col-span-6 mt-4 md:mt-16 md:col-span-2">
+          <div className="col-span-6 mt-4 md:mt-0 md:col-span-2">
             {property ? (
               <Fragment>
                 {property.feature === "RENT" ? (
@@ -208,7 +148,7 @@ function PropertyDetails(props) {
                     <h2 className="text-gray-600 text-lg mb-2">
                       {property ? property.title : <Skeleton />}
                     </h2>
-                    <h3 className="flex items-center text-sm font-normal text-gray-500 mb-2">
+                    <h3 className="flex items-center text-sm font-normal capitalize text-gray-500 mb-2">
                       <LocationOnIcon color="secondary" fontSize="small" />{" "}
                       {property ? (
                         `${property.address.city} ${property.address.state} ${property.address.country}`
@@ -245,7 +185,9 @@ function PropertyDetails(props) {
                         </span>
                         {property ? (
                           <Typography color="secondary">
-                            {BoxUtils.formatCurrency(property.price)}
+                            {BoxUtils.formatCurrency(
+                              property.price / property.units
+                            )}
                           </Typography>
                         ) : (
                           <Skeleton />
@@ -308,23 +250,19 @@ function PropertyDetails(props) {
                         variant="contained"
                         color="secondary"
                         component={Link}
-                        to={`${match.url}/offers`}
+                        to={`${match.url}/boxlots`}
+                        fullWidth
                       >
-                        View BBB Offers
-                      </AppButton>
-                      <AppButton
-                        variant="contained"
-                        color="secondary"
-                        onClick={openBidPaymentDialog}
-                      >
-                        Buy BBB Offer
+                        View Boxlots
                       </AppButton>
                     </div>
                   </Fragment>
                 )}
               </Fragment>
             ) : (
-              <Skeleton />
+              <h3 className="text-lg">
+                <Skeleton />
+              </h3>
             )}
           </div>
         </div>
@@ -347,7 +285,7 @@ function PropertyDetails(props) {
             <h3 className="text-gray-600 text-lg mb-4 font-bold">
               Similar Listings
             </h3>
-            {properties.entities.map((property, i) => (
+            {properties.entities.slice(0, 5).map((property, i) => (
               <Fragment key={i}>
                 <LandscapeCard property={property} />
 
@@ -370,19 +308,16 @@ function PropertyDetails(props) {
               About Neighbourhood
             </h3>
             <p className="text-sm text-gray-600 mb-4">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. At id
-              amet, felis, elementum egestas quam a. Egestas sed justo, faucibus
-              massa mauris elementum tincidunt. Blandit eleifend amet velit a
-              nibh. Tempor nam vel dictum mauris. Risus neque amet lacus, vel
-              et. Penatibus non adipiscing nam fermentum at volutpat semper
-              turpis adipiscing.
+              Lekki Peninsula, east of Victoria Island, is a rapidly growing
+              area on the coast. Its sandy beaches, including Lekki/Eleko Beach
+              and Oso Lekki Backwaters, and relics of Brazilian/Portuguese and
+              other imposing architecture make it a tourism goldmine. Housing in
+              Lekki is usually in blocks of adjoining flats.
             </p>
             <p className="text-sm text-gray-600 mb-4">
-              Aliquet nunc dui egestas nunc interdum quis. Tristique aliquet
-              condimentum erat proin mattis et, non gravida. Amet tincidunt
-              viverra morbi laoreet faucibus. Amet a sed maecenas id pharetra
-              vel odio. Aliquam nunc, nibh ultrices rhoncus faucibus. Sed
-              pulvinar diam quisque arcu.
+              Its is a lovely and well secured environment. The houses are
+              uniformed, neat environment and very serene. For a detailed review
+              visit the neighborhood review website.
             </p>
 
             <div className="mt-8">
@@ -401,7 +336,7 @@ function PropertyDetails(props) {
             </h3>
 
             <div className="flex flex-col space-y-4">
-              {properties.entities.map((property, item) => (
+              {properties.entities.slice(0, 5).map((property, item) => (
                 <FeaturedCard key={item} property={property} />
               ))}
             </div>
@@ -409,7 +344,6 @@ function PropertyDetails(props) {
         </div>
       </div>
 
-      <BidPaymentDialog />
       <BuyIpoStakeDialog />
       <QueueInBidDialog />
       <ConfirmIpoStakeDialog />
@@ -431,7 +365,6 @@ const mapDispatchToProps = (dispatch) => {
       getProperties: Actions.getProperties,
       getPropertyById: Actions.getPropertyById,
       openIpoStakeDialog: Actions.openIpoStakeDialog,
-      openBidPaymentDialog: Actions.openBidPaymentDialog,
       openQueueInBidDialog: Actions.openQueueInBidDialog,
     },
     dispatch

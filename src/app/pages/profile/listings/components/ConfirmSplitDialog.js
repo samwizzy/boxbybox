@@ -20,15 +20,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ConfirmMergeDialog(props) {
-  const classes = useStyles();
+function ConfirmSplitDialog(props) {
+  const classes = useStyles(props);
   const dispatch = useDispatch();
   const [state, setState] = useState(false);
   const dialog = useSelector(
-    ({ profileListing }) => profileListing.ipostakes.confirmMergeDialog
+    ({ profileListing }) => profileListing.ipostakes.confirmSplitDialog
   );
 
-  console.log(dialog, "confirm merge dialog");
+  console.log(dialog, "confirm sale dialog");
 
   const handleChange = (event) => {
     setState(event.target.checked);
@@ -38,15 +38,15 @@ function ConfirmMergeDialog(props) {
     <Dialog
       className={classes.root}
       open={dialog.open}
-      onClose={() => dispatch(Actions.closeConfirmMergeDialog())}
-      aria-labelledby="confirm-to-merge-boxlot"
+      onClose={() => dispatch(Actions.closeConfirmSplitDialog())}
+      aria-labelledby="confirm-boxlot-split"
       fullWidth
       maxWidth="xs"
     >
       <DialogContent>
         <div className="text-center p-8">
           <h3 className="text-lg font-medium text-gray-600 mb-4">
-            You are about to Merge Boxlots
+            You are about to split your boxlot
           </h3>
           <span className="mt-8 text-xs">
             <FormControlLabel
@@ -66,12 +66,17 @@ function ConfirmMergeDialog(props) {
       </DialogContent>
 
       <DialogActions>
-        <AppButton size="small" variant="contained" color="secondary">
-          Confirm Merge
+        <AppButton
+          size="small"
+          variant="contained"
+          color="secondary"
+          onClick={() => dispatch(Actions.splitIpoStake(dialog.data.id))}
+        >
+          Confirm
         </AppButton>
       </DialogActions>
     </Dialog>
   );
 }
 
-export default ConfirmMergeDialog;
+export default ConfirmSplitDialog;

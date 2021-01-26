@@ -3,18 +3,19 @@ import history from "./../../../../history";
 import { showSnackbar } from "./../../../../store/actions";
 
 export const GET_PROPERTIES_SUCCESS = "[PROPERTY] GET_PROPERTIES_SUCCESS";
-export const GET_PROPERTIES_ERROR = "[PROPERTY] GET_PROPERTIES_ERROR";
 
 export const GET_USER_PROPERTIES = "[PROPERTY] GET_USER_PROPERTIES";
+export const GET_USER_PROPERTIES_ON_RENT =
+  "[PROPERTY] GET_USER_PROPERTIES_ON_RENT";
+export const GET_USER_PROPERTIES_ON_SALE =
+  "[PROPERTY] GET_USER_PROPERTIES_ON_SALE";
 
 export const GET_PROPERTY_BY_ID_SUCCESS =
   "[PROPERTY] GET_PROPERTY_BY_ID_SUCCESS";
 export const GET_PROPERTY_BY_ID_ERROR = "[PROPERTY] GET_PROPERTY_BY_ID_ERROR";
 
-export const GET_USER_PROPERTIES_WITH_IPO_STAKE_SUCCESS =
-  "[PROPERTY] GET_USER_PROPERTIES_WITH_IPO_STAKE_SUCCESS";
-export const GET_USER_PROPERTIES_WITH_IPO_STAKE_ERROR =
-  "[PROPERTY] GET_USER_PROPERTIES_WITH_IPO_STAKE_ERROR";
+export const GET_USER_PROPERTIES_WITH_IPO_STAKE =
+  "[PROPERTY] GET_USER_PROPERTIES_WITH_IPO_STAKE";
 
 export const ADD_PROPERTY_SUCCESS = "[PROPERTY] ADD_PROPERTY_SUCCESS";
 export const ADD_PROPERTY_PROGRESS = "[PROPERTY] ADD_PROPERTY_PROGRESS";
@@ -46,13 +47,41 @@ export function getUserProperties() {
     );
 }
 
+export function getPropertiesOnRent(data = { page: 0 }) {
+  const request = axios.get(`/auth/users/properties`, {
+    params: { page: data.page, saleOrRent: "RENT" },
+  });
+
+  return (dispatch) =>
+    request.then((response) =>
+      dispatch({
+        type: GET_USER_PROPERTIES_ON_RENT,
+        payload: response.data,
+      })
+    );
+}
+
+export function getPropertiesOnSale(data = { page: 0 }) {
+  const request = axios.get("/auth/users/properties", {
+    params: { page: data.page, saleOrRent: "SALE" },
+  });
+
+  return (dispatch) =>
+    request.then((response) =>
+      dispatch({
+        type: GET_USER_PROPERTIES_ON_SALE,
+        payload: response.data,
+      })
+    );
+}
+
 export function getUserPropertiesWithIpoStake() {
   const request = axios.get("/auth/users/properties-ipo-stake-purchased");
 
   return (dispatch) =>
     request.then((response) =>
       dispatch({
-        type: GET_USER_PROPERTIES_WITH_IPO_STAKE_SUCCESS,
+        type: GET_USER_PROPERTIES_WITH_IPO_STAKE,
         payload: response.data,
       })
     );

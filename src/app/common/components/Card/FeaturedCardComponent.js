@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardMedia } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
@@ -12,7 +13,13 @@ export default function FeaturedCardComponent({ property }) {
       />
       <CardContent>
         <h3 className="text-gray-800 font-medium text-sm mb-1 uppercase">
-          {property ? property.title : <Skeleton />}
+          {property ? (
+            <Link className="no-underline" to={`/property/${property.id}`}>
+              {property.title}
+            </Link>
+          ) : (
+            <Skeleton />
+          )}
         </h3>
         <span className="text-xs text-gray-600 uppercase">
           {property ? property.propertyRef : <Skeleton />}

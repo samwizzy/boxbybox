@@ -19,10 +19,6 @@ const initialState = {
     open: false,
     data: null,
   },
-  paymentDialog: {
-    open: false,
-    data: null,
-  },
   confirmBidDialog: {
     open: false,
     data: null,
@@ -40,6 +36,10 @@ const initialState = {
     data: null,
   },
   confirmSaleDialog: {
+    open: false,
+    data: null,
+  },
+  confirmSplitDialog: {
     open: false,
     data: null,
   },
@@ -147,6 +147,21 @@ const ipoStakesReducer = (state = initialState, action) => {
       return {
         ...state,
         confirmSaleDialog: { open: false, data: null },
+      };
+    }
+    case Actions.OPEN_CONFIRM_SPLIT_DIALOG: {
+      return {
+        ...state,
+        confirmSplitDialog: {
+          open: true,
+          data: action.payload,
+        },
+      };
+    }
+    case Actions.CLOSE_CONFIRM_SPLIT_DIALOG: {
+      return {
+        ...state,
+        confirmSplitDialog: { open: false, data: null },
       };
     }
     default:

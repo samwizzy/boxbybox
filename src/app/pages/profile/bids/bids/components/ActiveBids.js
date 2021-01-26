@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
   root: {},
   table: {
     width: "100%",
-    "& td": { border: 0 },
+    "& td": { border: 0, padding: theme.spacing(1, 0) },
   },
 }));
 
@@ -23,7 +23,7 @@ export default function ActiveBids(props) {
           key={i}
           className="py-2 border-0 border-b border-gray-200 border-solid"
         >
-          <div className="flex space-x-3">
+          <div className="flex space-x-4">
             <div>
               <img
                 src="https://image.freepik.com/free-photo/happy-asian-family-father-mother-daughter-near-new-home-real-estate_36356-245.jpg"
@@ -32,7 +32,7 @@ export default function ActiveBids(props) {
               />
             </div>
             <div className="flex flex-col w-full space-y-2">
-              <h3 className="text-sm text-gray-800">{bid.title}</h3>
+              <h3 className="capitalize text-gray-600">{bid.title}</h3>
               <div className="flex flex-col md:flex-row justify-between md:space-x-1">
                 <Table size="small" className={classes.table}>
                   <TableBody>
@@ -40,13 +40,13 @@ export default function ActiveBids(props) {
                       <TableCell>
                         <strong>Property ID:</strong>
                       </TableCell>
-                      <TableCell>R001XXXEN</TableCell>
+                      <TableCell>{bid.propertyRef}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
                         <strong>Units:</strong>
                       </TableCell>
-                      <TableCell>{BoxUtils.formatCurrency(105)}</TableCell>
+                      <TableCell>{bid.units}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
@@ -69,7 +69,9 @@ export default function ActiveBids(props) {
                       <TableCell>
                         <strong>Amount:</strong>
                       </TableCell>
-                      <TableCell>{BoxUtils.formatCurrency(750000)}</TableCell>
+                      <TableCell>
+                        {BoxUtils.formatCurrency(bid.price)}
+                      </TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>

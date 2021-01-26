@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  ListItemText,
   MenuItem,
   Table,
   TableBody,
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SellSublotDialog(props) {
+function SellBoxlotDialog(props) {
   const classes = useStyles(props);
   const dispatch = useDispatch();
   const [form, setForm] = useState({ amount: 0, ipoId: 0 });
@@ -59,10 +60,12 @@ function SellSublotDialog(props) {
       open={dialog.open}
       onClose={() => dispatch(Actions.closeSellSublotDialog())}
       aria-labelledby="bid-offers-payment"
-      fullWidth
-      maxWidth="sm"
     >
-      <DialogTitle>Sell BBB Sublots</DialogTitle>
+      <DialogTitle>
+        Sell Boxlots
+        <p className="text-xs text-gray-600">Put boxlot up for sale</p>
+      </DialogTitle>
+
       <DialogContent>
         <div className="flex items-center space-x-2">
           <div>
@@ -94,7 +97,7 @@ function SellSublotDialog(props) {
           </div>
         </div>
 
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center space-y-4">
           <TextField
             id="selling-price"
             label="Selling Price"
@@ -104,7 +107,7 @@ function SellSublotDialog(props) {
             onChange={handleChange}
             variant="outlined"
             margin="dense"
-            classes={{ root: "w-56" }}
+            fullWidth
           />
 
           <TextField
@@ -116,12 +119,23 @@ function SellSublotDialog(props) {
             onChange={handleChange}
             variant="outlined"
             margin="dense"
-            classes={{ root: "w-56" }}
+            fullWidth
+            classes={{ root: "w-60" }}
           >
             <MenuItem value="0">Select IPO stake</MenuItem>
             {userBoxlots.entities.map((boxlot, i) => (
               <MenuItem key={i} value={boxlot.id}>
-                {boxlot.purchaseAmount}
+                <ListItemText
+                  primary={`#${boxlot.ipoRef} — ${BoxUtils.formatCurrency(
+                    boxlot.purchaseAmount
+                  )}`}
+                  secondary={
+                    <div className="space-x-1">
+                      <span>No. of units: {boxlot.noOfUnitsPurchased} |</span>
+                      <span>Date Acquired: {boxlot.createdAt}</span>
+                    </div>
+                  }
+                />
               </MenuItem>
             ))}
           </TextField>
@@ -135,11 +149,11 @@ function SellSublotDialog(props) {
           color="secondary"
           onClick={() => dispatch(Actions.openConfirmSaleDialog(form))}
         >
-          Sell Sublot
+          Sell Boxlot
         </AppButton>
       </DialogActions>
     </Dialog>
   );
 }
 
-export default SellSublotDialog;
+export default SellBoxlotDialog;

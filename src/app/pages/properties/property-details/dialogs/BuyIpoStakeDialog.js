@@ -53,6 +53,8 @@ function BuyIpoStakeDialog(props) {
       open={dialog.open}
       onClose={() => dispatch(Actions.closeIpoStakeDialog())}
       aria-labelledby="bid-offers-payment"
+      fullWidth
+      maxWidth="xs"
     >
       <DialogTitle>Buy IPO Stake</DialogTitle>
       <DialogContent>
@@ -63,7 +65,7 @@ function BuyIpoStakeDialog(props) {
           <h4 className="text-sm font-normal text-gray-600 my-4">
             Make your Offer
           </h4>
-          <span className="flex justify-between items-center gap-6 mt-8">
+          <span className="flex flex-wrap justify-center items-center gap-4 mt-8">
             <div>
               <TextField
                 id="units-purchased"

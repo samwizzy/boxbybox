@@ -19,8 +19,9 @@ export const GET_USER_PROPERTIES_WITH_IPO_STAKE_ERROR =
 export const ADD_PROPERTY_SUCCESS = "[PROPERTY] ADD_PROPERTY_SUCCESS";
 export const ADD_PROPERTY_ERROR = "[PROPERTY] ADD_PROPERTY_ERROR";
 
-export function getProperties() {
-  const request = axios.get("/properties");
+export function getProperties(data = { page: 0 }) {
+  const { page } = data;
+  const request = axios.get(`/properties?page=${page}`);
 
   return (dispatch) =>
     request.then((response) =>

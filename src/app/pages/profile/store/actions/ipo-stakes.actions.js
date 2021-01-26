@@ -31,6 +31,10 @@ export const CLOSE_CONFIRM_MERGE_DIALOG =
 export const OPEN_CONFIRM_SALE_DIALOG = "[LISTING] OPEN_CONFIRM_SALE_DIALOG";
 export const CLOSE_CONFIRM_SALE_DIALOG = "[LISTING] CLOSE_CONFIRM_SALE_DIALOG";
 
+export const OPEN_CONFIRM_SPLIT_DIALOG = "[LISTING] OPEN_CONFIRM_SPLIT_DIALOG";
+export const CLOSE_CONFIRM_SPLIT_DIALOG =
+  "[LISTING] CLOSE_CONFIRM_SPLIT_DIALOG";
+
 export function getUserIpoStakes(propertyId) {
   // const request = axios.get(`/auth/users/ipo-stake?propertyId=${propertyId}`);
   const request = axios.get(`/auth/ipo-stake`);
@@ -169,5 +173,18 @@ export function openConfirmSaleDialog(payload) {
 export function closeConfirmSaleDialog() {
   return {
     type: CLOSE_CONFIRM_SALE_DIALOG,
+  };
+}
+
+export function openConfirmSplitDialog(payload) {
+  return {
+    type: OPEN_CONFIRM_SPLIT_DIALOG,
+    payload,
+  };
+}
+
+export function closeConfirmSplitDialog() {
+  return {
+    type: CLOSE_CONFIRM_SPLIT_DIALOG,
   };
 }

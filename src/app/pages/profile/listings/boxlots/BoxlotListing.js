@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import BoxUtils from "../../../../utils/BoxUtils";
+import { useDispatch } from "react-redux";
+import * as Actions from "./../../store/actions";
 import moment from "moment";
+import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppButton } from "../../../../common/components";
 import {
@@ -13,7 +16,7 @@ import {
   TableCell,
   TextField,
 } from "@material-ui/core";
-import Pagination from "@material-ui/lab/Pagination";
+import { Alert, AlertTitle, Pagination } from "@material-ui/lab";
 import SearchIcon from "@material-ui/icons/Search";
 
 const useStyles = makeStyles((theme) => ({
@@ -25,11 +28,14 @@ const useStyles = makeStyles((theme) => ({
 
 function BoxlotListing(props) {
   const classes = useStyles(props);
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedSublot, setSelectedSublot] = useState(null);
   const { properties, openSellSublotDialog, openMergeSublotDialog } = props;
 
-  console.log(selectedSublot, "selectedSublot");
+  const handlePaginate = (event, page) => {
+    dispatch(Actions.getProperties({ page: page - 1 }));
+  };
 
   const handleClick = (property) => (event) => {
     setSelectedSublot(property);
@@ -52,12 +58,12 @@ function BoxlotListing(props) {
 
   return (
     <div className="container">
-      <div className="bg-white pb-8">
-        <div className="py-4 px-8">
-          <h3 className="text-lg font-normal text-gray-600">BBB Sublots</h3>
+      <div className="bg-white pb-8 px-8">
+        <div className="py-4">
+          <h3 className="text-lg font-normal text-gray-600">Boxlots</h3>
         </div>
 
-        <div className="flex flex-col md:flex-row md:justify-end md:items-center md:space-x-2 px-8 py-4">
+        <div className="flex flex-col md:flex-row md:justify-end md:items-center md:space-x-2 py-4">
           <TextField
             id="search-by-id"
             label="Search by ID"
@@ -102,8 +108,22 @@ function BoxlotListing(props) {
           </AppButton>
         </div>
 
+        {!properties.length && (
+          <Alert severity="info">
+            <AlertTitle>Hey there!</AlertTitle>
+            <div className="flex items-center space-x-4">
+              There are no properties to which you have obtained a boxlot
+              —&nbsp;
+              <strong>Obtain a property boxlot here!</strong>
+              <AppButton variant="contained" color="secondary">
+                Buy Property
+              </AppButton>
+            </div>
+          </Alert>
+        )}
+
         <div className="space-y-4">
-          {properties.entities.map((property, i) => (
+          {properties.map((property, i) => (
             <div
               key={i}
               className="flex space-x-2 border-0 border-t border-b border-solid border-gray-200"
@@ -198,9 +218,18 @@ function BoxlotListing(props) {
           <MenuItem onClick={handleClose}>Split Sublots</MenuItem>
         </Menu>
 
-        <div className="flex items-center justify-center mt-16">
-          <Pagination count={10} variant="outlined" color="secondary" />
-        </div>
+        {properties.total ? (
+          <div className="flex items-center justify-center mt-16">
+            <Pagination
+              count={_.ceil(properties.total / properties.limit)}
+              variant="outlined"
+              color="secondary"
+              onChange={handlePaginate}
+            />
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

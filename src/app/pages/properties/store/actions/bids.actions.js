@@ -14,9 +14,6 @@ export const GET_MIN_COST_OF_UNIT_ERROR = "[BIDS] GET_MIN_COST_OF_UNIT_ERROR";
 export const GET_MIN_COST_OF_COUNTERING_BID =
   "[BIDS] GET_MIN_COST_OF_COUNTERING_BID";
 
-export const OPEN_BID_PAYMENT_DIALOG = "[BIDS] OPEN_BID_PAYMENT_DIALOG";
-export const CLOSE_BID_PAYMENT_DIALOG = "[BIDS] CLOSE_BID_PAYMENT_DIALOG";
-
 export const OPEN_QUEUE_IN_BID_DIALOG = "[BIDS] OPEN_QUEUE_IN_BID_DIALOG";
 export const CLOSE_QUEUE_IN_BID_DIALOG = "[BIDS] CLOSE_QUEUE_IN_BID_DIALOG";
 
@@ -83,19 +80,6 @@ export function getMinCostOfUnit(propertyId, units) {
         payload: response.data,
       })
     );
-}
-
-export function openBidPaymentDialog(payload) {
-  return {
-    type: OPEN_BID_PAYMENT_DIALOG,
-    payload,
-  };
-}
-
-export function closeBidPaymentDialog() {
-  return {
-    type: CLOSE_BID_PAYMENT_DIALOG,
-  };
 }
 
 export function openQueueInBidDialog(payload) {
