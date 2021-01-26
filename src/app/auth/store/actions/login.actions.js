@@ -26,7 +26,8 @@ export function login(data) {
         ]).then(dispatch(showSnackbar({ message: "Login successfully" })))
       )
       .catch((error) => {
-        dispatch(showSnackbar({ message: "Invalid email or password" }));
+        console.log(error, "inside the goddamn login action");
+        dispatch(showSnackbar({ message: error.message, variant: "error" }));
       });
   };
 }

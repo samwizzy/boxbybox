@@ -5,10 +5,22 @@ import { bindActionCreators } from "redux";
 import * as authActions from "./store/actions";
 import * as Actions from "../store/actions";
 import authService from "./../services/authService";
+import history from "./../history";
 class Auth extends Component {
   constructor(props) {
     super(props);
     this.authCheck();
+  }
+
+  componentDidUpdate() {
+    history.listen((location, action) => {
+      //Do your logic here and dispatch if needed
+      if (location.pathname === "/logout") {
+        // Do something here
+        console.log("you can now call your logout action");
+        this.props.logout();
+      }
+    });
   }
 
   authCheck = () => {
@@ -53,6 +65,7 @@ const mapStateToProps = ({ auth }) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
+      logout: authActions.logout,
       setUserData: authActions.setUserData,
       showMessage: Actions.showSnackbar,
     },

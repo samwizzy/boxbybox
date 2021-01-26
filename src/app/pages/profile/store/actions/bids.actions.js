@@ -16,7 +16,8 @@ export const OPEN_CONFIRM_BID_DIALOG = "[BIDS] OPEN_CONFIRM_BID_DIALOG";
 export const CLOSE_CONFIRM_BID_DIALOG = "[BIDS] CLOSE_CONFIRM_BID_DIALOG";
 
 export function getBids() {
-  const request = axios.get("/properties");
+  const request = axios.get("/auth/bids-by-user");
+  console.log(request, "request get bids");
 
   return (dispatch) =>
     request.then((response) =>
@@ -27,8 +28,8 @@ export function getBids() {
     );
 }
 
-export function getBidById(id) {
-  const request = axios.get("/bids/" + id);
+export function getBidById() {
+  const request = axios.get("/auth/bids-on-user-ipostakes");
 
   return (dispatch) =>
     request.then((response) =>

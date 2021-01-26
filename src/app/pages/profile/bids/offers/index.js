@@ -54,21 +54,17 @@ function Offers(props) {
   const classes = useStyles(props);
   const [value, setValue] = useState(0);
   const dispatch = useDispatch();
-  const offers = useSelector(({ bidsApp }) => bidsApp.property.properties);
+  const offers = useSelector(({ bidsApp }) => bidsApp.bids.bids);
 
   console.log(offers, "offers state live");
 
   useEffect(() => {
-    dispatch(Actions.getProperties());
+    dispatch(Actions.getBids());
   }, [dispatch]);
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  if (!offers) {
-    return null;
-  }
 
   return (
     <div className={clsx(classes.root, "container")}>

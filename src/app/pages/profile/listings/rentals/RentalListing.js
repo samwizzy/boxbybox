@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import BoxUtils from "../../../../utils/BoxUtils";
+import { useDispatch } from "react-redux";
+import * as Actions from "./../../store/actions";
 import moment from "moment";
+import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppButton } from "./../../../../common/components";
 import {
@@ -26,9 +29,14 @@ const useStyles = makeStyles((theme) => ({
 
 function RentalListing(props) {
   const classes = useStyles(props);
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedSublot, setSelectedSublot] = useState(null);
   const { properties, openSellSublotDialog, openMergeSublotDialog } = props;
+
+  const handlePaginate = (event, page) => {
+    dispatch(Actions.getProperties({ page: page - 1 }));
+  };
 
   const handleClick = (event) => {
     setSelectedSublot();
@@ -51,14 +59,14 @@ function RentalListing(props) {
 
   return (
     <div className="container">
-      <div className="bg-white pb-8">
-        <div className="py-4 px-8">
+      <div className="bg-white pb-8 px-8">
+        <div className="py-4">
           <h3 className="text-lg font-normal text-gray-600">
             My Rental Listing
           </h3>
         </div>
 
-        <div className="flex flex-col md:flex-row md:justify-end md:items-center md:space-x-2 px-8 py-4">
+        <div className="flex flex-col md:flex-row md:justify-end md:items-center md:space-x-2 py-4">
           <TextField
             id="search-by-title-id"
             label="Search by title or ID"
@@ -131,7 +139,7 @@ function RentalListing(props) {
           {properties.entities.map((property, i) => (
             <div
               key={i}
-              className="flex space-x-2 border-0 border-t border-b border-solid border-gray-200"
+              className="flex space-x-2 border-0 border-t border-solid border-gray-200"
             >
               <div>
                 <img
@@ -242,9 +250,18 @@ function RentalListing(props) {
           <MenuItem onClick={handleClose}>Delete</MenuItem>
         </Menu>
 
-        <div className="flex items-center justify-center mt-16">
-          <Pagination count={10} variant="outlined" color="secondary" />
-        </div>
+        {properties.total ? (
+          <div className="flex items-center justify-center mt-16">
+            <Pagination
+              count={_.ceil(properties.total / properties.limit)}
+              variant="outlined"
+              color="secondary"
+              onChange={handlePaginate}
+            />
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

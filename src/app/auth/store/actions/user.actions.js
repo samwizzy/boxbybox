@@ -1,5 +1,6 @@
 import authService from "./../../../services/authService";
 import { showSnackbar } from "./../../../store/actions";
+import history from "./../../../history";
 
 export const SET_USER_DATA_SUCCESS = "[AUTH] SET_USER_DATA_SUCCESS";
 export const SET_USER_DATA_ERROR = "[AUTH] SET_USER_DATA_ERROR";
@@ -29,12 +30,14 @@ export function removeUserData(payload) {
 
 export function logout() {
   return (dispatch) =>
-    authService
-      .logout()
-      .then((data) => {
+    authService.logout().then((data) => {
+      Promise.all([
         dispatch({
           type: LOGOUT_SUCCESS,
-        });
-      })
-      .then((data) => dispatch(showSnackbar({ message: data.message })));
+        }),
+      ]).then(
+        dispatch(showSnackbar({ message: data.message })),
+        history.push("/")
+      );
+    });
 }

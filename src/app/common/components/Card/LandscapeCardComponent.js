@@ -1,5 +1,6 @@
 import React from "react";
 import BoxUtils from "./../../../utils/BoxUtils";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Card, CardContent, CardMedia, Icon } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
@@ -46,7 +47,13 @@ export default function LandscapeCardComponent({ property }, props) {
         )}
         {property ? (
           <h3 className="mb-1 text-sm text-gray-500 uppercase">
-            {property.title}
+            {property ? (
+              <Link className="no-underline" to={`/property/${property.id}`}>
+                {property.title}
+              </Link>
+            ) : (
+              <Skeleton />
+            )}
           </h3>
         ) : (
           <Skeleton width="100%" />
@@ -68,7 +75,7 @@ export default function LandscapeCardComponent({ property }, props) {
         <div className="flex items-center flex-wrap space-x-2 mt-5">
           {property ? (
             <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid pr-2">
-              {property.size} sqft
+              {property.size} sq ft
             </div>
           ) : (
             <Skeleton width="50px" />

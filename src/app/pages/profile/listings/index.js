@@ -12,6 +12,7 @@ import SellSublotDialog from "./components/SellSublotDialog";
 import MergeSublotDialog from "./components/MergeSublotDialog";
 import ConfirmMergeDialog from "./components/ConfirmMergeDialog";
 import ConfirmSellDialog from "./components/ConfirmSellDialog";
+import ConfirmSplitDialog from "./components/ConfirmSplitDialog";
 import BoxlotListing from "./boxlots/BoxlotListing";
 import RentalListing from "./rentals/RentalListing";
 import SalesListing from "./sales/SalesListing";
@@ -81,14 +82,25 @@ function a11yProps(index) {
 
 function PropertyListing(props) {
   const classes = useStyles(props);
-  const { getUserProperties } = props;
   const [value, setValue] = useState(0);
-  const { userProperties, openSellSublotDialog, openMergeSublotDialog } = props;
+  const {
+    userIpoStakedProperties,
+    userPropertiesOnRent,
+    userPropertiesOnSale,
+    getUserPropertiesWithIpoStake,
+    getPropertiesOnRent,
+    getPropertiesOnSale,
+    openSellSublotDialog,
+    openMergeSublotDialog,
+    openConfirmSplitDialog,
+  } = props;
 
   useEffect(() => {
-    getUserProperties();
+    getUserPropertiesWithIpoStake();
+    getPropertiesOnRent();
+    getPropertiesOnSale();
     return () => {};
-  }, [getUserProperties]);
+  }, [getUserPropertiesWithIpoStake, getPropertiesOnRent, getPropertiesOnSale]);
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
@@ -125,21 +137,22 @@ function PropertyListing(props) {
             <Grid item xs={12} md={9}>
               {value === 0 && (
                 <BoxlotListing
-                  properties={userProperties}
+                  properties={userIpoStakedProperties}
                   openSellSublotDialog={openSellSublotDialog}
                   openMergeSublotDialog={openMergeSublotDialog}
+                  openConfirmSplitDialog={openConfirmSplitDialog}
                 />
               )}
               {value === 1 && (
                 <RentalListing
-                  properties={userProperties}
+                  properties={userPropertiesOnRent}
                   openSellSublotDialog={openSellSublotDialog}
                   openMergeSublotDialog={openMergeSublotDialog}
                 />
               )}
               {value === 2 && (
                 <SalesListing
-                  properties={userProperties}
+                  properties={userPropertiesOnSale}
                   openSellSublotDialog={openSellSublotDialog}
                   openMergeSublotDialog={openMergeSublotDialog}
                 />
@@ -151,6 +164,7 @@ function PropertyListing(props) {
           <MergeSublotDialog />
           <ConfirmMergeDialog />
           <ConfirmSellDialog />
+          <ConfirmSplitDialog />
         </div>
       </div>
     </div>
@@ -159,17 +173,21 @@ function PropertyListing(props) {
 
 const mapStateToProps = ({ profileListing }) => {
   return {
-    properties: profileListing.property.properties,
-    userProperties: profileListing.property.userProperties,
+    userIpoStakedProperties: profileListing.property.userIpoStakedProperties,
+    userPropertiesOnRent: profileListing.property.userPropertiesOnRent,
+    userPropertiesOnSale: profileListing.property.userPropertiesOnSale,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      getUserProperties: Actions.getUserProperties,
+      getUserPropertiesWithIpoStake: Actions.getUserPropertiesWithIpoStake,
+      getPropertiesOnRent: Actions.getPropertiesOnRent,
+      getPropertiesOnSale: Actions.getPropertiesOnSale,
       openSellSublotDialog: Actions.openSellSublotDialog,
       openMergeSublotDialog: Actions.openMergeSublotDialog,
+      openConfirmSplitDialog: Actions.openConfirmSplitDialog,
     },
     dispatch
   );

@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogActions,
   IconButton,
+  ListItemText,
   MenuItem,
   Table,
   TableBody,
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MergeSublotDialog(props) {
+function MergeBoxlotDialog(props) {
   const classes = useStyles(props);
   const [form, setForm] = useState({
     ipos: [0],
@@ -58,11 +59,11 @@ function MergeSublotDialog(props) {
     setForm({ ...form, ipos });
   };
 
-  const addSublot = () => {
+  const addBoxlot = () => {
     setForm({ ...form, ipos: [...form.ipos, 0] });
   };
 
-  const removeSublot = (i) => () => {
+  const removeBoxlot = (i) => () => {
     let ipos = [...form.ipos];
     ipos.splice(i, 1);
     setForm({ ...form, ipos });
@@ -78,8 +79,8 @@ function MergeSublotDialog(props) {
       open={dialog.open}
       onClose={() => dispatch(Actions.closeMergeSublotDialog())}
       aria-labelledby="merge-subslots"
-      fullWidth
-      maxWidth="sm"
+      // fullWidth
+      // maxWidth="sm"
     >
       <DialogContent>
         <div className="flex items-center space-x-2">
@@ -118,31 +119,39 @@ function MergeSublotDialog(props) {
           </div>
         </div>
 
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center space-y-4">
           {form.ipos.map((ipo, i) => (
             <div
               key={i}
               className="flex justify-between items-center space-x-2"
             >
               <TextField
-                id={`bbb-sublots ${i}`}
+                id={`merge-boxlots-${i}`}
                 select
-                label="Sublots"
+                label="Boxlots"
                 name="ipos"
                 value={ipo}
                 onChange={handleChange(i)}
                 variant="outlined"
                 margin="dense"
-                classes={{ root: "w-40" }}
+                fullWidth
+                classes={{ root: "w-64" }}
               >
-                <MenuItem value="0">Select Sublot</MenuItem>
+                <MenuItem value="0">Select Boxlot</MenuItem>
                 {userBoxlots.entities.map((boxlot) => (
                   <MenuItem key={boxlot.id} value={boxlot.id}>
-                    {boxlot.purchaseAmount}
+                    <ListItemText
+                      primary={`#${boxlot.ipoRef} — ${BoxUtils.formatCurrency(
+                        boxlot.purchaseAmount
+                      )}`}
+                      secondary={
+                        <span>No. of units: {boxlot.noOfUnitsPurchased}</span>
+                      }
+                    />
                   </MenuItem>
                 ))}
               </TextField>
-              <IconButton onClick={removeSublot(i)}>
+              <IconButton onClick={removeBoxlot(i)}>
                 <CloseIcon />
               </IconButton>
             </div>
@@ -151,9 +160,9 @@ function MergeSublotDialog(props) {
             size="small"
             color="secondary"
             startIcon={<AddIcon />}
-            onClick={addSublot}
+            onClick={addBoxlot}
           >
-            Add BBB Sublot
+            Add Boxlot
           </AppButton>
         </div>
       </DialogContent>
@@ -172,11 +181,11 @@ function MergeSublotDialog(props) {
           color="secondary"
           onClick={() => dispatch(Actions.openConfirmMergeDialog())}
         >
-          Merge sublot
+          Merge boxlots
         </AppButton>
       </DialogActions>
     </Dialog>
   );
 }
 
-export default MergeSublotDialog;
+export default MergeBoxlotDialog;

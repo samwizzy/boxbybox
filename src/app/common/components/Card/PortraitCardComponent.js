@@ -1,4 +1,5 @@
 import React from "react";
+import BoxUtils from "./../../../utils/BoxUtils";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -37,13 +38,13 @@ export default function PortraitCardComponent(props) {
             {property ? property.title : <Skeleton />}
           </h3>
           <h3 className="mb-1 text-lg text-gray-800">
-            {property ? property.price : <Skeleton />}
+            {property ? BoxUtils.formatCurrency(property.price) : <Skeleton />}
           </h3>
 
           <div className="flex items-center justify-center flex-wrap mt-5">
             {property ? (
               <div className="flex items-center text-sm border-0 border-r-2 border-gray-300 border-solid px-2">
-                {property.size} sqft
+                {property.size} sq ft
               </div>
             ) : (
               <Skeleton />

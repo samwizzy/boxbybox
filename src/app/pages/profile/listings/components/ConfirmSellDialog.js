@@ -39,7 +39,7 @@ function ConfirmSellDialog(props) {
       className={classes.root}
       open={dialog.open}
       onClose={() => dispatch(Actions.closeConfirmSaleDialog())}
-      aria-labelledby="bid-offers-payment"
+      aria-labelledby="confirm-to-put-boxlot-for-sale"
       fullWidth
       maxWidth="xs"
     >

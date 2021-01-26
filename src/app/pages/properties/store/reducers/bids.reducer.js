@@ -7,10 +7,6 @@ const initialState = {
   minimumCostForUnit: null,
   userBids: [],
   bidsOnIpoStakes: [],
-  paymentDialog: {
-    open: false,
-    data: null,
-  },
   queueInBidDialog: {
     open: false,
     data: null,
@@ -45,21 +41,6 @@ const bidsReducer = (state = initialState, action) => {
       return {
         ...state,
         minimumCostForUnit: action.payload,
-      };
-    }
-    case Actions.OPEN_BID_PAYMENT_DIALOG: {
-      return {
-        ...state,
-        paymentDialog: {
-          open: true,
-          data: action.payload,
-        },
-      };
-    }
-    case Actions.CLOSE_BID_PAYMENT_DIALOG: {
-      return {
-        ...state,
-        paymentDialog: { open: false, data: null },
       };
     }
     case Actions.OPEN_QUEUE_IN_BID_DIALOG: {

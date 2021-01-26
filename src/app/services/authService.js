@@ -87,8 +87,8 @@ class authService extends BoxUtils.EventEmitter {
           }
         })
         .catch((error) => {
-          console.log(error, "catch login error");
-          error.response && reject(error.response.data);
+          console.log(error.toJSON(), "catch login error");
+          error.message && reject(error.toJSON());
         });
     });
   };
@@ -145,7 +145,6 @@ class authService extends BoxUtils.EventEmitter {
       //     reject(response.data.error);
       //   }
       // });
-      console.log("You have been logged out");
       this.setSession(null);
       resolve({ message: "You have logged out successfully" });
     });

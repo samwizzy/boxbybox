@@ -12,7 +12,7 @@ import {
 
 function BidPaymentDialog(props) {
   const dispatch = useDispatch();
-  const dialog = useSelector(({ offersApp }) => offersApp);
+  const dialog = useSelector(({ boxlotApp }) => boxlotApp);
 
   console.log(dialog, "dialog state bid payment");
 

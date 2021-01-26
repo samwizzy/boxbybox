@@ -30,40 +30,21 @@ function a11yProps(index) {
   };
 }
 
-const dummyBids = {
-  entities: [
-    {
-      id: 1,
-      title: "4 BEDROOM DUPLEX",
-      address: { country: "Nigeria", state: "Lagos", city: "Lekki" },
-    },
-    {
-      id: 1,
-      title: "4 BEDROOM DUPLEX",
-      address: { country: "Nigeria", state: "Lagos", city: "Lekki" },
-    },
-  ],
-};
-
 function Bids(props) {
   const classes = useStyles(props);
   const [value, setValue] = useState(0);
   const dispatch = useDispatch();
-  const bids = useSelector(({ bidsApp }) => bidsApp.property.properties);
+  const bids = useSelector(({ bidsApp }) => bidsApp.bids.bids);
 
   console.log(bids, "bids state live");
 
   useEffect(() => {
-    dispatch(Actions.getProperties());
+    dispatch(Actions.getBids());
   }, [dispatch]);
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  if (!bids) {
-    return null;
-  }
 
   return (
     <div className={clsx(classes.root, "container")}>
@@ -84,10 +65,10 @@ function Bids(props) {
               </AppBar>
               <div>
                 <TabPanel value={value} index={0} nopadding>
-                  <ActiveBids bids={dummyBids} />
+                  <ActiveBids bids={bids} />
                 </TabPanel>
                 <TabPanel value={value} index={1} nopadding>
-                  <ExpiredBids bids={dummyBids} />
+                  <ExpiredBids bids={bids} />
                 </TabPanel>
               </div>
 
