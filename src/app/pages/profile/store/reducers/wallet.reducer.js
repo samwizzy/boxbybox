@@ -3,7 +3,14 @@ import * as Actions from "../actions/wallet.actions";
 const initialState = {
   loading: false,
   error: null,
+  paymentGateways: [],
   wallet: null,
+  transactions: {
+    page: 0,
+    limit: 0,
+    total: 0,
+    entities: [],
+  },
   fundWalletDialog: {
     open: false,
     data: null,
@@ -16,10 +23,22 @@ const initialState = {
 
 const walletsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case Actions.GET_USER_WALLET_SUCCESS: {
+    case Actions.GET_USER_WALLET_BALANCE: {
       return {
         ...state,
         wallet: action.payload,
+      };
+    }
+    case Actions.GET_USER_WALLET_TRANSACTIONS: {
+      return {
+        ...state,
+        transactions: action.payload,
+      };
+    }
+    case Actions.GET_PAYMENT_GATEWAYS: {
+      return {
+        ...state,
+        paymentGateways: action.payload,
       };
     }
     case Actions.FUND_WALLET_SUCCESS: {

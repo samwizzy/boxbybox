@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
 function FundWalletDialog(props) {
   const classes = useStyles(props);
+  const { paymentGateways } = props;
   const dispatch = useDispatch();
   const dialog = useSelector(
     ({ profileWallet }) => profileWallet.wallet.fundWalletDialog
@@ -61,6 +62,11 @@ function FundWalletDialog(props) {
             fullWidth
           >
             <MenuItem value="">Payment method</MenuItem>
+            {paymentGateways.map((pay, i) => (
+              <MenuItem key={i} value={pay.name}>
+                {pay.name}
+              </MenuItem>
+            ))}
           </TextField>
         </div>
       </DialogContent>

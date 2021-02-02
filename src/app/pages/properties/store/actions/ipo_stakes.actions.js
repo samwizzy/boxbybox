@@ -67,19 +67,24 @@ export function getUserIpoStakeByPropertyId(propertyId) {
 
 export function addIpoStake(data, propertyId) {
   const request = axios.post(`/auth/ipo-stake/${propertyId}`, data);
-  console.log(request, "request addipostake action");
+  console.dir(request, "request addipostake action");
 
   return (dispatch) =>
     request.then((response) => {
-      console.log(response, "did it even make it in here");
-      if (response.status === 200) {
+      if (response.status === 201) {
         Promise.all([
           dispatch({
             type: ADD_IPO_STAKE_SUCCESS,
             payload: response.data,
           }),
         ]).then(
-          dispatch(showSnackbar({ message: "Ipo stake added successfully" }))
+          Promise.all([
+            dispatch(
+              showSnackbar({
+                message: `You have successfully purchased ${response.data.noOfUnitsPurchased} units, worth NGN ${response.data.purchaseAmount}`,
+              })
+            ),
+          ]).then(dispatch(closeConfirmIpoStakeDialog()))
         );
       } else {
         Promise.all([dispatch({ type: ADD_IPO_STAKE_ERROR })]).then(

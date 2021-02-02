@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import BoxUtils from "../../../utils/BoxUtils";
 import { withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
@@ -22,6 +22,7 @@ import {
   TableCell,
   Toolbar,
 } from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import ProfileSidebar from "./../components/ProfileSidebar";
 import FundWalletDialog from "./components/FundWalletDialog";
@@ -37,7 +38,24 @@ const useStyles = makeStyles((theme) => ({
 
 function ProfileWallet(props) {
   const classes = useStyles(props);
-  const { openFundWalletDialog, openNewCardDialog } = props;
+  const {
+    openFundWalletDialog,
+    openNewCardDialog,
+    getWalletBalance,
+    getWalletTransactions,
+    getPaymentGateways,
+    wallet,
+    transactions,
+    paymentGateways,
+  } = props;
+
+  useEffect(() => {
+    getWalletBalance();
+    getWalletTransactions();
+    getPaymentGateways();
+  }, [getWalletBalance, getWalletTransactions, getPaymentGateways]);
+
+  console.log(transactions, paymentGateways);
 
   return (
     <div className="container">
@@ -58,9 +76,13 @@ function ProfileWallet(props) {
                     <CardContent>
                       <div className="flex flex-col items-center space-y-16">
                         <section className="flex flex-col items-center">
-                          <h2 className="text-2xl text-gray-800 mb-2">
-                            {BoxUtils.formatCurrency(5000000)}
-                          </h2>
+                          {wallet ? (
+                            <h2 className="text-2xl text-gray-800 mb-2">
+                              {BoxUtils.formatCurrency(wallet.amount)}
+                            </h2>
+                          ) : (
+                            <Skeleton />
+                          )}
                           <h3 className="text-sm text-gray-500">Balance</h3>
                         </section>
                         <section className="flex items-center justify-between space-x-8">
@@ -156,7 +178,7 @@ function ProfileWallet(props) {
             </Grid>
           </Grid>
 
-          <FundWalletDialog />
+          <FundWalletDialog paymentGateways={paymentGateways} />
           <CardDialog />
         </div>
       </div>
@@ -165,12 +187,20 @@ function ProfileWallet(props) {
 }
 
 const mapStateToProps = ({ profileWallet }) => {
-  return {};
+  const { wallet } = profileWallet;
+  return {
+    wallet: wallet.wallet,
+    transactions: wallet.transactions,
+    paymentGateways: wallet.paymentGateways,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
+      getWalletBalance: Actions.getWalletBalance,
+      getWalletTransactions: Actions.getWalletTransactions,
+      getPaymentGateways: Actions.getPaymentGateways,
       openFundWalletDialog: Actions.openFundWalletDialog,
       openNewCardDialog: Actions.openNewCardDialog,
     },

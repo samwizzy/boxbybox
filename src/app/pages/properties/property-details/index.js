@@ -78,10 +78,12 @@ function PropertyDetails(props) {
     openIpoStakeDialog,
     openQueueInBidDialog,
     match,
+    user,
   } = props;
   const params = useParams();
 
   console.log(property, "single property details");
+  console.log(user, "user details");
 
   useEffect(() => {
     getProperties();
@@ -213,7 +215,9 @@ function PropertyDetails(props) {
                       </span>
                       {property ? (
                         <Slider
-                          value={property.unitsSold}
+                          value={_.ceil(
+                            property.units / property.unitsSold / 100
+                          )}
                           color="secondary"
                           valueLabelDisplay="auto"
                           valueLabelFormat={(value) => <div>{value}%</div>}
@@ -234,7 +238,10 @@ function PropertyDetails(props) {
                       <AppButton
                         variant="contained"
                         color="secondary"
-                        disabled={!property.unitsAvailable}
+                        disabled={
+                          !property.unitsAvailable ||
+                          property.createdBy.id === user.id
+                        }
                         onClick={() => openIpoStakeDialog(property)}
                       >
                         Buy IPO Stake
@@ -353,8 +360,9 @@ function PropertyDetails(props) {
   );
 }
 
-const mapStateToProps = ({ propertyDetails }) => {
+const mapStateToProps = ({ propertyDetails, auth }) => {
   return {
+    user: auth.user.data,
     properties: propertyDetails.property.properties,
     property: propertyDetails.property.property,
   };
