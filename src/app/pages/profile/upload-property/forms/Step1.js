@@ -89,7 +89,7 @@ function Step1(props) {
               margin="dense"
               fullWidth
             />
-            <div className="grid grid-cols-4 gap-x-8 gap-y-2">
+            <div className="grid grid-cols-2 gap-x-4 md:grid-cols-4 md:gap-x-8 gap-y-2">
               <TextField
                 id="type"
                 select
@@ -148,7 +148,7 @@ function Step1(props) {
             </div>
           </div>
           <div className="space-y-4 border-0 border-b border-solid border-gray-200 py-4">
-            <div className="grid grid-cols-3 gap-x-8 gap-y-2">
+            <div className="grid grid-cols-2 gap-x-4 md:grid-cols-3 md:gap-x-8 gap-y-2">
               <TextField
                 id="bedrooms"
                 select
@@ -267,7 +267,7 @@ function Step1(props) {
             </FormGroup>
           </div>
           <div className="space-y-4 border-0 border-b border-solid border-gray-200 py-4">
-            <div className="grid grid-cols-3 gap-x-8 gap-y-2">
+            <div className="grid grid-cols-2 gap-x-4 md:grid-cols-3 md:gap-x-8 gap-y-2">
               <TextField
                 id="country"
                 select

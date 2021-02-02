@@ -1,5 +1,5 @@
 import authService from "./../../../services/authService";
-import { setUserData } from "./";
+import { setUserData, closeDialog } from "./";
 import { showSnackbar } from "./../../../store/actions";
 
 export const REGISTER_SUCCESS = "[AUTH] REGISTER_SUCCESS";
@@ -15,6 +15,7 @@ export function register(data) {
         Promise.all([
           dispatch(setUserData(user)),
           dispatch({ type: REGISTER_SUCCESS }),
+          dispatch(closeDialog()),
         ]).then(dispatch(showSnackbar({ message: "Registration successful" })));
       })
       .catch((error) => {

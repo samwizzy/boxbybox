@@ -242,6 +242,7 @@ function PropertyDetails(props) {
                       <AppButton
                         variant="contained"
                         color="secondary"
+                        disabled={Boolean(property.unitsAvailable)}
                         onClick={() => openQueueInBidDialog(property)}
                       >
                         Queue in a Bid

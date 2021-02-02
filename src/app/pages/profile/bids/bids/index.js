@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as Actions from "./../../store/actions";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
@@ -34,7 +34,8 @@ function Bids(props) {
   const classes = useStyles(props);
   const [value, setValue] = useState(0);
   const dispatch = useDispatch();
-  const bids = useSelector(({ bidsApp }) => bidsApp.bids.bids);
+  const { bids } = props;
+  // const bids = useSelector(({ bidsApp }) => bidsApp.bids.bids);
 
   console.log(bids, "bids state live");
 

@@ -18,7 +18,7 @@ export default function RejectedOffers(props) {
 
   return (
     <div className={classes.root}>
-      {offers.entities.map((bid, i) => (
+      {offers.map((bid, i) => (
         <div
           key={i}
           className="py-2 border-0 border-b border-gray-200 border-solid"
@@ -32,7 +32,9 @@ export default function RejectedOffers(props) {
               />
             </div>
             <div className="flex flex-col w-full space-y-2">
-              <h3 className="text-sm text-gray-800">{bid.title}</h3>
+              <h3 className="capitalize text-gray-600">
+                {bid.ipoStake.property.title}
+              </h3>
               <div className="flex flex-col md:flex-row justify-between md:space-x-1">
                 <Table size="small" className={classes.table}>
                   <TableBody>
@@ -40,13 +42,13 @@ export default function RejectedOffers(props) {
                       <TableCell>
                         <strong>Property ID:</strong>
                       </TableCell>
-                      <TableCell>{bid.propertyRef}</TableCell>
+                      <TableCell>{bid.ipoStake.ipoRef}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
                         <strong>Units:</strong>
                       </TableCell>
-                      <TableCell>{bid.units}</TableCell>
+                      <TableCell>{bid.ipoStake.property.units}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
@@ -63,14 +65,14 @@ export default function RejectedOffers(props) {
                       <TableCell>
                         <strong>Seller:</strong>
                       </TableCell>
-                      <TableCell>John Doe</TableCell>
+                      <TableCell>{bid.ipoStake.owner.email}</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
                         <strong>Amount:</strong>
                       </TableCell>
                       <TableCell>
-                        {BoxUtils.formatCurrency(bid.price)}
+                        {BoxUtils.formatCurrency(bid.bidAmount)}
                       </TableCell>
                     </TableRow>
                   </TableBody>

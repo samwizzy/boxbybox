@@ -53,7 +53,7 @@ function ProfileWallet(props) {
               </Toolbar>
 
               <div className="space-y-4">
-                <div className="grid grid-cols-1 gap-0 md:grid-cols-2 md:gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-4">
                   <Card className={classes.card}>
                     <CardContent>
                       <div className="flex flex-col items-center space-y-16">

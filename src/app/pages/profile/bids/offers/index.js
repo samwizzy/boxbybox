@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as Actions from "./../../store/actions";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
@@ -35,26 +35,12 @@ function a11yProps(index) {
   };
 }
 
-const dummyOffers = {
-  entities: [
-    {
-      id: 1,
-      title: "4 BEDROOM DUPLEX",
-      address: { country: "Nigeria", state: "Lagos", city: "Lekki" },
-    },
-    {
-      id: 1,
-      title: "4 BEDROOM DUPLEX",
-      address: { country: "Nigeria", state: "Lagos", city: "Lekki" },
-    },
-  ],
-};
-
 function Offers(props) {
   const classes = useStyles(props);
   const [value, setValue] = useState(0);
   const dispatch = useDispatch();
-  const offers = useSelector(({ bidsApp }) => bidsApp.bids.bids);
+  const { offers } = props;
+  // const offers = useSelector(({ bidsApp }) => bidsApp.bids.bids);
 
   console.log(offers, "offers state live");
 
@@ -87,16 +73,16 @@ function Offers(props) {
               </AppBar>
               <div>
                 <TabPanel value={value} index={0} nopadding>
-                  <ActiveOffers offers={dummyOffers} />
+                  <ActiveOffers offers={offers} />
                 </TabPanel>
                 <TabPanel value={value} index={1} nopadding>
-                  <AcceptedOffers offers={dummyOffers} />
+                  <AcceptedOffers offers={offers} />
                 </TabPanel>
                 <TabPanel value={value} index={2} nopadding>
-                  <RejectedOffers offers={dummyOffers} />
+                  <RejectedOffers offers={offers} />
                 </TabPanel>
                 <TabPanel value={value} index={3} nopadding>
-                  <ExpiredOffers offers={dummyOffers} />
+                  <ExpiredOffers offers={offers} />
                 </TabPanel>
               </div>
 

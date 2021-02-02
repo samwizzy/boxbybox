@@ -10,8 +10,8 @@ function Contact(props) {
 
       <div className="bg-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-2 gap-8">
-            <div className="mt-2 text-3xl md:text-4xl font-normal leading-8 tracking-tight text-gray-800 sm:text-4xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
               <div style={{ width: "100%" }}>
                 <iframe
                   title="Box by Box"

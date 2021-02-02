@@ -87,8 +87,7 @@ class authService extends BoxUtils.EventEmitter {
           }
         })
         .catch((error) => {
-          console.log(error.toJSON(), "catch login error");
-          error.message && reject(error.toJSON());
+          error.response ? reject(error.response.data) : reject(error.toJSON());
         });
     });
   };

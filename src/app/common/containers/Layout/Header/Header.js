@@ -127,7 +127,7 @@ export default withRouter(function Header(props) {
                 <Link to="/news">News</Link>
                 <Link to="/about">About</Link>
                 <Link to="/contacts">Contacts</Link>
-                <Link to="/live-bids">Live Bids</Link>
+                {user.role && <Link to="/live-bids">Live Bids</Link>}
               </div>
             </div>
 
@@ -175,7 +175,7 @@ export default withRouter(function Header(props) {
                       </Avatar>
                     }
                   >
-                    {user.email}
+                    <span className="truncate">{user.email}</span>
                     <Icon
                       className="text-16 ml-4 hidden sm:flex tran"
                       variant="action"

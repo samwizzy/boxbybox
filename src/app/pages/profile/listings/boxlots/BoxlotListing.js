@@ -103,6 +103,7 @@ function BoxlotListing(props) {
           >
             <MenuItem value="">BBB Hierachy</MenuItem>
           </TextField>
+          <div className="mt-2 md:mt-0" />
           <AppButton variant="contained" color="secondary">
             Filter
           </AppButton>
@@ -111,7 +112,7 @@ function BoxlotListing(props) {
         {!properties.length && (
           <Alert severity="info">
             <AlertTitle>Hey there!</AlertTitle>
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col md:flex-row items-center space-x-4 space-y-2">
               There are no properties to which you have obtained a boxlot
               —&nbsp;
               <strong>Obtain a property boxlot here!</strong>

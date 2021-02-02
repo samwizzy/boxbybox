@@ -3,12 +3,7 @@ import * as Actions from "../actions/bids.actions";
 const initialState = {
   loading: false,
   error: null,
-  bids: {
-    entities: [],
-    page: 0,
-    limit: 0,
-    total: 0,
-  },
+  bids: [],
   bid: null,
   offerDialog: {
     open: false,

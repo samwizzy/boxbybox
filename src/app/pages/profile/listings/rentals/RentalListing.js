@@ -90,7 +90,7 @@ function RentalListing(props) {
             value=""
             variant="outlined"
             margin="dense"
-            classes={{ root: "w-40" }}
+            classes={{ root: "w-full md:w-40" }}
           >
             <MenuItem value="">Plan</MenuItem>
           </TextField>
@@ -102,7 +102,7 @@ function RentalListing(props) {
             value=""
             variant="outlined"
             margin="dense"
-            classes={{ root: "w-40" }}
+            classes={{ root: "w-full md:w-40" }}
           >
             <MenuItem value="">Type</MenuItem>
           </TextField>
@@ -114,7 +114,7 @@ function RentalListing(props) {
             value=""
             variant="outlined"
             margin="dense"
-            classes={{ root: "w-40" }}
+            classes={{ root: "w-full md:w-40" }}
           >
             <MenuItem value="">Status</MenuItem>
           </TextField>
@@ -126,10 +126,11 @@ function RentalListing(props) {
             value=""
             variant="outlined"
             margin="dense"
-            classes={{ root: "w-40" }}
+            classes={{ root: "w-full md:w-40" }}
           >
             <MenuItem value="">Date Added</MenuItem>
           </TextField>
+          <div className="mt-2 md:mt-0" />
           <AppButton variant="contained" color="secondary">
             Filter
           </AppButton>
@@ -139,13 +140,13 @@ function RentalListing(props) {
           {properties.entities.map((property, i) => (
             <div
               key={i}
-              className="flex space-x-2 border-0 border-t border-solid border-gray-200"
+              className="flex flex-col md:flex-row space-x-2 border-0 border-t border-solid border-gray-200"
             >
               <div>
                 <img
                   src="https://image.freepik.com/free-vector/logo-template-design_1289-160.jpg"
                   alt=""
-                  height="180px"
+                  className="w-60"
                 />
               </div>
               <div className="flex flex-col space-y-6 p-4 w-full">

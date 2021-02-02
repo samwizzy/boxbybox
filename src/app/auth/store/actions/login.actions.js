@@ -27,7 +27,17 @@ export function login(data) {
       )
       .catch((error) => {
         console.log(error, "inside the goddamn login action");
-        dispatch(showSnackbar({ message: error.message, variant: "error" }));
+        error.status === 401
+          ? dispatch(
+              showSnackbar({
+                message: "Email or Password is not valid",
+                variant: "warning",
+              })
+            )
+          : dispatch(
+              showSnackbar({ message: error.message, variant: "error" })
+            );
+        dispatch({ type: LOGIN_ERROR, payload: error.message });
       });
   };
 }

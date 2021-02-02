@@ -126,9 +126,14 @@ export function closeIpoStakeDialog() {
 }
 
 export function openConfirmIpoStakeDialog(payload) {
-  return {
-    type: OPEN_CONFIRM_IPO_STAKE_DIALOG,
-    payload,
+  return (dispatch) => {
+    Promise.all([
+      dispatch(closeIpoStakeDialog()),
+      dispatch({
+        type: OPEN_CONFIRM_IPO_STAKE_DIALOG,
+        payload,
+      }),
+    ]);
   };
 }
 

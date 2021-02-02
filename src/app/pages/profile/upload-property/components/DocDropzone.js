@@ -4,7 +4,7 @@ import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 
 const baseStyle = {
   flex: 1,
-  width: 400,
+  // width: 400,
   display: "flex",
   flexDirection: "row",
   alignItems: "center",
@@ -60,7 +60,7 @@ function DocDropzone(props) {
   return (
     <div className="flex flex-col space-y-4">
       <section className="container">
-        <div {...getRootProps({ style })} className="space-x-2">
+        <div {...getRootProps({ style })} className="space-x-2 w-full md:w-80">
           <input {...getInputProps()} />
           <CloudUploadIcon />
           <p>Upload Property Document</p>
