@@ -5,7 +5,6 @@ import { connect, useSelector } from "react-redux";
 import withReducer from "../../store/withReducer";
 import * as Actions from "./store/actions";
 import reducer from "./store/reducers";
-import _ from "lodash";
 import moment from "moment";
 import { AppButton } from "../../common/components";
 import { makeStyles } from "@material-ui/core/styles";
@@ -37,7 +36,6 @@ function ProfileApp(props) {
   const classes = useStyles(props);
   const { openProfileDialog } = props;
   const user = useSelector(({ auth }) => auth.user.data);
-  const countries = useSelector(({ auth }) => auth.location.countries);
 
   return (
     <div className="container bg-gray-100">
@@ -103,10 +101,10 @@ function ProfileApp(props) {
                       <section>
                         <h3 className="text-sm text-gray-600">Nationality</h3>
                         <span className="text-gray-600">
-                          {countries.length && user.individualUser ? (
-                            _.find(countries, {
-                              id: Number(user.individualUser.address.country),
-                            }).name
+                          {user.individualUser ? (
+                            user.individualUser.address.country
+                          ) : user.company ? (
+                            user.company.address.country
                           ) : (
                             <Skeleton />
                           )}
@@ -122,16 +120,12 @@ function ProfileApp(props) {
                       </section>
                       <section>
                         <h3 className="text-sm text-gray-600">Address</h3>
-                        {user.individualUser && countries.length ? (
+                        {user.individualUser ? (
                           <span className="text-gray-600">
                             {user.individualUser.address.houseNoAddress}
                             {", "}
                             {user.individualUser.address.city}{" "}
-                            {
-                              _.find(countries, {
-                                id: Number(user.individualUser.address.country),
-                              }).name
-                            }
+                            {user.individualUser.address.country}
                           </span>
                         ) : (
                           <Skeleton />
