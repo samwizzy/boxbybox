@@ -2,11 +2,10 @@ import React, { useEffect } from "react";
 import BoxUtils from "../../../utils/BoxUtils";
 import { withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import withReducer from "../../../store/withReducer";
 import * as Actions from "./../store/actions";
 import reducer from "./../store/reducers";
-import moment from "moment";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppButton } from "./../../../common/components";
@@ -22,7 +21,7 @@ import {
   TableCell,
   Toolbar,
 } from "@material-ui/core";
-import { Skeleton } from "@material-ui/lab";
+import { Alert, AlertTitle, Pagination, Skeleton } from "@material-ui/lab";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import ProfileSidebar from "./../components/ProfileSidebar";
 import FundWalletDialog from "./components/FundWalletDialog";
@@ -38,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 function ProfileWallet(props) {
   const classes = useStyles(props);
+  const dispatch = useDispatch();
   const {
     openFundWalletDialog,
     openNewCardDialog,
@@ -54,6 +54,10 @@ function ProfileWallet(props) {
     getWalletTransactions();
     getPaymentGateways();
   }, [getWalletBalance, getWalletTransactions, getPaymentGateways]);
+
+  const handlePaginate = (event, page) => {
+    dispatch(/*Actions.getIpoStakeByPropertyId(params.id, page - 1)*/);
+  };
 
   console.log(transactions, paymentGateways);
 
@@ -156,22 +160,50 @@ function ProfileWallet(props) {
                       <TableHead>
                         <TableRow>
                           <TableCell>Transaction Type</TableCell>
+                          <TableCell>Description</TableCell>
                           <TableCell>Amount</TableCell>
                           <TableCell>Date</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {_.range(0, 5).map((trans, i) => (
+                        {!transactions.total && (
+                          <Alert severity="info">
+                            <AlertTitle>Hey there!</AlertTitle>
+                            <div className="flex items-center space-x-4">
+                              You have not made any transactions —&nbsp;
+                              <strong>be the first to stake now!</strong>
+                            </div>
+                          </Alert>
+                        )}
+                        {transactions.entities.map((trans, i) => (
                           <TableRow key={i}>
-                            <TableCell>Wallet Fund</TableCell>
+                            <TableCell>{trans.transactionType}</TableCell>
                             <TableCell>
-                              {BoxUtils.formatCurrency(5000000)}
+                              {trans.transactionDescription}
                             </TableCell>
-                            <TableCell>{moment().format("ll")}</TableCell>
+                            <TableCell>
+                              {BoxUtils.formatCurrency(trans.amount)}
+                            </TableCell>
+                            <TableCell>{trans.createdAt}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
                     </Table>
+
+                    {transactions.total ? (
+                      <div className="flex items-center justify-center mt-16">
+                        <Pagination
+                          count={_.ceil(
+                            transactions.total / transactions.limit
+                          )}
+                          variant="outlined"
+                          color="secondary"
+                          onChange={handlePaginate}
+                        />
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </CardContent>
                 </Card>
               </div>
