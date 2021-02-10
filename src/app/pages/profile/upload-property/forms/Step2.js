@@ -4,17 +4,17 @@ import ImageDropzone from "./../components/ImageDropzone";
 import DocDropzone from "./../components/DocDropzone";
 
 function Step2(props) {
-  // const { form, handleChange } = props;
+  const { form, handleImageUpload } = props;
 
   return (
     <Card>
       <CardContent>
         <div className="flex flex-col p-8 space-y-4">
           <div>
-            <ImageDropzone />
+            <ImageDropzone form={form} handleImageUpload={handleImageUpload} />
           </div>
           <div>
-            <DocDropzone />
+            <DocDropzone form={form} handleImageUpload={handleImageUpload} />
           </div>
         </div>
       </CardContent>

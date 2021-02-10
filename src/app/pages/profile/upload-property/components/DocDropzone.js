@@ -33,7 +33,7 @@ const rejectStyle = {
 };
 
 function DocDropzone(props) {
-  // const { form, handleChange } = props;
+  const { handleImageUpload } = props;
   const {
     getRootProps,
     getInputProps,
@@ -41,7 +41,17 @@ function DocDropzone(props) {
     isDragAccept,
     isDragReject,
     acceptedFiles,
-  } = useDropzone({ accept: "image/*" });
+  } = useDropzone({
+    accept: "image/*",
+    onDrop: (acceptedFiles) => {
+      const files = acceptedFiles.map((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        })
+      );
+      handleImageUpload(files);
+    },
+  });
 
   const files = acceptedFiles.map((file) => (
     <li key={file.path}>{file.path}</li>

@@ -10,11 +10,12 @@ export const REGISTER_TRANSACTION = "[WALLET] REGISTER_TRANSACTION";
 
 export const VERIFY_PAYMENT = "[WALLET] VERIFY_PAYMENT";
 
-export const FUND_WALLET_SUCCESS = "[WALLET] ADD_WALLET_SUCCESS";
-export const FUND_WALLET_ERROR = "[WALLET] ADD_WALLET_ERROR";
-
 export const OPEN_FUND_WALLET_DIALOG = "[WALLET] OPEN_FUND_WALLET_DIALOG";
 export const CLOSE_FUND_WALLET_DIALOG = "[WALLET] CLOSE_FUND_WALLET_DIALOG";
+
+export const OPEN_VERIFY_PAYMENT_DIALOG = "[WALLET] OPEN_VERIFY_PAYMENT_DIALOG";
+export const CLOSE_VERIFY_PAYMENT_DIALOG =
+  "[WALLET] CLOSE_VERIFY_PAYMENT_DIALOG";
 
 export const OPEN_NEW_CARD_DIALOG = "[WALLET] OPEN_NEW_CARD_DIALOG";
 export const CLOSE_NEW_CARD_DIALOG = "[WALLET] CLOSE_NEW_CARD_DIALOG";
@@ -55,19 +56,25 @@ export function getPaymentGateways() {
     );
 }
 
-export function registerTransaction() {
-  const request = axios.get("/auth/transactions");
+export function registerTransaction(data) {
+  const request = axios.post("/auth/transactions", data);
+  console.log(request, "register transaction request");
 
   return (dispatch) =>
-    request.then((response) =>
-      dispatch({
-        type: REGISTER_TRANSACTION,
-        payload: response.data,
-      })
-    );
+    request.then((response) => {
+      Promise.all([
+        dispatch({
+          type: REGISTER_TRANSACTION,
+          payload: response.data,
+        }),
+      ]).then(
+        dispatch(closeFundWalletDialog()),
+        dispatch(openVerifyPaymentDialog(response.data))
+      );
+    });
 }
 
-export function verifyPayment(paymentGateway, transactionRef) {
+export function verifyPayment(transactionRef, paymentGateway = "PAYSTACK") {
   const request = axios.get(
     `/auth/payment-verification/${paymentGateway}/${transactionRef}`
   );
@@ -76,18 +83,6 @@ export function verifyPayment(paymentGateway, transactionRef) {
     request.then((response) =>
       dispatch({
         type: VERIFY_PAYMENT,
-        payload: response.data,
-      })
-    );
-}
-
-export function fundWallet(data) {
-  const request = axios.post("/auth/wallet/fund", data);
-
-  return (dispatch) =>
-    request.then((response) =>
-      dispatch({
-        type: FUND_WALLET_SUCCESS,
         payload: response.data,
       })
     );
@@ -103,6 +98,19 @@ export function openFundWalletDialog(payload) {
 export function closeFundWalletDialog() {
   return {
     type: CLOSE_FUND_WALLET_DIALOG,
+  };
+}
+
+export function openVerifyPaymentDialog(payload) {
+  return {
+    type: OPEN_VERIFY_PAYMENT_DIALOG,
+    payload,
+  };
+}
+
+export function closeVerifyPaymentDialog() {
+  return {
+    type: CLOSE_VERIFY_PAYMENT_DIALOG,
   };
 }
 

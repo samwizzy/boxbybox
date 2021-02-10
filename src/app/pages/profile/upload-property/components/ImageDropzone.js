@@ -33,32 +33,34 @@ const rejectStyle = {
 };
 
 function ImageDropzone(props) {
-  // const { form, handleChange } = props;
+  const { form, handleImageUpload } = props;
   const {
     getRootProps,
     getInputProps,
     isDragActive,
     isDragAccept,
     isDragReject,
-    acceptedFiles,
+    // acceptedFiles,
   } = useDropzone({
     accept: "image/*, *.pdf, *.doc",
     onDrop: (acceptedFiles) => {
-      console.log(
-        acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
-        )
+      const files = acceptedFiles.map((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        })
       );
+      handleImageUpload(files);
     },
   });
 
-  const files = acceptedFiles.map((file) => (
-    <li key={file.path}>
-      <img src={file.preview} alt="" className="h-40" />
+  const files = form.images.map((file, i) => (
+    <li key={i}>
+      <img
+        src={`data:image/jpg;base64,${file.encodedString}`}
+        alt=""
+        className="h-40"
+      />
     </li>
-    // <li key={file.path}>{file.path}</li>
   ));
 
   const style = useMemo(

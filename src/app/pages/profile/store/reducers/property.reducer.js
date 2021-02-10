@@ -1,5 +1,33 @@
 import * as Actions from "../actions/property.actions";
 
+const formData = {
+  address: {
+    city: "",
+    country: "",
+    houseNoAddress: "",
+    latitude: "",
+    lga: "",
+    longitude: "",
+    postCode: "",
+    state: "",
+  },
+  bathrooms: 0,
+  bedrooms: 0,
+  canBidFor: true,
+  condition: "",
+  description: "",
+  documentsAvailable: "CFO",
+  feature: "SALE",
+  images: [],
+  parkingLot: true,
+  price: 0,
+  size: "",
+  title: "",
+  toilet: 0,
+  type: "",
+  units: 0,
+};
+
 const initialState = {
   loading: false,
   error: null,
@@ -29,6 +57,7 @@ const initialState = {
     limit: 0,
     total: 0,
   },
+  data: { ...formData },
 };
 
 const propertyReducer = (state = initialState, action) => {
@@ -61,6 +90,14 @@ const propertyReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+        data: { ...formData },
+      };
+    }
+    case Actions.ADD_PROPERTY_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
       };
     }
     case Actions.GET_USER_PROPERTIES: {

@@ -68,7 +68,7 @@ export default function Footer(props) {
   return (
     <footer className={clsx("container mx-auto", classes.root)}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
-        <Grid container spacing={2} className="items-start">
+        <Grid container spacing={4} className="items-start">
           <Grid item xs={12} md={4}>
             <div className="mb-4">
               <img
@@ -114,7 +114,7 @@ export default function Footer(props) {
             <Grid container spacing={2}>
               {footerLinks.map((item, i) => (
                 <Grid item xs={12} md key={i}>
-                  <div className="box-border md:h-16 md:p-4 px-4">
+                  <div className="box-border md:h-8 px-0">
                     {item.column === "Contact Us" && (
                       <div className="flex items-center space-x-2">
                         <a
@@ -143,7 +143,11 @@ export default function Footer(props) {
                     component="nav"
                     aria-labelledby="nested-list-subheader"
                     subheader={
-                      <ListSubheader color="inherit" id="nested-list-subheader">
+                      <ListSubheader
+                        color="inherit"
+                        id="nested-list-subheader"
+                        disableGutters
+                      >
                         <div className={classes.title}>{item.column}</div>
                       </ListSubheader>
                     }
@@ -152,11 +156,16 @@ export default function Footer(props) {
                     {item.links.map((link, a) => (
                       <Fragment key={a}>
                         {item.column === "About us" ? (
-                          <ListItem key={a} component={Link} to={link.path}>
+                          <ListItem
+                            key={a}
+                            component={Link}
+                            to={link.path}
+                            disableGutters
+                          >
                             <ListItemText primary={link.title} />
                           </ListItem>
                         ) : (
-                          <ListItem key={a}>
+                          <ListItem key={a} disableGutters>
                             <ListItemText primary={link.title} />
                           </ListItem>
                         )}

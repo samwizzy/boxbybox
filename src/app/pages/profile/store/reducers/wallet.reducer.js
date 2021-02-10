@@ -5,6 +5,7 @@ const initialState = {
   error: null,
   paymentGateways: [],
   wallet: null,
+  paymentRef: null,
   transactions: {
     page: 0,
     limit: 0,
@@ -12,6 +13,10 @@ const initialState = {
     entities: [],
   },
   fundWalletDialog: {
+    open: false,
+    data: null,
+  },
+  verifyPaymentDialog: {
     open: false,
     data: null,
   },
@@ -41,7 +46,14 @@ const walletsReducer = (state = initialState, action) => {
         paymentGateways: action.payload,
       };
     }
-    case Actions.FUND_WALLET_SUCCESS: {
+    case Actions.REGISTER_TRANSACTION: {
+      return {
+        ...state,
+        loading: false,
+        paymentRef: action.payload,
+      };
+    }
+    case Actions.VERIFY_PAYMENT: {
       return {
         ...state,
         loading: false,
@@ -60,6 +72,21 @@ const walletsReducer = (state = initialState, action) => {
       return {
         ...state,
         fundWalletDialog: { open: false, data: null },
+      };
+    }
+    case Actions.OPEN_VERIFY_PAYMENT_DIALOG: {
+      return {
+        ...state,
+        verifyPaymentDialog: {
+          open: true,
+          data: action.payload,
+        },
+      };
+    }
+    case Actions.CLOSE_VERIFY_PAYMENT_DIALOG: {
+      return {
+        ...state,
+        verifyPaymentDialog: { open: false, data: null },
       };
     }
     case Actions.OPEN_NEW_CARD_DIALOG: {

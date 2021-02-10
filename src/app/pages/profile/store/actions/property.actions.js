@@ -101,26 +101,37 @@ export function getPropertyById(id) {
 
 export function addProperty(data) {
   const request = axios.post("/auth/properties", data);
-  console.log(request, "add new property request");
+  console.dir(request, "add new property request");
 
   return (dispatch) => {
     dispatch({ type: ADD_PROPERTY_PROGRESS });
-    request.then((response) => {
-      if (response.status === 201) {
-        Promise.all([
-          dispatch({
-            type: ADD_PROPERTY_SUCCESS,
-            payload: response.data,
-          }),
-        ]).then(
-          dispatch(
-            showSnackbar({
-              message: "Your property has been added successfully",
-            })
-          ),
-          history.push("/profile/upload-property")
+    request
+      .then((response) => {
+        if (response.status === 201) {
+          Promise.all([
+            dispatch({
+              type: ADD_PROPERTY_SUCCESS,
+              payload: response.data,
+            }),
+          ]).then(
+            dispatch(
+              showSnackbar({
+                message: "Your property has been added successfully",
+              })
+            ),
+            history.push("/profile/upload-property")
+          );
+        }
+      })
+      .catch((error) => {
+        dispatch({ type: ADD_PROPERTY_ERROR, payload: error.response.data });
+        dispatch(
+          showSnackbar({
+            message: error.response.data.message,
+            variant: "error",
+          })
         );
-      }
-    });
+        history.push("/profile/upload-property");
+      });
   };
 }

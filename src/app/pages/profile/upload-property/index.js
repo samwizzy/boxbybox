@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import BoxUtils from "./../../../utils/BoxUtils";
 import { withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -51,12 +52,7 @@ const initialState = {
   description: "",
   documentsAvailable: "CFO",
   feature: "SALE",
-  images: [
-    {
-      imageUrl:
-        "https://image.freepik.com/free-photo/real-estate-agent-with-house-model-keys_1150-17813.jpg",
-    },
-  ],
+  images: [],
   parkingLot: true,
   price: 0,
   size: "",
@@ -74,6 +70,7 @@ function UploadProperty(props) {
   const classes = useStyles(props);
   const {
     loading,
+    data,
     getCountries,
     countries,
     states,
@@ -82,7 +79,7 @@ function UploadProperty(props) {
     getStateByCountry,
     getLgaByState,
   } = props;
-  const [form, setForm] = useState({ ...initialState });
+  const [form, setForm] = useState(data);
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
 
@@ -101,6 +98,20 @@ function UploadProperty(props) {
   const handleChange = (event) => {
     const { name, value, checked, type } = event.target;
     setForm({ ..._.set(form, name, type === "checkbox" ? checked : value) });
+  };
+
+  const handleImageUpload = (files) => {
+    let images = [];
+    files.map((file) => {
+      return BoxUtils.toBase64(file).then((data) => {
+        images.push({
+          encodedString: data,
+          extension: file.type.split("/")[1],
+        });
+      });
+    });
+
+    setForm({ ...form, images });
   };
 
   useEffect(() => {
@@ -148,7 +159,10 @@ function UploadProperty(props) {
                       />
                     )}
                     {activeStep === 1 && (
-                      <Step2 form={form} handleChange={handleChange} />
+                      <Step2
+                        form={form}
+                        handleImageUpload={handleImageUpload}
+                      />
                     )}
                     {activeStep === 2 && (
                       <Step3 form={form} handleChange={handleChange} />
@@ -191,6 +205,7 @@ function UploadProperty(props) {
 const mapStateToProps = ({ propertyUpload, auth }) => {
   return {
     loading: propertyUpload.property.loading,
+    data: propertyUpload.property.data,
     countries: auth.location.countries,
     states: auth.location.states,
     lgas: auth.location.lgas,

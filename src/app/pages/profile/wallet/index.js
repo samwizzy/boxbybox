@@ -26,6 +26,7 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import ProfileSidebar from "./../components/ProfileSidebar";
 import FundWalletDialog from "./components/FundWalletDialog";
 import CardDialog from "./components/CardDialog";
+import VerifyPaymentDialog from "./components/VerifyPaymentDialog";
 
 const useStyles = makeStyles((theme) => ({
   card: {},
@@ -167,14 +168,19 @@ function ProfileWallet(props) {
                       </TableHead>
                       <TableBody>
                         {!transactions.total && (
-                          <Alert severity="info">
-                            <AlertTitle>Hey there!</AlertTitle>
-                            <div className="flex items-center space-x-4">
-                              You have not made any transactions —&nbsp;
-                              <strong>be the first to stake now!</strong>
-                            </div>
-                          </Alert>
+                          <TableRow>
+                            <TableCell colSpan={4}>
+                              <Alert severity="info">
+                                <AlertTitle>Hey there!</AlertTitle>
+                                <p className="flex items-center space-x-4">
+                                  You have not made any transactions —&nbsp;
+                                  <strong>be the first to stake now!</strong>
+                                </p>
+                              </Alert>
+                            </TableCell>
+                          </TableRow>
                         )}
+
                         {transactions.entities.map((trans, i) => (
                           <TableRow key={i}>
                             <TableCell>{trans.transactionType}</TableCell>
@@ -210,7 +216,8 @@ function ProfileWallet(props) {
             </Grid>
           </Grid>
 
-          <FundWalletDialog paymentGateways={paymentGateways} />
+          <FundWalletDialog />
+          <VerifyPaymentDialog paymentGateways={paymentGateways} />
           <CardDialog />
         </div>
       </div>
