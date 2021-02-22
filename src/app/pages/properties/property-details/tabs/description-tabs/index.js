@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AppBar, Tabs, Tab } from "@material-ui/core";
+import { AppBar, Divider, Tabs, Tab } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
 import { TabPanel } from "../../../../../common/components";
@@ -55,17 +55,27 @@ export default function DescriptionTabs({ property }, props) {
           <h3 className="text-lg font-semibold text-gray-600 mb-4">
             Terms of Service
           </h3>
-          <p className="text-sm text-gray-600">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. At id amet,
-            felis, elementum egestas quam a. Egestas sed justo, faucibus massa
-            mauris elementum tincidunt. Blandit eleifend amet velit a nibh.
-            Tempor nam vel dictum mauris. Risus neque amet lacus, vel et.
-            Penatibus non adipiscing nam fermentum at volutpat semper turpis
-            adipiscing. Aliquet nunc dui egestas nunc interdum quis. Tristique
-            aliquet condimentum erat proin mattis et, non gravida. Amet
-            tincidunt viverra morbi laoreet faucibus. Amet a sed maecenas id
-            pharetra vel odio. Aliquam nunc, nibh ultrices rhoncus faucibus. Sed
-            pulvinar diam quisque arcu.
+          <p className="text-base text-gray-800">
+            The Property Owner desires to engage the Property Manager to
+            supervise, manage, lease, operate, and maintain the Project.
+          </p>
+          <p className="text-sm text-gray-800">
+            NOW, THEREFORE, for good and valuable consideration, the receipt and
+            sufficiency of which is hereby acknowledged, the parties agree as
+            follows:
+          </p>
+
+          <div className="my-4">
+            <Divider />
+          </div>
+
+          <p className="text-xs text-gray-600">
+            1. Commencement and Termination Dates.
+          </p>
+          <p className="text-xs text-gray-600">
+            1.1 Commencement and Termination. The Property Manager’s duties and
+            responsibilities under this Agreement shall begin on the Effective
+            Date.
           </p>
         </TabPanel>
       </div>

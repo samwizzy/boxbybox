@@ -123,7 +123,7 @@ export default withRouter(function Header(props) {
                 )}
               >
                 <Link to="/">Home</Link>
-                <Link to="/properties">Listing</Link>
+                <Link to="/properties">Properties</Link>
                 <Link to="/news">News</Link>
                 <Link to="/about">About</Link>
                 <Link to="/contacts">Contacts</Link>

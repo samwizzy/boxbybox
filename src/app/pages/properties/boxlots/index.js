@@ -73,7 +73,7 @@ function Boxlots(props) {
                     Properties: "/properties",
                     [property.propertyRef]: `/property/${property.id}`,
                   }}
-                  current="boxlots"
+                  current="Boxlots"
                 />
               ) : (
                 <Skeleton />
@@ -97,7 +97,7 @@ function Boxlots(props) {
                         disabled={!property.unitsAvailable}
                         onClick={() => openIpoStakeDialog(property)}
                       >
-                        Buy IPO Stake
+                        Buy Boxlot
                       </AppButton>
                     ) : (
                       <Skeleton />
@@ -112,14 +112,14 @@ function Boxlots(props) {
                     key={i}
                     className="grid grid-cols-12 gap-x-2 p-2 border-0 border-b border-solid border-gray-300"
                   >
-                    <div className="col-span-3">
+                    <div className="col-span-4 md:col-span-3">
                       <img
                         src="https://image.freepik.com/free-photo/stay-home-concept-wooden-table-side-view-hand-holding-wooden-cube_176474-9516.jpg"
                         alt=""
                         className="w-full md:w-60"
                       />
                     </div>
-                    <div className="col-span-6">
+                    <div className="col-span-8 md:col-span-6">
                       <Table
                         size="small"
                         padding="none"
@@ -149,7 +149,7 @@ function Boxlots(props) {
                         </TableBody>
                       </Table>
                     </div>
-                    <div className="col-span-3 justify-self-end">
+                    <div className="col-span-12 md:col-span-3 pt-2 md:pt-0">
                       <AppButton
                         color="secondary"
                         variant="contained"
