@@ -36,7 +36,7 @@ const menus = [
   { name: "Listing", path: "listing" },
   { name: "Wallet", path: "wallet" },
   { name: "Upload Property", path: "upload-property" },
-  { name: "Bids", path: "bids" },
+  { name: "Live Bids", path: "bids" },
   { name: "Notifications", path: "notifications" },
   { name: "Logout", path: "logout" },
 ];

@@ -244,7 +244,7 @@ function PropertyDetails(props) {
                         }
                         onClick={() => openIpoStakeDialog(property)}
                       >
-                        Buy IPO Stake
+                        Buy Boxlot
                       </AppButton>
                       <AppButton
                         variant="contained"

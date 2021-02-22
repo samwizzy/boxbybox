@@ -161,7 +161,7 @@ function Step1(props) {
                 fullWidth
               >
                 <MenuItem value="0">No. of bedrooms</MenuItem>
-                {_.range(1, 5).map((bed) => (
+                {_.range(1, 11).map((bed) => (
                   <MenuItem key={bed} value={bed}>
                     {bed}
                   </MenuItem>
@@ -179,7 +179,7 @@ function Step1(props) {
                 fullWidth
               >
                 <MenuItem value="0">No. of bathrooms</MenuItem>
-                {_.range(1, 5).map((bath) => (
+                {_.range(1, 11).map((bath) => (
                   <MenuItem key={bath} value={bath}>
                     {bath}
                   </MenuItem>
@@ -197,7 +197,7 @@ function Step1(props) {
                 fullWidth
               >
                 <MenuItem value="0">No. of toilets</MenuItem>
-                {_.range(1, 5).map((toilet) => (
+                {_.range(1, 11).map((toilet) => (
                   <MenuItem key={toilet} value={toilet}>
                     {toilet}
                   </MenuItem>

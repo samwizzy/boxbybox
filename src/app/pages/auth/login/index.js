@@ -41,6 +41,10 @@ export function Login(props) {
     }));
   };
 
+  const canBeSubmitted = () => {
+    return _.some(form, _.isEmpty);
+  };
+
   console.log(data, "data login");
   console.log(form, "form login");
 
@@ -126,6 +130,7 @@ export function Login(props) {
               variant="contained"
               color="secondary"
               onClick={() => login(form)}
+              disabled={canBeSubmitted()}
               startIcon={
                 loading && <CircularProgress size={20} color="inherit" />
               }

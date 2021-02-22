@@ -119,7 +119,7 @@ export function addProperty(data) {
                 message: "Your property has been added successfully",
               })
             ),
-            history.push("/profile/upload-property")
+            history.push("/profile/listing")
           );
         }
       })

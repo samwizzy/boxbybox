@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import BoxUtils from "./../../../../utils/BoxUtils";
+import BoxUtils from "../../../../utils/BoxUtils";
 import { useSelector, useDispatch } from "react-redux";
-import * as Actions from "./../../store/actions";
+import * as Actions from "../../store/actions";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppButton } from "../../../../common/components";
 import {
@@ -47,20 +47,23 @@ function BuyIpoStakeDialog(props) {
     });
   };
 
+  // const handleConfirmDialog = () => {};
+
   return (
     <Dialog
       className={classes.root}
       open={dialog.open}
       onClose={() => dispatch(Actions.closeIpoStakeDialog())}
-      aria-labelledby="bid-offers-payment"
+      aria-labelledby="buy-boxlot"
       fullWidth
       maxWidth="xs"
     >
-      <DialogTitle>Buy IPO Stake</DialogTitle>
+      <DialogTitle>Buy Boxlot</DialogTitle>
       <DialogContent>
         <div className="text-center px-4">
           <h3 className="text-sm font-medium text-gray-600">
-            Number of Units : <span>{data && data.units}</span>
+            Number of Available Units :{" "}
+            <span>{data && data.availableUnits}</span>
           </h3>
           <h4 className="text-sm font-normal text-gray-600 my-4">
             Make your Offer
@@ -95,7 +98,7 @@ function BuyIpoStakeDialog(props) {
           color="secondary"
           onClick={() => dispatch(Actions.openConfirmIpoStakeDialog(form))}
         >
-          Buy Stake
+          Buy
         </AppButton>
       </DialogActions>
     </Dialog>

@@ -34,34 +34,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const initialState = {
-  address: {
-    city: "",
-    country: "",
-    houseNoAddress: "",
-    latitude: "",
-    lga: "",
-    longitude: "",
-    postCode: "",
-    state: "",
-  },
-  bathrooms: 0,
-  bedrooms: 0,
-  canBidFor: true,
-  condition: "",
-  description: "",
-  documentsAvailable: "CFO",
-  feature: "SALE",
-  images: [],
-  parkingLot: true,
-  price: 0,
-  size: "",
-  title: "",
-  toilet: 0,
-  type: "",
-  units: 0,
-};
-
 function getSteps() {
   return ["Add property details", "Upload Property files", "Make payment"];
 }
@@ -70,7 +42,6 @@ function UploadProperty(props) {
   const classes = useStyles(props);
   const {
     loading,
-    data,
     getCountries,
     countries,
     states,
@@ -79,7 +50,7 @@ function UploadProperty(props) {
     getStateByCountry,
     getLgaByState,
   } = props;
-  const [form, setForm] = useState(data);
+  const [form, setForm] = useState({ ...props.form });
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
 
@@ -98,6 +69,10 @@ function UploadProperty(props) {
   const handleChange = (event) => {
     const { name, value, checked, type } = event.target;
     setForm({ ..._.set(form, name, type === "checkbox" ? checked : value) });
+  };
+
+  const canBeSubmitted = () => {
+    return _.some(form, _.isEmpty);
   };
 
   const handleImageUpload = (files) => {
@@ -179,7 +154,7 @@ function UploadProperty(props) {
                         <AppButton
                           variant="contained"
                           color="secondary"
-                          disabled={loading}
+                          disabled={loading || canBeSubmitted()}
                           onClick={
                             activeStep === steps.length - 1
                               ? handleSubmit
@@ -205,7 +180,7 @@ function UploadProperty(props) {
 const mapStateToProps = ({ propertyUpload, auth }) => {
   return {
     loading: propertyUpload.property.loading,
-    data: propertyUpload.property.data,
+    form: propertyUpload.property.form,
     countries: auth.location.countries,
     states: auth.location.states,
     lgas: auth.location.lgas,

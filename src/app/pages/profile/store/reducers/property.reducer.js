@@ -57,7 +57,7 @@ const initialState = {
     limit: 0,
     total: 0,
   },
-  data: { ...formData },
+  form: { ...formData },
 };
 
 const propertyReducer = (state = initialState, action) => {
@@ -90,7 +90,7 @@ const propertyReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        data: { ...formData },
+        form: { ...formData },
       };
     }
     case Actions.ADD_PROPERTY_ERROR: {
