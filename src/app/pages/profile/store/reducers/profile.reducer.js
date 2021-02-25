@@ -8,10 +8,48 @@ const initialState = {
     open: false,
     data: null,
   },
+  formModel: {
+    company: {
+      address: {
+        city: "",
+        country: "",
+        houseNoAddress: "",
+        id: 0,
+        latitude: "",
+        lga: "",
+        longitude: "",
+        postCode: "",
+        state: "",
+      },
+      name: "",
+    },
+    individualUser: {
+      address: {
+        city: "",
+        country: "",
+        houseNoAddress: "",
+        id: 0,
+        latitude: "",
+        lga: "",
+        longitude: "",
+        postCode: "",
+        state: "",
+      },
+      fullName: "",
+    },
+    phone: "",
+    role: "",
+  },
 };
 
 const profileReducer = (state = initialState, action) => {
   switch (action.type) {
+    case Actions.UPDATE_PROGRESS: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
     case Actions.UPDATE_PROFILE_SUCCESS: {
       return {
         ...state,

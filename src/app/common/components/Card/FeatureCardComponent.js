@@ -13,20 +13,23 @@ import {
 import { Skeleton } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
-  media: {
-    position: "relative",
-    "&::before": {
-      position: "absolute",
-      content: "'Rent'",
-      top: 0,
-      right: 0,
-      width: "100px",
-      height: "40px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      color: theme.palette.primary.contrastText,
-      backgroundColor: theme.palette.primary.main,
+  root: {
+    "& .MuiCardMedia-root": {
+      backgroundSize: "contain",
+      position: "relative",
+      "&::before": {
+        position: "absolute",
+        content: "'Rents'",
+        top: 0,
+        right: 0,
+        width: "100px",
+        height: "40px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: theme.palette.primary.contrastText,
+        backgroundColor: theme.palette.primary.main,
+      },
     },
   },
 }));
@@ -36,13 +39,17 @@ export default function FeatureCardComponent(props) {
   const { property } = props;
 
   return (
-    <Card className={clsx(classes.card, "flex-1 w-3/12")} variant="outlined">
+    <Card className={clsx(classes.root, "flex-1 w-3/12")} variant="outlined">
       <CardMedia
         className={classes.media}
         classes={{
           root: "w-full h-48",
         }}
-        image="https://image.freepik.com/free-photo/industrial-park-factory-building-warehouse_1417-1913.jpg"
+        image={
+          property && property.images.length
+            ? property.images[0].imageUrl
+            : "/assets/images/icons/picture.svg"
+        }
         title="demo"
       />
       <CardContent className="text-center">

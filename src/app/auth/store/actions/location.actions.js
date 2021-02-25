@@ -29,16 +29,17 @@ export function getStateByCountry(country) {
   const request = axios.get(`/state/${country}`);
 
   return (dispatch) =>
-    request.then((response) =>
+    request.then((response) => {
       dispatch({
         type: GET_STATES_BY_COUNTRY,
         payload: response.data,
-      })
-    );
+      });
+    });
 }
 
 export function getLgaByState(state) {
   const request = axios.get(`/lga/${state}`);
+  console.log(request, "request all lgas");
 
   return (dispatch) =>
     request.then((response) =>

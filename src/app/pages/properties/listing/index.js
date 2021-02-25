@@ -6,10 +6,14 @@ import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Divider, Tabs, Tab } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
-import { AppBreadcrumbs, TabPanel } from "../../../common/components";
+import {
+  AppBreadcrumbs,
+  TabPanel,
+  PropertyCard,
+} from "../../../common/components";
 import BuyForm from "./components/BuyForm";
 import RentForm from "./components/RentForm";
-import PropertyCard from "./../components/PropertyCard";
+// import PropertyCard from "./../components/PropertyCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -93,7 +97,7 @@ export default function Listing(props) {
                 <Fragment key={i}>
                   <PropertyCard property={property} />
 
-                  {_.range(0, 1).length !== i && (
+                  {properties.entities.length !== i && (
                     <Divider className={classes.divider} />
                   )}
                 </Fragment>

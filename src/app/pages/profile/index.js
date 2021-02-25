@@ -216,7 +216,7 @@ function ProfileApp(props) {
   );
 }
 
-const mapStateToProps = ({ profileApp }) => {
+const mapStateToProps = ({ profileReducer }) => {
   return {};
 };
 
@@ -231,6 +231,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default withReducer(
-  "profileApp",
+  "profileReducer",
   reducer
 )(withRouter(connect(mapStateToProps, mapDispatchToProps)(ProfileApp)));

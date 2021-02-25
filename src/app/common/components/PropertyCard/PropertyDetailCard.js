@@ -1,12 +1,17 @@
 import React from "react";
-import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardMedia, CardContent, Icon } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
+import Thumbnail from "./../Thumbnail/Thumbnail";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
+  card: {
+    "& .MuiCardMedia-root": {
+      backgroundSize: "cover",
+    },
+  },
 }));
 
 export default function PropertyDetailCard(props) {
@@ -35,23 +40,19 @@ export default function PropertyDetailCard(props) {
         )}
       </div>
 
-      <Card>
+      <Card className={classes.card}>
         <CardMedia
           className="h-80 md:h-80"
-          image="https://image.freepik.com/free-photo/house-key-home-insurance-broker-agent-s-hand-protection_1150-14910.jpg"
+          image={
+            property && property.images.length
+              ? property.images[0].imageUrl
+              : "/assets/images/icons/picture.svg"
+          }
           title="Live property details"
         />
         <CardContent>
-          <div className="flex items-center justify-around space-x-6 overflow-x-auto">
-            {_.range(0, 4).map((thumb, i) => (
-              <Card key={i}>
-                <CardMedia
-                  className="h-40 w-40"
-                  image="https://image.freepik.com/free-photo/house-key-home-insurance-broker-agent-s-hand-protection_1150-14910.jpg"
-                  title={`thumbnail ${i + 1}`}
-                />
-              </Card>
-            ))}
+          <div>
+            <Thumbnail images={property && property.images} />
           </div>
 
           <div className="flex items-center flex-wrap space-x-2 mt-5">

@@ -4,19 +4,18 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   smart: {
-    "& > img:first-child": {
+    "& > img": {
       position: "absolute",
-      top: "-120px",
       bottom: 0,
+      zIndex: theme.zIndex.appBar - 1,
+    },
+    "& > img:first-child": {
+      top: "-120px",
       right: 180,
-      zIndex: theme.zIndex.drawer,
     },
     "& > img:last-child": {
-      position: "absolute",
       top: "-80px",
-      bottom: 0,
       right: 0,
-      zIndex: theme.zIndex.drawer,
     },
   },
 }));

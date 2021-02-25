@@ -3,7 +3,6 @@ import { showSnackbar } from "./../../../store/actions";
 import history from "./../../../history";
 
 export const SET_USER_DATA = "[AUTH] SET_USER_DATA";
-
 export const REMOVE_USER_DATA = "[AUTH] REMOVE_USER_DATA";
 
 export const LOGOUT_SUCCESS = "[AUTH] LOGOUT_SUCCESS";

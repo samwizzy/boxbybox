@@ -1,14 +1,30 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import clsx from "clsx";
+import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardContent, CardMedia } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& .MuiCardMedia-root": {
+      backgroundSize: "contain",
+    },
+  },
+}));
+
 export default function FeaturedCardComponent({ property }) {
+  const classes = useStyles();
+
   return (
-    <Card className="grid grid-cols-2">
+    <Card className={clsx(classes.root, "grid grid-cols-2")}>
       <CardMedia
-        image="https://image.freepik.com/free-photo/house-key-home-insurance-broker-agent-s-hand-protection_1150-14910.jpg"
+        image={
+          property && property.images.length
+            ? property.images[0].imageUrl
+            : "/assets/images/icons/picture.svg"
+        }
         title="featured"
       />
       <CardContent>

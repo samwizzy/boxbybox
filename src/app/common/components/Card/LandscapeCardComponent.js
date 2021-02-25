@@ -1,13 +1,16 @@
 import React from "react";
 import BoxUtils from "./../../../utils/BoxUtils";
+import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Card, CardContent, CardMedia, Icon } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
-  media: {
-    backgroundSize: "80px",
+  root: {
+    "& .MuiCardMedia-root": {
+      backgroundSize: "contain",
+    },
   },
   button: {
     marginBottom: theme.spacing(2),
@@ -19,10 +22,14 @@ export default function LandscapeCardComponent({ property }, props) {
   const classes = useStyles(props);
 
   return (
-    <Card className="md:grid md:grid-cols-2 gap-4 mb-4">
+    <Card className={clsx(classes.root, "md:grid md:grid-cols-2 gap-4 mb-4")}>
       <CardMedia
         className="h-64 md:h-auto"
-        image="https://image.freepik.com/free-photo/house-key-home-insurance-broker-agent-s-hand-protection_1150-14910.jpg"
+        image={
+          property && property.images.length
+            ? property.images[0].imageUrl
+            : "/assets/images/icons/picture.svg"
+        }
         title="Live property"
       />
       <CardContent className="flex flex-col items-start">
