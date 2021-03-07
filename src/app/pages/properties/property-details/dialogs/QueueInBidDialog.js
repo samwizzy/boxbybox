@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import BoxUtils from "./../../../../utils/BoxUtils";
+import BoxUtils from "../../../../utils/BoxUtils";
 import { useSelector, useDispatch } from "react-redux";
-import * as Actions from "./../../store/actions";
+import * as Actions from "../../store/actions";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppButton } from "../../../../common/components";
 import {
@@ -33,10 +33,6 @@ function QueueInBidDialog(props) {
     propertyId: 0,
     units: 0,
   });
-
-  // console.log(dialog, "queue in bid shit dialog");
-  // console.log(bids, "queue in bid shit units");
-  // console.log(form, "queue in bid shit form");
 
   useEffect(() => {
     if (dialog.data) {
@@ -121,7 +117,6 @@ function QueueInBidDialog(props) {
 
       <DialogActions>
         <AppButton
-          size="small"
           variant="contained"
           color="secondary"
           onClick={() => dispatch(Actions.openConfirmBidDialog(form))}

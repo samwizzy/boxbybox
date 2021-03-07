@@ -5,7 +5,7 @@ export const NewsConfig = {
   routes: [
     {
       path: "/news",
-      component: loadable(() => import("./")),
+      component: loadable(() => import(".")),
     },
     {
       path: "/new",

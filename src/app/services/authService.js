@@ -1,5 +1,6 @@
 import axios from "axios";
 import BoxUtils from "../utils/BoxUtils";
+import { whiteLists } from "./urlConfig";
 
 class authService extends BoxUtils.EventEmitter {
   init() {
@@ -18,6 +19,7 @@ class authService extends BoxUtils.EventEmitter {
             err.response &&
             err.response.status === 401 &&
             err.config &&
+            !whiteLists.includes(err.config.url) &&
             !err.config.__isRetryRequest
           ) {
             // if you ever get an unauthorized response, logout the user
@@ -50,8 +52,11 @@ class authService extends BoxUtils.EventEmitter {
   };
 
   createUser = (data) => {
+    const request = axios.post("/users", data);
+    console.dir(request);
+
     return new Promise((resolve, reject) => {
-      axios.post("/users", data).then((response) => {
+      request.then((response) => {
         if (response.status === 201) {
           resolve(response.data);
         } else {

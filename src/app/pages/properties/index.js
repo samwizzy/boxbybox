@@ -24,10 +24,9 @@ function PropertyApp(props) {
 }
 
 const mapStateToProps = ({ propertyApp }) => {
-  console.log(propertyApp, "propertyApp from index propertyApp");
   return {
     properties: propertyApp.property.properties,
-    ipoStakes: propertyApp.ipostakes.boxlots,
+    boxpiles: propertyApp.boxpiles.boxlots,
   };
 };
 

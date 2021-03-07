@@ -9,10 +9,6 @@ import {
   DialogContent,
   DialogActions,
   MenuItem,
-  Table,
-  TableBody,
-  TableRow,
-  TableCell,
   TextField,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
@@ -33,8 +29,9 @@ function MergeSublotDialog(props) {
   const classes = useStyles(props);
   const dispatch = useDispatch();
   const dialog = useSelector(
-    ({ profileListing }) => profileListing.listing.mergeSublotDialog
+    ({ boxpilesReducer }) => boxpilesReducer.ipostakes.mergeSublotDialog
   );
+  const { data } = dialog;
 
   return (
     <Dialog
@@ -46,38 +43,21 @@ function MergeSublotDialog(props) {
       maxWidth="sm"
     >
       <DialogContent>
-        <div className="flex items-center space-x-2">
-          <div>
-            <img
-              src="https://image.freepik.com/free-vector/logo-template-design_1289-160.jpg"
-              alt=""
-              height="180px"
-            />
-          </div>
-          <div>
-            <Table size="small" className={classes.table}>
-              <TableBody>
-                <TableRow>
-                  <TableCell>
-                    <strong>Property ID:</strong>
-                  </TableCell>
-                  <TableCell>S001XXXEN/1/40/5/JD</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <strong>BBB Hierachy:</strong>
-                  </TableCell>
-                  <TableCell>21th</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <strong>Market Price:</strong>
-                  </TableCell>
-                  <TableCell>{BoxUtils.formatCurrency(105)}</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </div>
+        <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt className="text-sm font-medium text-gray-500">Property ID</dt>
+          <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+            {data?.property.propertyRef}
+          </dd>
+          <dt className="text-sm font-medium text-gray-500">Market Price</dt>
+          <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+            {BoxUtils.formatCurrency(data?.property?.price)}
+          </dd>
+          <dt className="text-sm font-medium text-gray-500">
+            Purchased Amount
+          </dt>
+          <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+            {BoxUtils.formatCurrency(data?.purchaseAmount)}
+          </dd>
         </div>
 
         <div className="flex flex-col items-center">

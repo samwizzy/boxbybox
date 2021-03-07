@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { connect, useDispatch } from "react-redux";
-import withReducer from "./../../../../store/withReducer";
-import reducer from "../../store/reducers";
+import { useSelector, useDispatch } from "react-redux";
 import * as Actions from "../../store/actions";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppButton } from "../../../../common/components";
@@ -22,13 +20,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ConfirmBidDialog(props) {
+function ConfirmBoxpileDialog(props) {
   const classes = useStyles();
-  const { dialog } = props;
   const dispatch = useDispatch();
   const [state, setState] = useState(false);
+  const dialog = useSelector(
+    ({ boxpileApp }) => boxpileApp.boxpiles.confirmBoxpileDialog
+  );
 
-  console.log(dialog.data, "ConfirmBidDialog diakog");
+  console.log(dialog, "dialog confirm boxpile me going dialog");
 
   const handleChange = (event) => {
     setState(event.target.checked);
@@ -38,15 +38,15 @@ function ConfirmBidDialog(props) {
     <Dialog
       className={classes.root}
       open={dialog.open}
-      onClose={() => dispatch(Actions.closeConfirmBidDialog())}
-      aria-labelledby="bid-offers-payment"
+      onClose={() => dispatch(Actions.closeConfirmBoxpileDialog())}
+      aria-labelledby="confirm-ipo-stake"
       fullWidth
       maxWidth="xs"
     >
       <DialogContent>
         <div className="text-center p-8">
           <h3 className="text-lg font-medium text-gray-600 mb-4">
-            You are about to submit a bid.
+            Are you sure you want to purchase this <em>boxpile</em>.
           </h3>
           <span className="mt-8 text-xs">
             <FormControlLabel
@@ -67,24 +67,17 @@ function ConfirmBidDialog(props) {
 
       <DialogActions>
         <AppButton
+          size="small"
+          disabled={!dialog.data}
           variant="contained"
           color="secondary"
-          onClick={() => dispatch(Actions.bidForIpoStake(dialog.data))}
+          onClick={() => dispatch(Actions.buyBoxPile(dialog.data))}
         >
-          Confirm bid
+          Yes, i want to buy
         </AppButton>
       </DialogActions>
     </Dialog>
   );
 }
 
-const mapStateToProps = ({ bidReducer }) => {
-  return {
-    dialog: bidReducer.bids.confirmBidDialog,
-  };
-};
-
-export default withReducer(
-  "bidReducer",
-  reducer
-)(connect(mapStateToProps, null)(ConfirmBidDialog));
+export default ConfirmBoxpileDialog;

@@ -2,12 +2,12 @@ import { combineReducers } from "redux";
 import property from "./property.reducer";
 import offers from "./offers.reducer";
 import bids from "./bids.reducer";
-import ipostakes from "./ipo_stakes.reducer";
+import boxpiles from "./boxpiles.reducer";
 
 const propertyReducers = combineReducers({
   property,
   offers,
-  ipostakes,
+  boxpiles,
   bids,
 });
 

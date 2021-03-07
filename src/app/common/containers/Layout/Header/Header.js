@@ -100,6 +100,11 @@ export default withRouter(function Header(props) {
     dispatch(Actions.openDialog());
   };
 
+  const handleLogout = () => {
+    dispatch(Actions.logout());
+    handleClose();
+  };
+
   return (
     <div>
       <AppBar
@@ -204,7 +209,11 @@ export default withRouter(function Header(props) {
                         </ListItemIcon>
                         <ListItemText className="pl-0" primary="Profile" />
                       </MenuItem>
-                      <MenuItem component={Link} to="/logout">
+                      <MenuItem
+                        component={Link}
+                        to="/logout"
+                        onClick={handleLogout}
+                      >
                         <ListItemIcon className={classes.listIcon}>
                           <Icon>lock</Icon>
                         </ListItemIcon>

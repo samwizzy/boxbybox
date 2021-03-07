@@ -32,8 +32,8 @@ export function getWalletBalance() {
     );
 }
 
-export function getWalletTransactions() {
-  const request = axios.get("/auth/wallet-transactions");
+export function getWalletTransactions(page = 0) {
+  const request = axios.get("/auth/wallet-transactions?page=" + page);
 
   return (dispatch) =>
     request.then((response) =>
@@ -79,12 +79,16 @@ export function verifyPayment(transactionRef, paymentGateway = "PAYSTACK") {
     `/auth/payment-verification/${paymentGateway}/${transactionRef}`
   );
 
+  console.dir(request);
+
   return (dispatch) =>
     request.then((response) =>
-      dispatch({
-        type: VERIFY_PAYMENT,
-        payload: response.data,
-      })
+      Promise.all([
+        dispatch({
+          type: VERIFY_PAYMENT,
+          payload: response.data,
+        }),
+      ]).then(dispatch(closeVerifyPaymentDialog()))
     );
 }
 

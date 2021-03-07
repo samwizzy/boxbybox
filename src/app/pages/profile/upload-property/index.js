@@ -72,7 +72,7 @@ function UploadProperty(props) {
   };
 
   const canBeSubmitted = () => {
-    return _.some(form, _.isEmpty);
+    return _.some(form, _.isNull);
   };
 
   const handleImageUpload = (files) => {
@@ -154,7 +154,11 @@ function UploadProperty(props) {
                         <AppButton
                           variant="contained"
                           color="secondary"
-                          disabled={loading || canBeSubmitted()}
+                          disabled={
+                            loading ||
+                            (canBeSubmitted() &&
+                              activeStep === steps.length - 1)
+                          }
                           onClick={
                             activeStep === steps.length - 1
                               ? handleSubmit

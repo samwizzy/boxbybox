@@ -10,8 +10,13 @@ export const ProfileConfig = {
       component: ProfileDetails,
     },
     {
-      path: "/profile/listing/:listType?",
+      path: "/profile/properties",
+      exact: true,
       component: loadable(() => import("./listings")),
+    },
+    {
+      path: "/profile/properties/:propertyId/boxpiles",
+      component: loadable(() => import("./boxpiles")),
     },
     {
       path: "/profile/wallet",

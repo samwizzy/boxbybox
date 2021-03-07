@@ -38,11 +38,14 @@ function Bids(props) {
   const [value, setValue] = useState(0);
   const dispatch = useDispatch();
   const bids = useSelector(({ bidsApp }) => bidsApp.bids.bids);
+  const offers = useSelector(({ bidsApp }) => bidsApp.offers.offers);
 
   console.log(bids, "bids state live");
+  console.log(offers, "offers state live");
 
   useEffect(() => {
     dispatch(Actions.getBids());
+    dispatch(Actions.getOffers());
   }, [dispatch]);
 
   const handleTabChange = (event, newValue) => {
@@ -64,9 +67,9 @@ function Bids(props) {
                   value={value}
                   onChange={handleTabChange}
                   centered
-                  aria-label="bids-offers"
+                  aria-label="live-bids"
                 >
-                  <Tab label="My Bids" {...a11yProps(0)} />
+                  <Tab label="Live Bids" {...a11yProps(0)} />
                   <Tab label="Offers Received" {...a11yProps(1)} />
                 </Tabs>
               </AppBar>
@@ -75,7 +78,7 @@ function Bids(props) {
                   <MyBids bids={bids} />
                 </TabPanel>
                 <TabPanel value={value} index={1} nopadding>
-                  <MyOffers offers={bids} />
+                  <MyOffers offers={offers} />
                 </TabPanel>
               </div>
             </div>

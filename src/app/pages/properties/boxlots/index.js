@@ -18,7 +18,9 @@ import {
 } from "@material-ui/core";
 import { Alert, AlertTitle, Pagination, Skeleton } from "@material-ui/lab";
 import { AppBreadcrumbs, AppButton } from "../../../common/components";
-import BuyIpoStakeDialog from "../property-details/dialogs/BuyIpoStakeDialog";
+import ConfirmBoxpileDialog from "./components/ConfirmBoxpileDialog";
+import BuyIpoStakeDialog from "./../property-details/dialogs/BuyIpoStakeDialog";
+import ConfirmIpoStakeDialog from "./../property-details/dialogs/ConfirmIpoStakeDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -37,29 +39,36 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Boxlots(props) {
+function BoxPiles(props) {
   const classes = useStyles(props);
   const dispatch = useDispatch();
   const {
     boxlots,
     property,
+    getPropertyById,
     getIpoStakeByPropertyId,
     openIpoStakeDialog,
+    openConfirmBoxpileDialog,
+    user,
     match,
   } = props;
   const { params } = match;
   console.log(params, "params get boxlot by property");
-  console.log(boxlots, "boxlots by property");
+  console.log(boxlots, "boxlots by property sam");
   console.log(property, "property by property");
 
   useEffect(() => {
+    getPropertyById(params.id);
     getIpoStakeByPropertyId(params.id);
     return () => {};
-  }, [getIpoStakeByPropertyId, params]);
+  }, [getIpoStakeByPropertyId, getPropertyById, params]);
 
   const handlePaginate = (event, page) => {
     dispatch(Actions.getIpoStakeByPropertyId(params.id, page - 1));
   };
+
+  console.log(user, "user");
+  console.log(boxlots, "boxlots");
 
   return (
     <div className={clsx(classes.root, "container")}>
@@ -73,14 +82,14 @@ function Boxlots(props) {
                     Properties: "/properties",
                     [property.propertyRef]: `/property/${property.id}`,
                   }}
-                  current="Boxlots"
+                  current="Boxpiles"
                 />
               ) : (
                 <Skeleton />
               )}
 
               <h3 className="text-gray-800 font-medium text-lg my-4">
-                Boxlots
+                Boxpiles
               </h3>
               <Divider className={classes.divider} />
 
@@ -88,17 +97,27 @@ function Boxlots(props) {
                 <Alert severity="info">
                   <AlertTitle>Hey there!</AlertTitle>
                   <div className="flex items-center space-x-4">
-                    There are no boxlots on this property yet —&nbsp;
+                    There are no boxpiles on this property yet —&nbsp;
                     <strong>be the first to stake now!</strong>
                     {property ? (
-                      <AppButton
-                        variant="contained"
-                        color="secondary"
-                        disabled={!property.unitsAvailable}
-                        onClick={() => openIpoStakeDialog(property)}
-                      >
-                        Buy Boxlot
-                      </AppButton>
+                      <div className="flex flex-col items-start space-y-2">
+                        <AppButton
+                          variant="contained"
+                          color="secondary"
+                          disabled={
+                            !property.unitsAvailable ||
+                            user.id === property.createdBy.id
+                          }
+                          onClick={() => openIpoStakeDialog(property)}
+                        >
+                          Buy Boxpile
+                        </AppButton>
+                        {user.id === property.createdBy.id && (
+                          <em className="text-xs text-gray-600">
+                            You can not obtain boxpile on your own property
+                          </em>
+                        )}
+                      </div>
                     ) : (
                       <Skeleton />
                     )}
@@ -153,9 +172,10 @@ function Boxlots(props) {
                       <AppButton
                         color="secondary"
                         variant="contained"
-                        onClick={() => openIpoStakeDialog(property)}
+                        disabled={!boxlot.isForSale}
+                        onClick={() => openConfirmBoxpileDialog(boxlot.id)}
                       >
-                        Buy Boxlot
+                        {boxlot.isForSale ? "Buy Boxpile" : "Not for Sale"}
                       </AppButton>
                     </div>
                   </div>
@@ -176,6 +196,8 @@ function Boxlots(props) {
               )}
 
               <BuyIpoStakeDialog />
+              <ConfirmIpoStakeDialog />
+              <ConfirmBoxpileDialog />
             </div>
           </div>
         </div>
@@ -184,26 +206,29 @@ function Boxlots(props) {
   );
 }
 
-const mapStateToProps = ({ boxlotApp }, state) => {
+const mapStateToProps = ({ auth, boxpileApp }, state) => {
   console.log(state, "state store");
-  console.log(boxlotApp, "propertyApp from index propertyApp");
+  console.log(boxpileApp, "propertyApp from index propertyApp");
   return {
-    boxlots: boxlotApp.ipostakes.boxlots,
-    property: boxlotApp.property.property,
+    boxlots: boxpileApp.boxpiles.boxlots,
+    property: boxpileApp.property.property,
+    user: auth.user.data,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
+      getPropertyById: Actions.getPropertyById,
       getIpoStakeByPropertyId: Actions.getIpoStakeByPropertyId,
       openIpoStakeDialog: Actions.openIpoStakeDialog,
+      openConfirmBoxpileDialog: Actions.openConfirmBoxpileDialog,
     },
     dispatch
   );
 };
 
 export default withReducer(
-  "boxlotApp",
+  "boxpileApp",
   reducer
-)(withRouter(connect(mapStateToProps, mapDispatchToProps)(Boxlots)));
+)(withRouter(connect(mapStateToProps, mapDispatchToProps)(BoxPiles)));

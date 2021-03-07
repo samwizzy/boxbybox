@@ -52,8 +52,6 @@ function SellBoxlotDialog(props) {
     setForm({ ...form, [event.target.name]: event.target.value });
   };
 
-  console.log(form, "put ipo up for sale");
-
   return (
     <Dialog
       className={classes.root}

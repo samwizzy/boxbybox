@@ -1,6 +1,10 @@
 import axios from "axios";
+import { showSnackbar } from "./../../../../store/actions";
 
 export const GET_USER_IPO_STAKES = "[IPOSTAKE] GET_USER_IPO_STAKES";
+
+export const GET_USER_BOXPILES_BY_PROPERTY_ID =
+  "[IPOSTAKE] GET_USER_BOXPILES_BY_PROPERTY_ID";
 
 export const ADD_IPO_STAKE_BY_ID_SUCCESS =
   "[IPOSTAKE] ADD_IPO_STAKE_BY_ID_SUCCESS";
@@ -38,8 +42,6 @@ export const CLOSE_CONFIRM_SPLIT_DIALOG =
 export function getUserIpoStakes(propertyId) {
   // const request = axios.get(`/auth/users/ipo-stake?propertyId=${propertyId}`);
   const request = axios.get(`/auth/ipo-stake`);
-
-  console.log(request, "request get ipo stakes on property");
 
   return (dispatch) =>
     request.then((response) =>
@@ -79,10 +81,20 @@ export function mergeIpoStake(data) {
 
   return (dispatch) =>
     request.then((response) =>
-      dispatch({
-        type: MERGE_IPO_STAKE_SUCCESS,
-        payload: response.data,
-      })
+      Promise.all([
+        dispatch({
+          type: MERGE_IPO_STAKE_SUCCESS,
+          payload: response.data,
+        }),
+      ]).then(
+        dispatch(
+          showSnackbar({
+            message: `${data.ipos.length} Boxpiles have been merged successfully`,
+          })
+        ),
+        dispatch(closeConfirmMergeDialog()),
+        window.location.reload()
+      )
     );
 }
 
@@ -92,23 +104,57 @@ export function putIpoStakeForSale(data) {
   console.log(request, "putIpoStakeForSale request");
 
   return (dispatch) =>
-    request.then((response) =>
-      dispatch({
-        type: PUT_IPO_STAKE_FOR_SALE_SUCCESS,
-        payload: response.data,
+    request
+      .then((response) => {
+        Promise.all([
+          dispatch({
+            type: PUT_IPO_STAKE_FOR_SALE_SUCCESS,
+            payload: response.data,
+          }),
+        ]).then(
+          dispatch(
+            showSnackbar({
+              message: "Your Boxpile has successfully been put up for sale",
+            })
+          ),
+          dispatch(closeSellSublotDialog()),
+          dispatch(closeConfirmSaleDialog())
+        );
       })
-    );
+      .catch((error) => {
+        console.dir(error, "error put up for sale");
+        dispatch(
+          showSnackbar({
+            message: error.response.data.message,
+            variant: "error",
+          })
+        );
+        dispatch(closeSellSublotDialog());
+        dispatch(closeConfirmSaleDialog());
+      });
 }
 
 export function splitIpoStake(ipoStakeId) {
   const request = axios.put("/auth/ipo-stake/split/" + ipoStakeId);
 
+  console.log(request, "request splitted boxlile erequest");
+
   return (dispatch) =>
     request.then((response) =>
-      dispatch({
-        type: SPLIT_IPO_STAKE_SUCCESS,
-        payload: response.data,
-      })
+      Promise.all([
+        dispatch({
+          type: SPLIT_IPO_STAKE_SUCCESS,
+          payload: response.data,
+        }),
+      ]).then(
+        dispatch(
+          showSnackbar({
+            message: `Your Boxpile have been splitted successfully`,
+          })
+        ),
+        dispatch(closeConfirmSplitDialog()),
+        window.location.reload()
+      )
     );
 }
 
@@ -119,6 +165,18 @@ export function getIpoStakeById(propertyId) {
     request.then((response) =>
       dispatch({
         type: GET_IPO_STAKE_BY_ID_SUCCESS,
+        payload: response.data,
+      })
+    );
+}
+
+export function getUserIpoStakeByPropertyId(propertyId) {
+  const request = axios.get("/auth/users/ipo-stake?propertyId=" + propertyId);
+
+  return (dispatch) =>
+    request.then((response) =>
+      dispatch({
+        type: GET_USER_BOXPILES_BY_PROPERTY_ID,
         payload: response.data,
       })
     );

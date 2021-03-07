@@ -17,6 +17,14 @@ const initialState = {
     open: false,
     data: null,
   },
+  counterBidDialog: {
+    open: false,
+    data: null,
+  },
+  updateBidDialog: {
+    open: false,
+    data: null,
+  },
 };
 
 const bidsReducer = (state = initialState, action) => {
@@ -31,6 +39,18 @@ const bidsReducer = (state = initialState, action) => {
       return {
         ...state,
         error: action.payload,
+      };
+    }
+    case Actions.COUNTER_BID_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
+      };
+    }
+    case Actions.UPDATE_BID_SUCCESS: {
+      return {
+        ...state,
+        loading: false,
       };
     }
     case Actions.GET_BID_BY_ID_SUCCESS: {
@@ -82,6 +102,36 @@ const bidsReducer = (state = initialState, action) => {
       return {
         ...state,
         confirmBidDialog: { open: false, data: null },
+      };
+    }
+    case Actions.OPEN_COUNTER_BID_DIALOG: {
+      return {
+        ...state,
+        counterBidDialog: {
+          open: true,
+          data: action.payload,
+        },
+      };
+    }
+    case Actions.CLOSE_COUNTER_BID_DIALOG: {
+      return {
+        ...state,
+        counterBidDialog: { open: false, data: null },
+      };
+    }
+    case Actions.OPEN_UPDATE_BID_DIALOG: {
+      return {
+        ...state,
+        updateBidDialog: {
+          open: true,
+          data: action.payload,
+        },
+      };
+    }
+    case Actions.CLOSE_UPDATE_BID_DIALOG: {
+      return {
+        ...state,
+        updateBidDialog: { open: false, data: null },
       };
     }
     default:

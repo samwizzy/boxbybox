@@ -84,10 +84,12 @@ function PropertyListing(props) {
   const classes = useStyles(props);
   const [value, setValue] = useState(0);
   const {
-    userIpoStakedProperties,
+    propertiesWithBoxpiles,
+    userProperties,
     userPropertiesOnRent,
     userPropertiesOnSale,
     getUserPropertiesWithIpoStake,
+    getUserProperties,
     getPropertiesOnRent,
     getPropertiesOnSale,
     openSellSublotDialog,
@@ -97,14 +99,22 @@ function PropertyListing(props) {
 
   useEffect(() => {
     getUserPropertiesWithIpoStake();
+    getUserProperties();
     getPropertiesOnRent();
     getPropertiesOnSale();
     return () => {};
-  }, [getUserPropertiesWithIpoStake, getPropertiesOnRent, getPropertiesOnSale]);
+  }, [
+    getUserPropertiesWithIpoStake,
+    getUserProperties,
+    getPropertiesOnRent,
+    getPropertiesOnSale,
+  ]);
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  console.log(userProperties, "userProperties");
 
   return (
     <div className="container">
@@ -127,7 +137,7 @@ function PropertyListing(props) {
                     aria-label="ant example"
                     className={classes.tabs}
                   >
-                    <AntTab label="Boxlots" {...a11yProps(0)} />
+                    <AntTab label="My Properties" {...a11yProps(0)} />
                     <AntTab label="My Rental Listing" {...a11yProps(1)} />
                     <AntTab label="My Sales Listing" {...a11yProps(2)} />
                   </AntTabs>
@@ -137,7 +147,7 @@ function PropertyListing(props) {
             <Grid item xs={12} md={9}>
               {value === 0 && (
                 <BoxlotListing
-                  properties={userIpoStakedProperties}
+                  properties={propertiesWithBoxpiles}
                   openSellSublotDialog={openSellSublotDialog}
                   openMergeSublotDialog={openMergeSublotDialog}
                   openConfirmSplitDialog={openConfirmSplitDialog}
@@ -173,7 +183,8 @@ function PropertyListing(props) {
 
 const mapStateToProps = ({ profileListing }) => {
   return {
-    userIpoStakedProperties: profileListing.property.userIpoStakedProperties,
+    propertiesWithBoxpiles: profileListing.property.userBoxpiles,
+    userProperties: profileListing.property.userProperties,
     userPropertiesOnRent: profileListing.property.userPropertiesOnRent,
     userPropertiesOnSale: profileListing.property.userPropertiesOnSale,
   };
@@ -183,6 +194,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
       getUserPropertiesWithIpoStake: Actions.getUserPropertiesWithIpoStake,
+      getUserProperties: Actions.getUserProperties,
       getPropertiesOnRent: Actions.getPropertiesOnRent,
       getPropertiesOnSale: Actions.getPropertiesOnSale,
       openSellSublotDialog: Actions.openSellSublotDialog,

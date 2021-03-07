@@ -4,10 +4,12 @@ import * as Actions from "./../../store/actions";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Tabs, Tab } from "@material-ui/core";
-import Pagination from "@material-ui/lab/Pagination";
 import { TabPanel } from "../../../../common/components";
 import ActiveBids from "./components/ActiveBids";
 import ExpiredBids from "./components/ExpiredBids";
+import CounteredBids from "./components/CounteredBids";
+import CounterBidDialog from "./../components/CounterBidDialog";
+import UpdateBidDialog from "./../components/UpdateBidDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -35,7 +37,6 @@ function Bids(props) {
   const [value, setValue] = useState(0);
   const dispatch = useDispatch();
   const { bids } = props;
-  // const bids = useSelector(({ bidsApp }) => bidsApp.bids.bids);
 
   console.log(bids, "bids state live");
 
@@ -60,8 +61,18 @@ function Bids(props) {
                   onChange={handleTabChange}
                   aria-label="live-bids"
                 >
-                  <Tab label="Active Bids ( 30 )" {...a11yProps(0)} />
-                  <Tab label="Expired Bids ( 10 )" {...a11yProps(1)} />
+                  <Tab
+                    label={`Active Bids ( ${bids.length} )`}
+                    {...a11yProps(0)}
+                  />
+                  <Tab
+                    label={`Expired Bids ( ${bids.length} )`}
+                    {...a11yProps(1)}
+                  />
+                  <Tab
+                    label={`Countered Bids ( ${bids.length} )`}
+                    {...a11yProps(2)}
+                  />
                 </Tabs>
               </AppBar>
               <div>
@@ -71,14 +82,16 @@ function Bids(props) {
                 <TabPanel value={value} index={1} nopadding>
                   <ExpiredBids bids={bids} />
                 </TabPanel>
-              </div>
-
-              <div className="flex items-center justify-center mt-16">
-                <Pagination count={10} variant="outlined" color="secondary" />
+                <TabPanel value={value} index={2} nopadding>
+                  <CounteredBids bids={bids} />
+                </TabPanel>
               </div>
             </div>
           </div>
         </div>
+
+        <CounterBidDialog />
+        <UpdateBidDialog />
       </div>
     </div>
   );

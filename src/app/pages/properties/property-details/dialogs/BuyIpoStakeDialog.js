@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import BoxUtils from "../../../../utils/BoxUtils";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, connect } from "react-redux";
+import withReducer from "./../../../../store/withReducer";
 import * as Actions from "../../store/actions";
+import reducer from "../../store/reducers";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppButton } from "../../../../common/components";
 import {
@@ -24,18 +26,16 @@ const useStyles = makeStyles((theme) => ({
 
 function BuyIpoStakeDialog(props) {
   const classes = useStyles(props);
+  const { dialog } = props;
+  const { data } = dialog;
   const [form, setForm] = useState({
     purchaseAmount: 0,
     unitsPurchased: 0,
   });
   const dispatch = useDispatch();
-  const dialog = useSelector(
-    ({ propertyDetails }) => propertyDetails.ipostakes.ipoStakeDialog
-  );
-  const { data } = dialog;
 
-  console.log(dialog, "dialog buy queue shit");
-  console.log(form, "form buy queue shit");
+  console.log(dialog, "dialog buy boxpile shit");
+  console.log(form, "form buy boxpile shit");
 
   const handleChange = (event) => {
     setForm({
@@ -47,23 +47,21 @@ function BuyIpoStakeDialog(props) {
     });
   };
 
-  // const handleConfirmDialog = () => {};
-
   return (
     <Dialog
       className={classes.root}
       open={dialog.open}
       onClose={() => dispatch(Actions.closeIpoStakeDialog())}
-      aria-labelledby="buy-boxlot"
+      aria-labelledby="buy-boxpile"
       fullWidth
       maxWidth="xs"
     >
-      <DialogTitle>Buy Boxlot</DialogTitle>
+      <DialogTitle>Buy Boxpile</DialogTitle>
       <DialogContent>
         <div className="text-center px-4">
           <h3 className="text-sm font-medium text-gray-600">
             Number of Available Units :{" "}
-            <span>{data && data.availableUnits}</span>
+            <span>{data && data.unitsAvailable}</span>
           </h3>
           <h4 className="text-sm font-normal text-gray-600 my-4">
             Make your Offer
@@ -78,6 +76,11 @@ function BuyIpoStakeDialog(props) {
                 onChange={handleChange}
                 variant="outlined"
                 size="small"
+                helperText={
+                  form.unitsPurchased > data?.unitsAvailable
+                    ? "Units can not be above the available units"
+                    : ""
+                }
                 fullWidth
               />
             </div>
@@ -93,10 +96,10 @@ function BuyIpoStakeDialog(props) {
 
       <DialogActions>
         <AppButton
-          size="small"
           variant="contained"
+          disabled={form.unitsPurchased > data?.unitsAvailable}
           color="secondary"
-          onClick={() => dispatch(Actions.openConfirmIpoStakeDialog(form))}
+          onClick={() => dispatch(Actions.openConfirmNewIpoStakeDialog(form))}
         >
           Buy
         </AppButton>
@@ -105,4 +108,13 @@ function BuyIpoStakeDialog(props) {
   );
 }
 
-export default BuyIpoStakeDialog;
+const mapStateToProps = ({ boxpileReducer }) => {
+  return {
+    dialog: boxpileReducer.boxpiles.boxpileDialog,
+  };
+};
+
+export default withReducer(
+  "boxpileReducer",
+  reducer
+)(connect(mapStateToProps, null)(BuyIpoStakeDialog));

@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BoxUtils from "../../../../utils/BoxUtils";
-import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import * as Actions from "./../../store/actions";
 import moment from "moment";
 import _ from "lodash";
+import { types } from "./../../../../utils/mock";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppButton } from "./../../../../common/components";
 import {
   Icon,
   IconButton,
-  Menu,
   MenuItem,
   Table,
   TableBody,
@@ -17,45 +18,106 @@ import {
   TableCell,
   TextField,
 } from "@material-ui/core";
+import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 import Pagination from "@material-ui/lab/Pagination";
 import SearchIcon from "@material-ui/icons/Search";
 
 const useStyles = makeStyles((theme) => ({
   table: {
     width: "100%",
-    "& td": { border: 0 },
+    "& td": { border: 0, verticalAlign: "top" },
   },
 }));
 
 function SalesListing(props) {
   const classes = useStyles(props);
+  const { properties } = props;
   const dispatch = useDispatch();
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedSublot, setSelectedSublot] = useState(null);
-  const { properties, openSellSublotDialog, openMergeSublotDialog } = props;
+  const [filteredProperties, setFilteredProperties] = useState({
+    ...properties,
+    entities: _.sortBy(properties.entities, "createdAt", "desc"),
+  });
+
+  const countries = useSelector(({ auth }) => auth.location.countries);
+  const [form, setForm] = useState({
+    searchText: "",
+    status: "",
+    type: "",
+    dateAdded: null,
+  });
+
+  useEffect(() => {
+    const { searchText, type, status, dateAdded } = form;
+    let searchedEntities = [...properties.entities];
+
+    if (searchText.length > 0) {
+      searchedEntities = properties.entities.filter((prop) => {
+        const regex = new RegExp(`^${searchText}`, "gi");
+        return prop.title.match(regex);
+      });
+    } else if (type.length > 0) {
+      searchedEntities = properties.entities.filter((prop) => {
+        return prop.type === type;
+      });
+    } else if (dateAdded) {
+      searchedEntities = properties.entities.filter((prop) => {
+        const createdAt = moment(prop.createdAt, ["DD-MM-YYYY"]).format(
+          "YYYY-MM-DD"
+        );
+        return moment(createdAt).isSame(dateAdded);
+      });
+    } else if (status.length > 0) {
+      searchedEntities = properties.entities.filter((prop) => {
+        return prop.status === status;
+      });
+    }
+
+    setFilteredProperties({
+      ...properties,
+      entities: _.sortBy(searchedEntities, "createdAt", "desc"),
+    });
+  }, [form, properties]);
+
+  const handleChange = (event) => {
+    setForm({ ...form, [event.target.name]: event.target.value });
+  };
+
+  const handleDateChange = (name) => (date) => {
+    setForm({
+      ..._.set(form, name, moment(date).format("YYYY-MM-DD")),
+    });
+  };
+
+  const handleFilter = () => {
+    const { searchText, type, dateAdded } = form;
+    if (searchText.length > 0 && type.length && dateAdded) {
+      let searchedEntities = properties.entities.filter((prop) => {
+        const regex = new RegExp(`^${searchText}`, "gi");
+        const createdAt = moment(prop.createdAt, ["DD-MM-YYYY"]).format(
+          "YYYY-MM-DD"
+        );
+        return (
+          (prop.title.match(regex) && prop.type === type) ||
+          moment(createdAt).isSame(dateAdded)
+        );
+      });
+
+      setFilteredProperties({ ...properties, entities: _.sortBy(searchedEntities, "createdAt", "desc")  });
+    }
+  };
 
   const handlePaginate = (event, page) => {
     dispatch(Actions.getProperties({ page: page - 1 }));
   };
 
-  const handleClick = (event) => {
-    setSelectedSublot();
-    setAnchorEl(event.currentTarget);
+  const canSubmit = () => {
+    return _.some(form, _.isEmpty);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const openSellSublot = () => {
-    openSellSublotDialog(selectedSublot);
-    handleClose();
-  };
-
-  const openMergeSublot = () => {
-    openMergeSublotDialog(selectedSublot);
-    handleClose();
-  };
+  console.log(filteredProperties, "filteredProperties for sales");
+  console.log(form, "form for sales");
+  console.log("hey friends");
 
   return (
     <div className="container">
@@ -70,8 +132,9 @@ function SalesListing(props) {
           <TextField
             id="search-by-title-id"
             label="Search by title or ID"
-            name="search"
-            value=""
+            name="searchText"
+            value={form.searchText}
+            onChange={handleChange}
             variant="outlined"
             margin="dense"
             InputProps={{
@@ -87,45 +150,64 @@ function SalesListing(props) {
             select
             label="Type"
             name="type"
-            value=""
+            value={form.type}
+            onChange={handleChange}
             variant="outlined"
             margin="dense"
             classes={{ root: "w-full md:w-40" }}
           >
             <MenuItem value="">Type</MenuItem>
+            {types.map((type, i) => (
+              <MenuItem key={i} value={type}>
+                {type}
+              </MenuItem>
+            ))}
           </TextField>
           <TextField
             id="status"
             select
             label="Status"
             name="status"
-            value=""
+            value={form.status}
+            onChange={handleChange}
             variant="outlined"
             margin="dense"
             classes={{ root: "w-full md:w-40" }}
           >
             <MenuItem value="">Status</MenuItem>
+            {["ACTIVE", "INACTIVE"].map((status, i) => (
+              <MenuItem key={i} value={status}>
+                {status}
+              </MenuItem>
+            ))}
           </TextField>
-          <TextField
-            id="date-added"
-            select
-            label="Date Added"
-            name="dateAdded"
-            value=""
-            variant="outlined"
-            margin="dense"
-            classes={{ root: "w-full md:w-40" }}
-          >
-            <MenuItem value="">Date Added</MenuItem>
-          </TextField>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <DatePicker
+              autoOk
+              format="dd MMMM yyyy"
+              minDate="1980-01-01"
+              id="date-added"
+              label="Date Added"
+              onChange={handleDateChange("dateAdded")}
+              value={form.dateAdded}
+              variant="inline"
+              inputVariant="outlined"
+              margin="dense"
+            />
+          </MuiPickersUtilsProvider>
           <div className="mt-2 md:mt-0" />
-          <AppButton variant="contained" color="secondary">
+          <AppButton
+            variant="contained"
+            color="secondary"
+            disabled={canSubmit()}
+            onClick={handleFilter}
+          >
             Filter
           </AppButton>
         </div>
 
         <div className="space-y-4">
-          {properties.entities.map((property, i) => (
+          {filteredProperties.entities.map((property, i) => (
             <div
               key={i}
               className="flex flex-col md:flex-row space-x-2 border-0 border-t border-solid border-gray-200"
@@ -143,9 +225,9 @@ function SalesListing(props) {
                     <TableBody>
                       <TableRow>
                         <TableCell>
-                          <strong>Property ID:</strong>
+                          <strong>Property Name:</strong>
                         </TableCell>
-                        <TableCell>{property.propertyRef}</TableCell>
+                        <TableCell>{property.title}</TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>
@@ -172,21 +254,34 @@ function SalesListing(props) {
                     <TableBody>
                       <TableRow>
                         <TableCell>
-                          <strong>BBB Hierachy:</strong>
+                          <strong>Location:</strong>
                         </TableCell>
-                        <TableCell>{moment().format("DD")}</TableCell>
+                        <TableCell>
+                          {`${property.address.houseNoAddress} ${
+                            property.address.city
+                          } ${
+                            countries &&
+                            _.find(countries, {
+                              id: Number(property.address.country),
+                            }).name
+                          }`}
+                        </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>
-                          <strong>Category:</strong>
+                          <strong>Property Ref:</strong>
                         </TableCell>
-                        <TableCell>1</TableCell>
+                        <TableCell>{property.propertyRef}</TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>
                           <strong>Date Acquired:</strong>
                         </TableCell>
-                        <TableCell>{moment().format("ll")}</TableCell>
+                        <TableCell>
+                          {moment(property.createdAt, ["DD-MM-YYYY"]).format(
+                            "ll"
+                          )}
+                        </TableCell>
                       </TableRow>
                     </TableBody>
                   </Table>
@@ -213,27 +308,16 @@ function SalesListing(props) {
                     color="secondary"
                     aria-controls="simple-menu"
                     aria-haspopup="true"
-                    onClick={handleClick}
+                    component={Link}
+                    to={`/property/${property.id}`}
                   >
-                    Manage Property
+                    View Property
                   </AppButton>
                 </div>
               </div>
             </div>
           ))}
         </div>
-
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem onClick={openSellSublot}>Sell BBB Sublots</MenuItem>
-          <MenuItem onClick={openMergeSublot}>Merge Sublots</MenuItem>
-          <MenuItem onClick={handleClose}>Split Sublots</MenuItem>
-        </Menu>
 
         {properties.total ? (
           <div className="flex items-center justify-center mt-16">

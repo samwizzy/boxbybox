@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import _ from "lodash";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
+import * as authActions from "../../../../auth/store/actions";
 import {
   Checkbox,
   FormControlLabel,
@@ -26,44 +27,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const initialState = {
-  location: "",
-  country: "",
-  bedrooms: "",
-  bathrooms: "",
-  minPrice: "",
-  maxPrice: "",
-  furnished: false,
-  serviced: false,
-};
-
 export default function SearchForm(props) {
   const classes = useStyles(props);
-  const [form, setForm] = useState({ ...initialState });
+  const dispatch = useDispatch();
+  const { form, handleChange, handleFilter } = props;
   const countries = useSelector(({ auth }) => auth.location.countries);
+  const states = useSelector(({ auth }) => auth.location.states);
 
-  const handleChange = (event) => {
-    const { name, value, type, checked } = event.target;
-    setForm({ ...form, [name]: type === "checkbox" ? checked : value });
-  };
+  useEffect(() => {
+    if (form.country) {
+      dispatch(authActions.getStateByCountry(form.country));
+    }
+  }, [dispatch, form.country]);
 
   console.log(form, "form property");
+  console.log(states, "states property");
 
   return (
     <div>
       <form className="grid grid-cols-3 gap-0 md:gap-3">
         <div className="col-span-3">
-          <TextField
-            margin="dense"
-            id="location"
-            name="location"
-            label="Location"
-            value={form.location}
-            onChange={handleChange}
-            variant="outlined"
-            fullWidth
-          />
-
           <TextField
             margin="dense"
             id="country"
@@ -85,6 +68,25 @@ export default function SearchForm(props) {
 
           <TextField
             margin="dense"
+            select
+            id="location"
+            name="location"
+            label="Location"
+            value={form.location}
+            onChange={handleChange}
+            variant="outlined"
+            fullWidth
+          >
+            <MenuItem value="">Select state</MenuItem>
+            {states.map((option) => (
+              <MenuItem key={option.id} value={option.id}>
+                {option.name}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <TextField
+            margin="dense"
             id="bedrooms"
             name="bedrooms"
             select
@@ -94,7 +96,7 @@ export default function SearchForm(props) {
             variant="outlined"
             fullWidth
           >
-            <MenuItem value="">Select country</MenuItem>
+            <MenuItem value="">Select no. of bedrooms</MenuItem>
             {_.range(1, 5).map((bed) => (
               <MenuItem key={bed} value={bed}>
                 {bed} {bed > 1 ? "bedrooms" : "bedroom"}
@@ -114,7 +116,7 @@ export default function SearchForm(props) {
             fullWidth
           >
             <MenuItem value="">Select Minimum Price</MenuItem>
-            {_.range(200000, 1000000, 100000).map((price) => (
+            {_.range(200000, 9000000000, 100000).map((price) => (
               <MenuItem key={price} value={price}>
                 {price}
               </MenuItem>
@@ -133,7 +135,7 @@ export default function SearchForm(props) {
             fullWidth
           >
             <MenuItem value="">Select Max Price</MenuItem>
-            {_.range(200000, 1000000, 100000).map((price) => (
+            {_.range(200000, 9000000000, 100000).map((price) => (
               <MenuItem key={price} value={price}>
                 {price}
               </MenuItem>
@@ -145,9 +147,10 @@ export default function SearchForm(props) {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={form.furnished}
+                    checked={form.condition === "FURNISHED"}
                     onChange={handleChange}
-                    name="furnished"
+                    name="condition"
+                    value="FURNISHED"
                   />
                 }
                 label="Furnished"
@@ -155,9 +158,10 @@ export default function SearchForm(props) {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={form.serviced}
+                    checked={form.condition === "SERVICED"}
                     onChange={handleChange}
-                    name="serviced"
+                    name="condition"
+                    value="SERVICED"
                   />
                 }
                 label="Serviced"
@@ -176,7 +180,12 @@ export default function SearchForm(props) {
           </button>
 
           <div className="mt-4">
-            <AppButton fullWidth variant="contained" color="secondary">
+            <AppButton
+              fullWidth
+              variant="contained"
+              color="secondary"
+              onClick={handleFilter}
+            >
               Search
             </AppButton>
           </div>

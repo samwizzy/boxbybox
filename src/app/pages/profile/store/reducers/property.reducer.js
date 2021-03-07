@@ -44,7 +44,7 @@ const initialState = {
     limit: 0,
     total: 0,
   },
-  userIpoStakedProperties: [],
+  userBoxpiles: [],
   userPropertiesOnRent: {
     entities: [],
     page: 0,
@@ -66,6 +66,12 @@ const propertyReducer = (state = initialState, action) => {
       return {
         ...state,
         properties: action.payload,
+      };
+    }
+    case Actions.GET_USER_PROPERTIES: {
+      return {
+        ...state,
+        userProperties: action.payload,
       };
     }
     case Actions.GET_USER_PROPERTIES_ON_RENT: {
@@ -100,16 +106,10 @@ const propertyReducer = (state = initialState, action) => {
         error: action.payload,
       };
     }
-    case Actions.GET_USER_PROPERTIES: {
-      return {
-        ...state,
-        userProperties: action.payload,
-      };
-    }
     case Actions.GET_USER_PROPERTIES_WITH_IPO_STAKE: {
       return {
         ...state,
-        userIpoStakedProperties: action.payload,
+        userBoxpiles: action.payload,
       };
     }
     case Actions.GET_PROPERTY_BY_ID_SUCCESS: {

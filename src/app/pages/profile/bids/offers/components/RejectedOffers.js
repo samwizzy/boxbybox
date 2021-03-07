@@ -3,6 +3,7 @@ import BoxUtils from "../../../../../utils/BoxUtils";
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
 import { Table, TableBody, TableRow, TableCell } from "@material-ui/core";
+import { Alert, AlertTitle, Pagination } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -54,7 +55,11 @@ export default function RejectedOffers(props) {
                       <TableCell>
                         <strong>Date:</strong>
                       </TableCell>
-                      <TableCell>{moment().format("ll")}</TableCell>
+                      <TableCell>
+                        {moment(bid.ipoStake.createdAt, ["DD-MM-YYYY"]).format(
+                          "ll"
+                        )}
+                      </TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -82,6 +87,19 @@ export default function RejectedOffers(props) {
           </div>
         </div>
       ))}
+
+      {offers.length ? (
+        <div className="flex items-center justify-center mt-16">
+          <Pagination count={5} variant="outlined" color="secondary" />
+        </div>
+      ) : (
+        <Alert severity="info">
+          <AlertTitle>Hey there!</AlertTitle>
+          <div className="flex flex-col md:flex-row md:flex-wrap items-center space-y-2">
+            You currently have no rejected offers
+          </div>
+        </Alert>
+      )}
     </div>
   );
 }

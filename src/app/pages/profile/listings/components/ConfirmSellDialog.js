@@ -28,8 +28,6 @@ function ConfirmSellDialog(props) {
     ({ profileListing }) => profileListing.ipostakes.confirmSaleDialog
   );
 
-  console.log(dialog, "confirm sale dialog");
-
   const handleChange = (event) => {
     setState(event.target.checked);
   };

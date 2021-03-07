@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import * as Actions from "./../store/actions";
 import clsx from "clsx";
@@ -13,7 +13,6 @@ import {
 } from "../../../common/components";
 import BuyForm from "./components/BuyForm";
 import RentForm from "./components/RentForm";
-// import PropertyCard from "./../components/PropertyCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -45,11 +44,62 @@ function a11yProps(index) {
   };
 }
 
+const initialState = {
+  location: "",
+  country: "",
+  bedrooms: "",
+  bathrooms: "",
+  minPrice: "",
+  maxPrice: "",
+  furnished: false,
+  serviced: false,
+  type: "",
+  condition: "",
+};
+
 export default function Listing(props) {
   const classes = useStyles(props);
   const dispatch = useDispatch();
   const { properties } = props;
   const [value, setValue] = useState(0);
+  const [filteredProperties, setFilteredProperties] = useState({
+    ...properties,
+    entities: _.sortBy(properties.entities, "createdAt", "desc"),
+  });
+
+  const [form, setForm] = useState({ ...initialState });
+
+  useEffect(() => {
+    setFilteredProperties({
+      ...properties,
+      entities: _.sortBy(properties.entities, "createdAt", "desc"),
+    });
+    return () => {};
+  }, [properties]);
+
+  const handleChange = (event) => {
+    const { name, value, type, checked } = event.target;
+    setForm({ ...form, [name]: type === "checkbox" ? checked : value });
+  };
+
+  const handleFilter = () => {
+    const { condition, type, bathrooms, bedrooms, country, location } = form;
+    if (condition.length > 0 && type.length && bedrooms && bathrooms) {
+      let searchedEntities = properties.entities.filter((prop) => {
+        return (
+          prop.address.country === country &&
+          prop.address.state === location &&
+          prop.type === type &&
+          prop.bedrooms === bedrooms
+        );
+      });
+
+      setFilteredProperties({
+        ...properties,
+        entities: _.sortBy(searchedEntities, "createdAt", "desc"),
+      });
+    }
+  };
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
@@ -58,6 +108,9 @@ export default function Listing(props) {
   const handlePaginate = (event, page) => {
     dispatch(Actions.getProperties({ page: page - 1 }));
   };
+
+  console.log(filteredProperties, "filteredProperties");
+  console.log(properties, "properties");
 
   return (
     <div className={clsx(classes.root, "container")}>
@@ -79,10 +132,18 @@ export default function Listing(props) {
               </AppBar>
               <div>
                 <TabPanel value={value} index={0}>
-                  <BuyForm />
+                  <BuyForm
+                    form={form}
+                    handleChange={handleChange}
+                    handleFilter={handleFilter}
+                  />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                  <RentForm />
+                  <RentForm
+                    form={form}
+                    handleChange={handleChange}
+                    handleFilter={handleFilter}
+                  />
                 </TabPanel>
               </div>
             </div>

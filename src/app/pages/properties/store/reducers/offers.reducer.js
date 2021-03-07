@@ -1,37 +1,30 @@
-import * as Actions from "../actions/property.actions";
+import * as Actions from "../actions/offers.actions";
 
 const initialState = {
   loading: false,
   error: null,
-  properties: {
-    entities: [],
-    page: 0,
-    limit: 10,
-    total: 8,
-  },
-  property: null,
   offers: [],
-  bids: [],
+  offer: null,
 };
 
-const propertyReducer = (state = initialState, action) => {
+const offersReducer = (state = initialState, action) => {
   switch (action.type) {
-    case Actions.GET_PROPERTIES_SUCCESS: {
+    case Actions.GET_OFFERS_SUCCESS: {
       return {
         ...state,
-        properties: action.payload,
+        offers: action.payload,
       };
     }
-    case Actions.GET_PROPERTIES_ERROR: {
+    case Actions.GET_OFFERS_ERROR: {
       return {
         ...state,
         error: action.payload,
       };
     }
-    case Actions.GET_PROPERTY_BY_ID_SUCCESS: {
+    case Actions.GET_OFFER_BY_ID_SUCCESS: {
       return {
         ...state,
-        property: action.payload,
+        offer: action.payload,
       };
     }
     default:
@@ -39,4 +32,4 @@ const propertyReducer = (state = initialState, action) => {
   }
 };
 
-export default propertyReducer;
+export default offersReducer;

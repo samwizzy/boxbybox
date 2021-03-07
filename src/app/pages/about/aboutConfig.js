@@ -4,7 +4,7 @@ export const AboutConfig = {
   routes: [
     {
       path: "/about",
-      component: loadable(() => import("./")),
+      component: loadable(() => import(".")),
     },
   ],
 };

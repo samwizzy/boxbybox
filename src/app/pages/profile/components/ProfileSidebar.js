@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 const menus = [
   { name: "Profile", path: "" },
-  { name: "Listing", path: "listing" },
+  { name: "Properties", path: "properties" },
   { name: "Wallet", path: "wallet" },
   { name: "Upload Property", path: "upload-property" },
   { name: "Live Bids", path: "bids" },

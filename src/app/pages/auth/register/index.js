@@ -15,7 +15,6 @@ import {
   CircularProgress,
   FormControl,
   FormControlLabel,
-  FormLabel,
   Grid,
   MenuItem,
   Radio,
@@ -178,7 +177,7 @@ function Register(props) {
               margin="dense"
               id="administrator.fullName"
               name="administrator.fullName"
-              label="Name"
+              label="Administrator Fullname"
               value={form.administrator.fullName}
               onChange={handleChange}
               variant="outlined"
@@ -541,46 +540,6 @@ function Register(props) {
                           label="Longitude"
                           type="number"
                           value={form.individualUser.address.longitude}
-                          onChange={handleChange}
-                          variant="outlined"
-                          fullWidth
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <FormLabel>Next of Kin Details</FormLabel>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <TextField
-                          margin="dense"
-                          id="individual-next-of-kin-name"
-                          name="individualUser.nextOfKinName"
-                          label="Name"
-                          value={form.individualUser.nextOfKinName}
-                          onChange={handleChange}
-                          variant="outlined"
-                          fullWidth
-                        />
-                      </Grid>
-                      <Grid item xs={6}>
-                        <TextField
-                          margin="dense"
-                          id="individual-next-of-kin-email"
-                          name="individualUser.nextOfKinEmail"
-                          label="Email"
-                          type="email"
-                          value={form.individualUser.nextOfKinEmail}
-                          onChange={handleChange}
-                          variant="outlined"
-                          fullWidth
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <TextField
-                          margin="dense"
-                          id="individual-next-of-kin-phone"
-                          name="individualUser.nextOfKinPhone"
-                          label="Phone"
-                          value={form.individualUser.nextOfKinPhone}
                           onChange={handleChange}
                           variant="outlined"
                           fullWidth

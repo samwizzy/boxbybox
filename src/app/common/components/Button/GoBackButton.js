@@ -11,7 +11,7 @@ function GoBackButton(props) {
   };
 
   return (
-    <IconButton onClick={goBack}>
+    <IconButton onClick={goBack} className="focus:outline-none">
       <ArrowBackIcon />
     </IconButton>
   );

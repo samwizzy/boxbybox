@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { connect, useDispatch } from "react-redux";
-import withReducer from "./../../../../store/withReducer";
-import reducer from "../../store/reducers";
-import * as Actions from "../../store/actions";
+import { useSelector, useDispatch } from "react-redux";
+import * as Actions from "./../../store/actions";
 import { makeStyles } from "@material-ui/core/styles";
-import { AppButton } from "../../../../common/components";
+import { AppButton } from "./../../../../common/components";
 import {
   Checkbox,
   Dialog,
@@ -22,31 +20,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ConfirmBidDialog(props) {
+function ConfirmSplitDialog(props) {
   const classes = useStyles();
-  const { dialog } = props;
   const dispatch = useDispatch();
   const [state, setState] = useState(false);
-
-  console.log(dialog.data, "ConfirmBidDialog diakog");
+  const dialog = useSelector(
+    ({ boxpilesReducer }) => boxpilesReducer.ipostakes.confirmSplitDialog
+  );
 
   const handleChange = (event) => {
     setState(event.target.checked);
   };
 
+  console.log(dialog, "dialog split");
+
   return (
     <Dialog
       className={classes.root}
       open={dialog.open}
-      onClose={() => dispatch(Actions.closeConfirmBidDialog())}
-      aria-labelledby="bid-offers-payment"
+      onClose={() => dispatch(Actions.closeConfirmSplitDialog())}
+      aria-labelledby="boxpile-split"
       fullWidth
       maxWidth="xs"
     >
       <DialogContent>
         <div className="text-center p-8">
           <h3 className="text-lg font-medium text-gray-600 mb-4">
-            You are about to submit a bid.
+            You are about to split this Boxpile
           </h3>
           <span className="mt-8 text-xs">
             <FormControlLabel
@@ -69,22 +69,13 @@ function ConfirmBidDialog(props) {
         <AppButton
           variant="contained"
           color="secondary"
-          onClick={() => dispatch(Actions.bidForIpoStake(dialog.data))}
+          onClick={() => dispatch(Actions.splitIpoStake(dialog?.data?.id))}
         >
-          Confirm bid
+          Confirm Split
         </AppButton>
       </DialogActions>
     </Dialog>
   );
 }
 
-const mapStateToProps = ({ bidReducer }) => {
-  return {
-    dialog: bidReducer.bids.confirmBidDialog,
-  };
-};
-
-export default withReducer(
-  "bidReducer",
-  reducer
-)(connect(mapStateToProps, null)(ConfirmBidDialog));
+export default ConfirmSplitDialog;

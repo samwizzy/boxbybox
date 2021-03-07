@@ -4,7 +4,6 @@ import * as Actions from "./../../store/actions";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Tabs, Tab } from "@material-ui/core";
-import Pagination from "@material-ui/lab/Pagination";
 import { TabPanel } from "../../../../common/components";
 import ActiveOffers from "./components/ActiveOffers";
 import ExpiredOffers from "./components/ExpiredOffers";
@@ -40,7 +39,6 @@ function Offers(props) {
   const [value, setValue] = useState(0);
   const dispatch = useDispatch();
   const { offers } = props;
-  // const offers = useSelector(({ bidsApp }) => bidsApp.bids.bids);
 
   console.log(offers, "offers state live");
 
@@ -65,10 +63,22 @@ function Offers(props) {
                   onChange={handleTabChange}
                   aria-label="live-offers"
                 >
-                  <Tab label="Active Offers ( 30 )" {...a11yProps(0)} />
-                  <Tab label="Accepted Offers ( 10 )" {...a11yProps(1)} />
-                  <Tab label="Rejected Offers ( 10 )" {...a11yProps(2)} />
-                  <Tab label="Expired Offers ( 10 )" {...a11yProps(3)} />
+                  <Tab
+                    label={`Active Offers ( ${offers.length} )`}
+                    {...a11yProps(0)}
+                  />
+                  <Tab
+                    label={`Accepted Offers ( ${offers.length} )`}
+                    {...a11yProps(1)}
+                  />
+                  <Tab
+                    label={`Rejected Offers ( ${offers.length} )`}
+                    {...a11yProps(2)}
+                  />
+                  <Tab
+                    label={`Expired Offers ( ${offers.length} )`}
+                    {...a11yProps(3)}
+                  />
                 </Tabs>
               </AppBar>
               <div>
@@ -84,10 +94,6 @@ function Offers(props) {
                 <TabPanel value={value} index={3} nopadding>
                   <ExpiredOffers offers={offers} />
                 </TabPanel>
-              </div>
-
-              <div className="flex items-center justify-center mt-16">
-                <Pagination count={10} variant="outlined" color="secondary" />
               </div>
             </div>
           </div>

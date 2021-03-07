@@ -20,17 +20,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ConfirmBidDialog(props) {
+function ConfirmMergeDialog(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [state, setState] = useState(false);
   const dialog = useSelector(
-    ({ profileListing }) => profileListing.listing.confirmMergeDialog
+    ({ boxpilesReducer }) => boxpilesReducer.ipostakes.confirmMergeDialog
   );
 
   const handleChange = (event) => {
     setState(event.target.checked);
   };
+
+  console.log(dialog, "dialog merge");
 
   return (
     <Dialog
@@ -44,7 +46,7 @@ function ConfirmBidDialog(props) {
       <DialogContent>
         <div className="text-center p-8">
           <h3 className="text-lg font-medium text-gray-600 mb-4">
-            You are about to Merge Sublots
+            You are about to merge <em>Boxpiles</em>
           </h3>
           <span className="mt-8 text-xs">
             <FormControlLabel
@@ -64,7 +66,11 @@ function ConfirmBidDialog(props) {
       </DialogContent>
 
       <DialogActions>
-        <AppButton size="small" variant="contained" color="secondary">
+        <AppButton
+          variant="contained"
+          color="secondary"
+          onClick={() => dispatch(Actions.mergeIpoStake(dialog.data))}
+        >
           Confirm Merge
         </AppButton>
       </DialogActions>
@@ -72,4 +78,4 @@ function ConfirmBidDialog(props) {
   );
 }
 
-export default ConfirmBidDialog;
+export default ConfirmMergeDialog;

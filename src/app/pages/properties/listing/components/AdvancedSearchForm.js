@@ -4,7 +4,7 @@ import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-import { AppButton } from "./../../../../common/components";
+import { AppButton } from "../../../../common/components";
 
 const useStyles = makeStyles((theme) => ({
   root: {},

@@ -15,11 +15,13 @@ import {
   CardMedia,
   Divider,
   Typography,
+  Tooltip,
   Slider,
 } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import ExploreIcon from "@material-ui/icons/Explore";
+import HelpOutlineIcon from "@material-ui/icons/HelpOutlineRounded";
 import { FormTabs, DescriptionTabs } from "./tabs";
 import {
   AppButton,
@@ -216,7 +218,7 @@ function PropertyDetails(props) {
                       {property ? (
                         <Slider
                           value={_.ceil(
-                            property.units / property.unitsSold / 100
+                            property.unitsSold / (property.units / 100)
                           )}
                           color="secondary"
                           valueLabelDisplay="auto"
@@ -244,8 +246,19 @@ function PropertyDetails(props) {
                         }
                         onClick={() => openIpoStakeDialog(property)}
                       >
-                        Buy Boxlot
+                        Buy Boxpile
                       </AppButton>
+                      <Tooltip
+                        title={
+                          property.createdBy.id === user.id
+                            ? "You can not buy boxpile on property to which you are a owner"
+                            : "You can buy boxpile on this property"
+                        }
+                        aria-label="add"
+                      >
+                        <HelpOutlineIcon className="text-gray-500" />
+                      </Tooltip>
+
                       <AppButton
                         variant="contained"
                         color="secondary"
@@ -261,7 +274,7 @@ function PropertyDetails(props) {
                         to={`${match.url}/boxlots`}
                         fullWidth
                       >
-                        View Boxlots
+                        View Boxpiles
                       </AppButton>
                     </div>
                   </Fragment>

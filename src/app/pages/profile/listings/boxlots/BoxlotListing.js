@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BoxUtils from "../../../../utils/BoxUtils";
+import { Link, useRouteMatch } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import * as Actions from "./../../store/actions";
 import moment from "moment";
 import _ from "lodash";
 import { makeStyles } from "@material-ui/core/styles";
+import { conditions, types } from "./../../../../utils/mock";
 import { AppButton } from "../../../../common/components";
 import {
   IconButton,
-  Menu,
   MenuItem,
   Table,
   TableBody,
@@ -22,53 +23,91 @@ import SearchIcon from "@material-ui/icons/Search";
 const useStyles = makeStyles((theme) => ({
   table: {
     width: "100%",
-    "& td": { border: 0 },
+    "& td": { border: 0, verticalAlign: "top" },
   },
 }));
 
 function BoxlotListing(props) {
   const classes = useStyles(props);
+  const { properties } = props;
   const dispatch = useDispatch();
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedSublot, setSelectedSublot] = useState(null);
-  const { properties, openSellSublotDialog, openMergeSublotDialog } = props;
+  const match = useRouteMatch();
+  const [filteredProperties, setFilteredProperties] = useState(
+    _.sortBy(properties, "createdAt", "desc")
+  );
+
+  const [form, setForm] = useState({
+    searchText: "",
+    condition: "",
+    type: "",
+  });
+
+  useEffect(() => {
+    setFilteredProperties(_.sortBy(properties, "createdAt", "desc"));
+
+    return () => {};
+  }, [properties]);
+
+  useEffect(() => {
+    const { searchText } = form;
+    if (searchText.length > 0) {
+      let searchedProperties = properties.filter((prop) => {
+        const regex = new RegExp(`^${searchText}`, "gi");
+        return prop.title.match(regex);
+      });
+
+      setFilteredProperties(_.sortBy(searchedProperties, "createdAt", "desc"));
+    }
+  }, [form, properties]);
+
+  const handleFilter = () => {
+    const { searchText, condition, type } = form;
+    if (searchText.length > 0 && condition.length && type.length) {
+      let searchedProperties = properties.filter((prop) => {
+        const regex = new RegExp(`^${searchText}`, "gi");
+
+        return (
+          prop.title.match(regex) &&
+          prop.condition === condition &&
+          prop.type === type
+        );
+      });
+
+      setFilteredProperties(_.sortBy(searchedProperties, "createdAt", "desc"));
+    }
+  };
+
+  const handleChange = (event) => {
+    setForm({ ...form, [event.target.name]: event.target.value });
+  };
 
   const handlePaginate = (event, page) => {
     dispatch(Actions.getProperties({ page: page - 1 }));
   };
 
-  const handleClick = (property) => (event) => {
-    setSelectedSublot(property);
-    setAnchorEl(event.currentTarget);
+  const canSubmit = () => {
+    const { hierachy, ...rest } = form;
+    return _.some(rest, _.isEmpty);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const openSellSublot = () => {
-    openSellSublotDialog(selectedSublot);
-    handleClose();
-  };
-
-  const openMergeSublot = () => {
-    openMergeSublotDialog(selectedSublot);
-    handleClose();
-  };
+  console.log(filteredProperties, "filteredProperties for boxlots");
+  console.log(properties, "user properties sam checking");
+  console.log(form, "form for boxlots");
 
   return (
     <div className="container">
       <div className="bg-white pb-8 px-8">
         <div className="py-4">
-          <h3 className="text-lg font-normal text-gray-600">Boxlots</h3>
+          <h3 className="text-lg font-normal text-gray-600">My Properties</h3>
         </div>
 
         <div className="flex flex-col md:flex-row md:justify-end md:items-center md:space-x-2 py-4">
           <TextField
             id="search-by-id"
             label="Search by ID"
-            name="search"
-            value=""
+            name="searchText"
+            value={form.searchText}
+            onChange={handleChange}
             variant="outlined"
             margin="dense"
             InputProps={{
@@ -80,31 +119,48 @@ function BoxlotListing(props) {
             }}
           />
           <TextField
-            id="category"
+            id="condition"
             select
-            label="Category"
-            name="category"
-            value=""
+            label="Condition"
+            name="condition"
+            value={form.condition}
+            onChange={handleChange}
             variant="outlined"
             margin="dense"
             classes={{ root: "w-40" }}
           >
-            <MenuItem value="">Category</MenuItem>
+            <MenuItem value="">Condition</MenuItem>
+            {conditions.map((condition, i) => (
+              <MenuItem key={i} value={condition}>
+                {condition}
+              </MenuItem>
+            ))}
           </TextField>
           <TextField
-            id="bbb-hierachy"
+            id="bbb-type"
             select
-            label="Hierachy"
-            name="hierachy"
-            value=""
+            label="Type"
+            name="type"
+            value={form.type}
+            onChange={handleChange}
             variant="outlined"
             margin="dense"
             classes={{ root: "w-40" }}
           >
-            <MenuItem value="">BBB Hierachy</MenuItem>
+            <MenuItem value="">Types</MenuItem>
+            {types.map((type, i) => (
+              <MenuItem key={i} value={type}>
+                {type}
+              </MenuItem>
+            ))}
           </TextField>
           <div className="mt-2 md:mt-0" />
-          <AppButton variant="contained" color="secondary">
+          <AppButton
+            variant="contained"
+            color="secondary"
+            disabled={canSubmit()}
+            onClick={handleFilter}
+          >
             Filter
           </AppButton>
         </div>
@@ -124,7 +180,7 @@ function BoxlotListing(props) {
         )}
 
         <div className="space-y-4">
-          {properties.map((property, i) => (
+          {filteredProperties.map((property, i) => (
             <div
               key={i}
               className="flex space-x-2 border-0 border-t border-b border-solid border-gray-200"
@@ -142,9 +198,9 @@ function BoxlotListing(props) {
                     <TableBody>
                       <TableRow>
                         <TableCell>
-                          <strong>Property ID:</strong>
+                          <strong>Property Name:</strong>
                         </TableCell>
-                        <TableCell>{property.propertyRef}</TableCell>
+                        <TableCell>{property.title}</TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>
@@ -171,15 +227,17 @@ function BoxlotListing(props) {
                     <TableBody>
                       <TableRow>
                         <TableCell>
-                          <strong>BBB Hierachy:</strong>
+                          <strong>Location:</strong>
                         </TableCell>
-                        <TableCell>{moment().format("DD")}</TableCell>
+                        <TableCell>
+                          {`${property.address.houseNoAddress} ${property.address.city} ${property.address.country}`}
+                        </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>
-                          <strong>Category:</strong>
+                          <strong>Property Ref:</strong>
                         </TableCell>
-                        <TableCell>1</TableCell>
+                        <TableCell>{property.propertyRef}</TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>
@@ -197,27 +255,16 @@ function BoxlotListing(props) {
                     color="secondary"
                     aria-controls="simple-menu"
                     aria-haspopup="true"
-                    onClick={handleClick(property)}
+                    component={Link}
+                    to={`${match.url}/${property.id}/boxpiles`}
                   >
-                    Manage Property
+                    View Boxpiles
                   </AppButton>
                 </div>
               </div>
             </div>
           ))}
         </div>
-
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem onClick={openSellSublot}>Sell BBB Sublots</MenuItem>
-          <MenuItem onClick={openMergeSublot}>Merge Sublots</MenuItem>
-          <MenuItem onClick={handleClose}>Split Sublots</MenuItem>
-        </Menu>
 
         {properties.total ? (
           <div className="flex items-center justify-center mt-16">

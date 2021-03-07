@@ -36,7 +36,7 @@ export function getProperties() {
 export function getUserProperties() {
   const request = axios.get("/auth/users/properties");
 
-  console.log(request, "request get user properties");
+  console.log(request, "request user properties");
 
   return (dispatch) =>
     request.then((response) =>
@@ -119,7 +119,7 @@ export function addProperty(data) {
                 message: "Your property has been added successfully",
               })
             ),
-            history.push("/profile/listing")
+            history.push("/profile/properties")
           );
         }
       })

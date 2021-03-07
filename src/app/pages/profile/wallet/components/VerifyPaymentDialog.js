@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as Actions from "./../../store/actions";
 import { makeStyles } from "@material-ui/core/styles";
-import { MenuItem, TextField } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import { AppButton } from "./../../../../common/components";
 import { Dialog, DialogContent, DialogActions } from "@material-ui/core";
+import { Autocomplete } from "@material-ui/lab";
 import { usePaystackPayment } from "react-paystack";
 
 const useStyles = makeStyles((theme) => ({
@@ -16,33 +17,43 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const initialConfig = {
-  reference: new Date().getTime(),
-  email: "samwize.inc@gmail.com",
-  amount: 20000,
-  publicKey: "pk_test_954d6c42ded371fec6455bde2d41638268324803",
-};
-
 function VerifyPaymentDialog(props) {
   const classes = useStyles(props);
-  const [paymentGateway, setPaymentGateway] = useState("PAYSTACK");
+  const [paymentGateway, setPaymentGateway] = useState(null);
+  const [inputValue, setInputValue] = useState("");
   const { paymentGateways } = props;
-  const [config, setConfig] = useState({ ...initialConfig });
   const dispatch = useDispatch();
+  const user = useSelector(({ auth }) => auth.user.data);
   const dialog = useSelector(
     ({ profileWallet }) => profileWallet.wallet.verifyPaymentDialog
   );
 
+  const initialConfig = {
+    reference: new Date().getTime(),
+    email: user?.email,
+    amount: 0,
+    publicKey: "",
+  };
+
+  const [config, setConfig] = useState({ ...initialConfig });
+
   useEffect(() => {
     if (dialog.data) {
+      let publicKey = "";
+      if (paymentGateway) {
+        publicKey = paymentGateway.publicKey.split(" ")[1];
+      }
       setConfig((state) => ({
         ...state,
+        email: user.email,
         reference: dialog.data.transactionReference,
         amount: dialog.data.totalAmount * 100,
+        publicKey: publicKey,
       }));
     }
+
     return () => {};
-  }, [dialog.data]);
+  }, [dialog.data, user, paymentGateway]);
 
   const onSuccess = ({ reference }) => {
     console.log(reference, "reference on success");
@@ -67,19 +78,22 @@ function VerifyPaymentDialog(props) {
             initializePayment(onSuccess, onClose);
           }}
         >
-          verify with {paymentGateway}
+          verify {paymentGateway && `with ${paymentGateway.name}`}
         </AppButton>
       </div>
     );
   };
 
-  const handleChange = (event) => {
-    setPaymentGateway(event.target.value);
+  const handleChange = (event, value) => {
+    console.log(value, "value");
+    setPaymentGateway(value);
   };
 
   console.log(dialog, "verify dialog");
+  console.log(user, "auth dialog");
   console.log(config, "config dialog");
   console.log(paymentGateway, "verify paymentGateway");
+  console.log(inputValue, "verify inputValue");
 
   return (
     <Dialog
@@ -96,24 +110,26 @@ function VerifyPaymentDialog(props) {
             You are about to verify fund wallet
           </p>
 
-          <TextField
-            id="payment-method"
-            select
-            label="Payment Method"
-            name="paymentMethod"
+          <Autocomplete
             value={paymentGateway}
+            getOptionLabel={(option) => option.name}
             onChange={handleChange}
-            variant="outlined"
-            margin="dense"
+            inputValue={inputValue}
+            onInputChange={(event, newInputValue) => {
+              setInputValue(newInputValue);
+            }}
+            id="select-payment-gateway"
+            options={paymentGateways}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Payment Gateway"
+                variant="outlined"
+                margin="dense"
+              />
+            )}
             fullWidth
-          >
-            <MenuItem value="">Select Payment method</MenuItem>
-            {paymentGateways.map((pay, i) => (
-              <MenuItem key={i} value={pay.name}>
-                {pay.name}
-              </MenuItem>
-            ))}
-          </TextField>
+          />
         </div>
       </DialogContent>
 

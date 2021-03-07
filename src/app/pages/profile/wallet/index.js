@@ -57,10 +57,12 @@ function ProfileWallet(props) {
   }, [getWalletBalance, getWalletTransactions, getPaymentGateways]);
 
   const handlePaginate = (event, page) => {
-    dispatch(/*Actions.getIpoStakeByPropertyId(params.id, page - 1)*/);
+    dispatch(Actions.getWalletTransactions(page - 1));
   };
 
-  console.log(transactions, paymentGateways);
+  console.log(transactions, "transactions");
+  console.log(paymentGateways, "paymentGateways");
+  console.log(wallet, "wallet");
 
   return (
     <div className="container">

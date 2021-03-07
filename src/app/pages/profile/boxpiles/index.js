@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { withRouter } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { withRouter, useParams } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import withReducer from "../../../store/withReducer";
@@ -9,11 +9,11 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { Card, CardContent, Grid, Tabs, Tab, Toolbar } from "@material-ui/core";
 import { GoBackButton } from "../../../common/components";
 import SellSublotDialog from "./components/SellSublotDialog";
+import ConfirmSellDialog from "./components/ConfirmSellDialog";
 import MergeSublotDialog from "./components/MergeSublotDialog";
 import ConfirmMergeDialog from "./components/ConfirmMergeDialog";
+import ConfirmSplitDialog from "./components/ConfirmSplitDialog";
 import BoxlotListing from "./boxlots/BoxlotListing";
-// import RentalListing from "./rentals/RentalListing";
-// import SalesListing from "./sales/SalesListing";
 
 const AntTabs = withStyles((theme) => ({
   flexContainer: {
@@ -78,30 +78,43 @@ function a11yProps(index) {
   };
 }
 
-function IPOStakeListing(props) {
+function BoxPileListing(props) {
   const classes = useStyles(props);
   const [value, setValue] = useState(0);
+  const params = useParams();
   const {
-    properties,
+    property,
     userProperties,
+    boxpiles,
+    getPropertyById,
+    getUserIpoStakeByPropertyId,
     openSellSublotDialog,
     openMergeSublotDialog,
+    openConfirmMergeDialog,
+    openConfirmSplitDialog,
+    user,
   } = props;
+
+  useEffect(() => {
+    getPropertyById(params.propertyId);
+    getUserIpoStakeByPropertyId(params.propertyId);
+    return () => {};
+  }, [params.propertyId, getPropertyById, getUserIpoStakeByPropertyId]);
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  console.log(properties, "profile listing");
+  console.log(property, "profile single property");
   console.log(userProperties, "userProperties listing");
+  console.log(boxpiles, "boxpiles listing");
 
   return (
     <div className="container">
       <div className="bg-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Toolbar variant="dense" className={classes.toolbar}>
-            <GoBackButton />
-            <h3 className="text-gray-800 ml-2">My IPO Stake Listing</h3>
+            <GoBackButton /> <h3 className="text-gray-800 ml-2">My Boxpiles</h3>
           </Toolbar>
 
           <Grid container spacing={2}>
@@ -116,9 +129,7 @@ function IPOStakeListing(props) {
                     aria-label="ant example"
                     className={classes.tabs}
                   >
-                    <AntTab label="Boxlots" {...a11yProps(0)} />
-                    {/* <AntTab label="My Rental Listing" {...a11yProps(1)} />
-                    <AntTab label="My Sales Listing" {...a11yProps(2)} /> */}
+                    <AntTab label="Boxpiles" {...a11yProps(0)} />
                   </AntTabs>
                 </CardContent>
               </Card>
@@ -126,55 +137,54 @@ function IPOStakeListing(props) {
             <Grid item xs={12} md={9}>
               {value === 0 && (
                 <BoxlotListing
-                  properties={userProperties}
+                  user={user}
+                  boxpiles={boxpiles}
+                  property={property}
                   openSellSublotDialog={openSellSublotDialog}
                   openMergeSublotDialog={openMergeSublotDialog}
+                  openConfirmMergeDialog={openConfirmMergeDialog}
+                  openConfirmSplitDialog={openConfirmSplitDialog}
                 />
               )}
-              {/* {value === 1 && (
-                <RentalListing
-                  properties={userProperties}
-                  openSellSublotDialog={openSellSublotDialog}
-                  openMergeSublotDialog={openMergeSublotDialog}
-                />
-              )}
-              {value === 2 && (
-                <SalesListing
-                  properties={userProperties}
-                  openSellSublotDialog={openSellSublotDialog}
-                  openMergeSublotDialog={openMergeSublotDialog}
-                />
-              )} */}
             </Grid>
           </Grid>
 
           <SellSublotDialog />
+          <ConfirmSellDialog />
           <MergeSublotDialog />
           <ConfirmMergeDialog />
+          <ConfirmSplitDialog />
         </div>
       </div>
     </div>
   );
 }
 
-const mapStateToProps = ({ profileListing }) => {
+const mapStateToProps = ({ auth, boxpilesReducer }) => {
   return {
-    properties: profileListing.property.properties,
-    userProperties: profileListing.property.userProperties,
+    properties: boxpilesReducer.property.properties,
+    userProperties: boxpilesReducer.property.userProperties,
+    boxpiles: boxpilesReducer.ipostakes.boxpiles,
+    property: boxpilesReducer.property.property,
+    user: auth.user.data,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
+      getUserIpoStakeByPropertyId: Actions.getUserIpoStakeByPropertyId,
+      getPropertyById: Actions.getPropertyById,
       openSellSublotDialog: Actions.openSellSublotDialog,
       openMergeSublotDialog: Actions.openMergeSublotDialog,
+      openConfirmMergeDialog: Actions.openConfirmMergeDialog,
+      openConfirmSplitDialog: Actions.openConfirmSplitDialog,
     },
     dispatch
   );
 };
 
 export default withReducer(
-  "profileListing",
+  "boxpilesReducer",
   reducer
-)(withRouter(connect(mapStateToProps, mapDispatchToProps)(IPOStakeListing)));
+)(withRouter(connect(mapStateToProps, mapDispatchToProps)(BoxPileListing)));

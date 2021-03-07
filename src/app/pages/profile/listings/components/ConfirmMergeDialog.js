@@ -28,8 +28,6 @@ function ConfirmMergeDialog(props) {
     ({ profileListing }) => profileListing.ipostakes.confirmMergeDialog
   );
 
-  console.log(dialog, "confirm merge dialog");
-
   const handleChange = (event) => {
     setState(event.target.checked);
   };

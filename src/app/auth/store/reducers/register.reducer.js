@@ -1,4 +1,5 @@
 import * as Actions from "../actions/register.actions";
+import moment from "moment";
 
 const initialState = {
   loading: false,
@@ -32,12 +33,9 @@ const initialState = {
         postCode: "",
         state: "",
       },
-      dateOfBirth: "01-01-1980",
+      dateOfBirth: moment().format("DD-MM-YYYY"),
       fullName: "",
       gender: "MALE",
-      nextOfKinEmail: "",
-      nextOfKinName: "",
-      nextOfKinPhone: "",
     },
     password: "",
     phone: "",

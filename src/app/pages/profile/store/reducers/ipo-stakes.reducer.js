@@ -3,7 +3,7 @@ import * as Actions from "../actions/ipo-stakes.actions";
 const initialState = {
   loading: false,
   error: null,
-  boxlots: {
+  boxpiles: {
     page: 0,
     limit: 50,
     total: 0,
@@ -45,12 +45,18 @@ const initialState = {
   },
 };
 
-const ipoStakesReducer = (state = initialState, action) => {
+const boxpileReducer = (state = initialState, action) => {
   switch (action.type) {
     case Actions.GET_USER_IPO_STAKES: {
       return {
         ...state,
         userBoxlots: action.payload,
+      };
+    }
+    case Actions.GET_USER_BOXPILES_BY_PROPERTY_ID: {
+      return {
+        ...state,
+        boxpiles: action.payload,
       };
     }
     case Actions.ADD_IPO_STAKE_BY_ID_SUCCESS: {
@@ -169,4 +175,4 @@ const ipoStakesReducer = (state = initialState, action) => {
   }
 };
 
-export default ipoStakesReducer;
+export default boxpileReducer;

@@ -69,10 +69,6 @@ function MergeBoxlotDialog(props) {
     setForm({ ...form, ipos });
   };
 
-  console.log(dialog, "activate merge dialog");
-  console.log(form, "merge dialog form");
-  console.log(userBoxlots, "activate merge userBoxlots");
-
   return (
     <Dialog
       className={classes.root}
