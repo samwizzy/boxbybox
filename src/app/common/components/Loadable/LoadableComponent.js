@@ -11,7 +11,7 @@ export default function LoadableComponent(props) {
 
   return (
     <div className={classes.root}>
-      <CircularProgress />
+      <CircularProgress size={24} />
     </div>
   );
 }

@@ -21,7 +21,7 @@ import {
 import { Skeleton } from "@material-ui/lab";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import ExploreIcon from "@material-ui/icons/Explore";
-import HelpOutlineIcon from "@material-ui/icons/HelpOutlineRounded";
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import { FormTabs, DescriptionTabs } from "./tabs";
 import {
   AppButton,
@@ -256,7 +256,7 @@ function PropertyDetails(props) {
                         }
                         aria-label="add"
                       >
-                        <HelpOutlineIcon className="text-gray-500" />
+                        <InfoOutlinedIcon className="text-gray-500" />
                       </Tooltip>
 
                       <AppButton

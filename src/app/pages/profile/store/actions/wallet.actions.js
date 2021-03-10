@@ -88,7 +88,10 @@ export function verifyPayment(transactionRef, paymentGateway = "PAYSTACK") {
           type: VERIFY_PAYMENT,
           payload: response.data,
         }),
-      ]).then(dispatch(closeVerifyPaymentDialog()))
+      ]).then(
+        dispatch(closeVerifyPaymentDialog()),
+        dispatch(getWalletBalance())
+      )
     );
 }
 

@@ -153,10 +153,18 @@ function BoxPiles(props) {
                           </TableRow>
                           <TableRow>
                             <TableCell>
-                              <strong>Price:</strong>
+                              <strong>Purchased Price:</strong>
                             </TableCell>
                             <TableCell>
                               {BoxUtils.formatCurrency(boxlot.purchaseAmount)}
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell>
+                              <strong>Selling Price:</strong>
+                            </TableCell>
+                            <TableCell>
+                              {BoxUtils.formatCurrency(boxlot.sellingAmount)}
                             </TableCell>
                           </TableRow>
                           <TableRow>

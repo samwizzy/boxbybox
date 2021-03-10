@@ -68,7 +68,6 @@ function QueueInBidDialog(props) {
 
       <DialogActions>
         <Button
-          size="small"
           variant="contained"
           color="secondary"
           onClick={() => dispatch(Actions.openConfirmBidDialog())}

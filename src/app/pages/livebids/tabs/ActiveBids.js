@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppButton } from "../../../common/components";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
+import { Alert, AlertTitle, Pagination } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -52,6 +53,19 @@ export default function ActiveBids(props) {
           </div>
         </div>
       ))}
+
+      {bids.length ? (
+        <div className="flex items-center justify-center mt-16">
+          <Pagination count={5} variant="outlined" color="secondary" />
+        </div>
+      ) : (
+        <Alert severity="info">
+          <AlertTitle>Hey there!</AlertTitle>
+          <div className="flex flex-col md:flex-row md:flex-wrap items-center space-y-2">
+            You currently have no active bid
+          </div>
+        </Alert>
+      )}
     </div>
   );
 }

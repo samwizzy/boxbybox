@@ -49,7 +49,6 @@ function BidPaymentDialog(props) {
 
       <DialogActions>
         <Button
-          size="small"
           variant="outlined"
           startIcon={<ArrowBackIcon />}
           onClick={() => dispatch(Actions.closeBidPaymentDialog())}

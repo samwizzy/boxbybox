@@ -64,7 +64,7 @@ function ConfirmBidDialog(props) {
       </DialogContent>
 
       <DialogActions>
-        <Button size="small" variant="contained" color="secondary">
+        <Button variant="contained" color="secondary">
           Confirm bid
         </Button>
       </DialogActions>

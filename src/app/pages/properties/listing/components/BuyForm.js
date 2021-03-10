@@ -38,6 +38,7 @@ export default function SearchForm(props) {
     if (form.country) {
       dispatch(authActions.getStateByCountry(form.country));
     }
+    return () => {};
   }, [dispatch, form.country]);
 
   console.log(form, "form property");
@@ -79,7 +80,7 @@ export default function SearchForm(props) {
           >
             <MenuItem value="">Select state</MenuItem>
             {states.map((option) => (
-              <MenuItem key={option.id} value={option.id}>
+              <MenuItem key={option.id} value={option.name}>
                 {option.name}
               </MenuItem>
             ))}
@@ -116,7 +117,7 @@ export default function SearchForm(props) {
             fullWidth
           >
             <MenuItem value="">Select Minimum Price</MenuItem>
-            {_.range(200000, 9000000000, 100000).map((price) => (
+            {_.range(200000, 90000000, 100000).map((price) => (
               <MenuItem key={price} value={price}>
                 {price}
               </MenuItem>
@@ -135,7 +136,7 @@ export default function SearchForm(props) {
             fullWidth
           >
             <MenuItem value="">Select Max Price</MenuItem>
-            {_.range(200000, 9000000000, 100000).map((price) => (
+            {_.range(200000, 90000000, 100000).map((price) => (
               <MenuItem key={price} value={price}>
                 {price}
               </MenuItem>

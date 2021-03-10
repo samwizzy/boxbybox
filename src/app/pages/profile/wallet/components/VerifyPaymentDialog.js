@@ -56,8 +56,7 @@ function VerifyPaymentDialog(props) {
   }, [dialog.data, user, paymentGateway]);
 
   const onSuccess = ({ reference }) => {
-    console.log(reference, "reference on success");
-    dispatch(Actions.verifyPayment(reference, paymentGateway));
+    dispatch(Actions.verifyPayment(reference, paymentGateway.name));
   };
 
   // you can call this function anything
@@ -74,6 +73,7 @@ function VerifyPaymentDialog(props) {
         <AppButton
           variant="contained"
           color="primary"
+          disabled={!paymentGateway}
           onClick={() => {
             initializePayment(onSuccess, onClose);
           }}

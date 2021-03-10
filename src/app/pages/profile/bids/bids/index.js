@@ -38,6 +38,10 @@ function Bids(props) {
   const dispatch = useDispatch();
   const { bids } = props;
 
+  const activeBids = bids.filter((bid) => bid.status === "ACTIVE");
+  const expiredBids = bids.filter((bid) => bid.status === "EXPIRED");
+  const counteredBids = bids.filter((bid) => bid.status === "COUNTERED");
+
   console.log(bids, "bids state live");
 
   useEffect(() => {
@@ -62,28 +66,28 @@ function Bids(props) {
                   aria-label="live-bids"
                 >
                   <Tab
-                    label={`Active Bids ( ${bids.length} )`}
+                    label={`Active Bids ( ${activeBids.length} )`}
                     {...a11yProps(0)}
                   />
                   <Tab
-                    label={`Expired Bids ( ${bids.length} )`}
+                    label={`Expired Bids ( ${expiredBids.length} )`}
                     {...a11yProps(1)}
                   />
                   <Tab
-                    label={`Countered Bids ( ${bids.length} )`}
+                    label={`Countered Bids ( ${counteredBids.length} )`}
                     {...a11yProps(2)}
                   />
                 </Tabs>
               </AppBar>
               <div>
                 <TabPanel value={value} index={0} nopadding>
-                  <ActiveBids bids={bids} />
+                  <ActiveBids bids={activeBids} />
                 </TabPanel>
                 <TabPanel value={value} index={1} nopadding>
-                  <ExpiredBids bids={bids} />
+                  <ExpiredBids bids={expiredBids} />
                 </TabPanel>
                 <TabPanel value={value} index={2} nopadding>
-                  <CounteredBids bids={bids} />
+                  <CounteredBids bids={counteredBids} />
                 </TabPanel>
               </div>
             </div>

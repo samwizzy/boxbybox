@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { bindActionCreators } from "redux";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import withReducer from "./../../store/withReducer";
 import reducer from "./store/reducers";
 import * as Actions from "./store/actions";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, IconButton, Tabs, Tab, Toolbar } from "@material-ui/core";
-import Pagination from "@material-ui/lab/Pagination";
 import MenuIcon from "@material-ui/icons/Menu";
 import { AppBreadcrumbs, TabPanel } from "../../common/components";
 import RentForm from "./components/RentForm";
@@ -39,10 +38,9 @@ function a11yProps(index) {
 
 function Bids(props) {
   const classes = useStyles(props);
-  const { openQueueInBidDialog } = props;
+  const { bids, openQueueInBidDialog } = props;
   const [value, setValue] = useState(0);
   const dispatch = useDispatch();
-  const bids = useSelector(({ bidsApp }) => bidsApp.bids.bids);
 
   console.log(bids, "bids state live");
 
@@ -53,6 +51,9 @@ function Bids(props) {
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const activeBids = bids.filter((bid) => bid.status === "ACTIVE");
+  const expiredBids = bids.filter((bid) => bid.status === "EXPIRED");
 
   return (
     <div className={clsx(classes.root, "container")}>
@@ -78,27 +79,29 @@ function Bids(props) {
                   onChange={handleTabChange}
                   aria-label="live-bids"
                 >
-                  <Tab label="Active Bids ( 30 )" {...a11yProps(0)} />
-                  <Tab label="Expired Bids ( 10 )" {...a11yProps(1)} />
+                  <Tab
+                    label={`Active Bids ( ${activeBids.length} )`}
+                    {...a11yProps(0)}
+                  />
+                  <Tab
+                    label={`Expired Bids ( ${expiredBids.length} )`}
+                    {...a11yProps(1)}
+                  />
                 </Tabs>
               </AppBar>
               <div>
                 <TabPanel value={value} index={0} nopadding>
                   <ActiveBids
-                    bids={bids}
+                    bids={activeBids}
                     openQueueInBidDialog={openQueueInBidDialog}
                   />
                 </TabPanel>
                 <TabPanel value={value} index={1} nopadding>
                   <ExpiredBids
-                    bids={bids}
+                    bids={expiredBids}
                     openQueueInBidDialog={openQueueInBidDialog}
                   />
                 </TabPanel>
-              </div>
-
-              <div className="flex items-center justify-center mt-16">
-                <Pagination count={10} variant="outlined" color="secondary" />
               </div>
             </div>
           </div>
@@ -110,6 +113,12 @@ function Bids(props) {
   );
 }
 
+const mapStateToProps = ({ livebidsApp }) => {
+  return {
+    bids: livebidsApp.bids.bids,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
@@ -120,6 +129,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default withReducer(
-  "bidsApp",
+  "livebidsApp",
   reducer
-)(connect(null, mapDispatchToProps)(Bids));
+)(connect(mapStateToProps, mapDispatchToProps)(Bids));

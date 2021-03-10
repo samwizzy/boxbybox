@@ -10,6 +10,7 @@ import {
   AppBreadcrumbs,
   TabPanel,
   PropertyCard,
+  Loading,
 } from "../../../common/components";
 import BuyForm from "./components/BuyForm";
 import RentForm from "./components/RentForm";
@@ -83,14 +84,13 @@ export default function Listing(props) {
   };
 
   const handleFilter = () => {
-    const { condition, type, bathrooms, bedrooms, country, location } = form;
-    if (condition.length > 0 && type.length && bedrooms && bathrooms) {
+    const { bathrooms, bedrooms, location, minPrice, maxPrice } = form;
+    if (bedrooms && bathrooms) {
       let searchedEntities = properties.entities.filter((prop) => {
         return (
-          prop.address.country === country &&
           prop.address.state === location &&
-          prop.type === type &&
-          prop.bedrooms === bedrooms
+          prop.bedrooms === bedrooms &&
+          _.inRange(prop.price, minPrice, maxPrice)
         );
       });
 
@@ -110,6 +110,7 @@ export default function Listing(props) {
   };
 
   console.log(filteredProperties, "filteredProperties");
+  console.log(form, "form");
   console.log(properties, "properties");
 
   return (
@@ -158,7 +159,7 @@ export default function Listing(props) {
                 <Fragment key={i}>
                   <PropertyCard property={property} />
 
-                  {properties.entities.length !== i && (
+                  {properties.entities.length !== i + 1 && (
                     <Divider className={classes.divider} />
                   )}
                 </Fragment>
@@ -174,7 +175,7 @@ export default function Listing(props) {
                   />
                 </div>
               ) : (
-                ""
+                <Loading />
               )}
             </div>
           </div>

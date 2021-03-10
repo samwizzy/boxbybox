@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useRouteMatch } from "react-router-dom";
 import BoxUtils from "../../../../utils/BoxUtils";
 import { useDispatch } from "react-redux";
 import * as Actions from "./../../store/actions";
@@ -43,7 +42,6 @@ function BoxlotListing(props) {
     openConfirmSplitDialog,
   } = props;
   const dispatch = useDispatch();
-  const match = useRouteMatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedSublot, setSelectedSublot] = useState(null);
   const [filteredBoxpiles, setFilteredBoxpiles] = useState(boxpiles);
@@ -160,7 +158,7 @@ function BoxlotListing(props) {
             <AppBreadcrumbs
               prevLinks={{
                 Properties: "/profile/properties",
-                [property?.title]: match.url,
+                [property?.title || ""]: `/property/${property?.id}`,
               }}
               current="My Boxpiles"
             />
@@ -338,6 +336,14 @@ function BoxlotListing(props) {
                         </TableCell>
                         <TableCell>
                           {BoxUtils.formatCurrency(boxpile.purchaseAmount)}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>
+                          <strong>Selling Price:</strong>
+                        </TableCell>
+                        <TableCell>
+                          {BoxUtils.formatCurrency(boxpile.sellingAmount)}
                         </TableCell>
                       </TableRow>
                       <TableRow>

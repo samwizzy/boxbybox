@@ -55,6 +55,8 @@ export function getUserIpoStakes(propertyId) {
 export function buyIpoStakeById(propertyId) {
   const request = axios.post("/auth/ipo-stake/" + propertyId);
 
+  
+
   return (dispatch) =>
     request.then((response) =>
       dispatch({

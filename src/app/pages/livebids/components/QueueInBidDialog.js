@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 function QueueInBidDialog(props) {
   const classes = useStyles(props);
   const dispatch = useDispatch();
-  const bids = useSelector(({ bidsApp }) => bidsApp.bids);
+  const bids = useSelector(({ livebidsApp }) => livebidsApp.bids);
   const dialog = bids.queueInBidDialog;
   const [form, setForm] = useState({
     amount: 0,

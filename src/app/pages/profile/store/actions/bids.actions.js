@@ -81,6 +81,7 @@ export function counterBid(data) {
         );
       });
 }
+
 export function updateBid(data) {
   const request = axios.post("/auth/update-a-bid", data);
 

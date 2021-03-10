@@ -4,10 +4,9 @@ import * as Actions from "./../../../store/actions";
 import BoxUtils from "./../../../../../utils/BoxUtils";
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
-import { Alert, AlertTitle, Pagination } from "@material-ui/lab";
+import { Alert, AlertTitle /*Pagination*/ } from "@material-ui/lab";
 import { AppButton } from "./../../../../../common/components";
 import { Table, TableBody, TableRow, TableCell } from "@material-ui/core";
-import { dateDiff } from "./ExpiredBids";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -22,11 +21,9 @@ export default function ActiveBids(props) {
   const dispatch = useDispatch();
   const { bids } = props;
 
-  const activeBids = bids.filter((bid) => !dateDiff(bid.endTime));
-
   return (
     <div className={classes.root}>
-      {activeBids.map((bid, i) => (
+      {bids.map((bid, i) => (
         <div
           key={i}
           className="py-2 border-0 border-b border-gray-200 border-solid"
@@ -60,12 +57,10 @@ export default function ActiveBids(props) {
                     </TableRow>
                     <TableRow>
                       <TableCell>
-                        <strong>Date:</strong>
+                        <strong>Start Date:</strong>
                       </TableCell>
                       <TableCell>
-                        {moment(bid.ipoStake.createdAt, ["DD-MM-YYYY"]).format(
-                          "ll"
-                        )}
+                        {moment(bid.startTime, ["DD-MM-YYYY"]).format("ll")}
                       </TableCell>
                     </TableRow>
                   </TableBody>
@@ -111,9 +106,9 @@ export default function ActiveBids(props) {
         </div>
       ))}
 
-      {activeBids.length ? (
+      {bids.length ? (
         <div className="flex items-center justify-center mt-16">
-          <Pagination count={5} variant="outlined" color="secondary" />
+          {/* <Pagination count={5} variant="outlined" color="secondary" /> */}
         </div>
       ) : (
         <Alert severity="info">

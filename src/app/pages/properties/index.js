@@ -8,13 +8,12 @@ import * as Actions from "./store/actions";
 import Listing from "./listing";
 
 function PropertyApp(props) {
-  const { getProperties, getIpoStakes, properties } = props;
+  const { getProperties, properties } = props;
 
   useEffect(() => {
     getProperties();
-    getIpoStakes();
     return () => {};
-  }, [getProperties, getIpoStakes]);
+  }, [getProperties]);
 
   return (
     <Fragment>

@@ -2,8 +2,8 @@ import React from "react";
 import BoxUtils from "./../../../../../utils/BoxUtils";
 import moment from "moment";
 import { makeStyles } from "@material-ui/core/styles";
-import { Alert, AlertTitle, Pagination } from "@material-ui/lab";
-import { Table, TableBody, TableRow, TableCell } from "@material-ui/core";
+import { Alert, AlertTitle /*Pagination*/ } from "@material-ui/lab";
+import { Chip, Table, TableBody, TableRow, TableCell } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -34,7 +34,8 @@ export default function CounteredBids(props) {
             </div>
             <div className="flex flex-col w-full space-y-2">
               <h3 className="capitalize text-gray-800">
-                {bid.ipoStake.property.title}
+                {bid.ipoStake.property.title}{" "}
+                <Chip label={bid.status} variant="outlined" color="primary" />
               </h3>
               <div className="flex flex-col md:flex-row justify-between md:space-x-1">
                 <Table size="small" className={classes.table}>
@@ -53,12 +54,10 @@ export default function CounteredBids(props) {
                     </TableRow>
                     <TableRow>
                       <TableCell>
-                        <strong>Date:</strong>
+                        <strong>Start Date:</strong>
                       </TableCell>
                       <TableCell>
-                        {moment(bid.ipoStake.createdAt, ["DD-MM-YYYY"]).format(
-                          "ll"
-                        )}
+                        {moment(bid.startTime, ["DD-MM-YYYY"]).format("ll")}
                       </TableCell>
                     </TableRow>
                   </TableBody>
@@ -90,7 +89,7 @@ export default function CounteredBids(props) {
 
       {bids.length ? (
         <div className="flex items-center justify-center mt-16">
-          <Pagination count={5} variant="outlined" color="secondary" />
+          {/* <Pagination count={5} variant="outlined" color="secondary" /> */}
         </div>
       ) : (
         <Alert severity="info">

@@ -75,34 +75,42 @@ export function getUserIpoStakeByPropertyId(propertyId) {
 
 export function addIpoStake(data, propertyId) {
   const request = axios.post(`/auth/ipo-stake/${propertyId}`, data);
-  console.dir(request, "request addipostake action");
 
   return (dispatch) =>
-    request.then((response) => {
-      if (response.status === 201) {
-        Promise.all([
-          dispatch({
-            type: ADD_BOXPILE_SUCCESS,
-            payload: response.data,
-          }),
-        ]).then(
+    request
+      .then((response) => {
+        if (response.status === 201) {
           Promise.all([
-            dispatch(
-              showSnackbar({
-                message: `You have successfully purchased ${response.data.noOfUnitsPurchased} units, worth NGN ${response.data.purchaseAmount}`,
-              })
-            ),
+            dispatch({
+              type: ADD_BOXPILE_SUCCESS,
+              payload: response.data,
+            }),
           ]).then(
-            dispatch(closeConfirmNewIpoStakeDialog()),
-            window.location.reload()
-          )
+            Promise.all([
+              dispatch(
+                showSnackbar({
+                  message: `You have successfully purchased ${response.data.noOfUnitsPurchased} units, worth NGN ${response.data.purchaseAmount}`,
+                })
+              ),
+            ]).then(
+              dispatch(closeConfirmNewIpoStakeDialog()),
+              window.location.reload()
+            )
+          );
+        } else {
+          Promise.all([dispatch({ type: ADD_BOXPILE_ERROR })]).then(
+            dispatch(showSnackbar({ message: response.data.message }))
+          );
+        }
+      })
+      .catch((error) => {
+        dispatch(
+          showSnackbar({
+            message: error.response.data.message,
+            variant: "warning",
+          })
         );
-      } else {
-        Promise.all([dispatch({ type: ADD_BOXPILE_ERROR })]).then(
-          dispatch(showSnackbar({ message: response.data.message }))
-        );
-      }
-    });
+      });
 }
 
 export function buyBoxPile(ipoStakeId) {
@@ -111,24 +119,35 @@ export function buyBoxPile(ipoStakeId) {
   console.log(request, "buy boxpile request");
 
   return (dispatch) =>
-    request.then((response) => {
-      if (response.status === 200) {
-        Promise.all([
-          dispatch({
-            type: BUY_BOXPILE_SUCCESS,
-            payload: response.data,
-          }),
-        ]).then(
+    request
+      .then((response) => {
+        if (response.status === 200) {
           Promise.all([
-            dispatch(
-              showSnackbar({
-                message: `You have successfully purchased a boxpile worth NGN ${response.data.purchaseAmount}`,
-              })
-            ),
-          ]).then(dispatch(closeConfirmBoxpileDialog()))
+            dispatch({
+              type: BUY_BOXPILE_SUCCESS,
+              payload: response.data,
+            }),
+          ]).then(
+            Promise.all([
+              dispatch(
+                showSnackbar({
+                  message: `You have successfully purchased a boxpile worth NGN ${response.data.sellingAmount}`,
+                })
+              ),
+            ]).then(dispatch(closeConfirmBoxpileDialog()))
+          );
+        }
+      })
+      .catch((error) => {
+        console.dir(error);
+        dispatch(
+          showSnackbar({
+            message: error.response.data.message,
+            variant: "warning",
+          })
         );
-      }
-    });
+        dispatch(closeConfirmBoxpileDialog());
+      });
 }
 
 export function bidForIpoStake(data) {

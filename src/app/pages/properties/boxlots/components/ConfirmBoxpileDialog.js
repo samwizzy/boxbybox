@@ -67,7 +67,6 @@ function ConfirmBoxpileDialog(props) {
 
       <DialogActions>
         <AppButton
-          size="small"
           disabled={!dialog.data}
           variant="contained"
           color="secondary"

@@ -68,7 +68,6 @@ function ConfirmIpoStakeDialog(props) {
 
       <DialogActions>
         <AppButton
-          size="small"
           disabled={!dialog.data}
           variant="contained"
           color="secondary"
